@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+ARG RUBY_VERSION=3.4.4 # Mantenha a mesma versão do seu .ruby-version
+FROM ruby:$RUBY_VERSION-slim
+
+# Variáveis de ambiente
+ENV RAILS_ENV=development \
+    APP_HOME=/rails
+
+# Cria o diretório da aplicação
+WORKDIR $APP_HOME
+
+# Instala dependências do sistema
+# - build-essential: para compilar gems nativas
+# - libpq-dev: para a gem 'pg' (PostgreSQL)
+# - git: para gems que vêm de repositórios git
+# - nodejs & yarn (opcional): se você usar JavaScript com webpacker/shakapacker ou importmaps com um pipeline de build JS
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    git \
+    libpq-dev \
+    libyaml-dev && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+    
+# Copia os arquivos de gerenciamento de gem
+COPY Gemfile Gemfile.lock ./
+
+# Instala as gems (BUNDLE_WITHOUT vazio para incluir gems de development e test)
+ENV BUNDLE_WITHOUT=""
+RUN bundle install
+
+# Copia o restante do código da aplicação para o container
+COPY . .
+
+# Expõe a porta padrão do Rails
+EXPOSE 3000
+
+# Comando padrão para iniciar o servidor Rails
+CMD ["./bin/rails", "server", "-b", "0.0.0.0"]

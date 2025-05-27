@@ -1,0 +1,37 @@
+version: '3.8' # Ou a versão mais recente que você tiver do Docker Compose
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev # Usaremos um Dockerfile específico para desenvolvimento
+    ports:
+      - "3000:3000" # Mapeia a porta 3000 do container para a porta 3000 da sua máquina
+    volumes:
+      - .:/rails   # Monta o código do seu projeto no container para live-reloading
+      - bundle_cache:/usr/local/bundle # Cache das gems para acelerar builds futuras
+    environment:
+      - RAILS_ENV=development
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password # Escolha uma senha segura
+      # - RAILS_MASTER_KEY=sua_master_key_aqui # Se você usar credentials.yml.enc em desenvolvimento
+    depends_on:
+      - db          # Garante que o container 'db' inicie antes do 'app'
+    stdin_open: true # Mantém o STDIN aberto, útil para debuggers como o byebug/debug
+    tty: true        # Aloca um pseudo-TTY
+
+  db:
+    image: postgres:15 # Você pode escolher a versão do Postgres, ex: postgres:14, postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco de dados
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_password # Use a MESMA senha definida no serviço 'app'
+      - POSTGRES_DB=app_development # Opcional: cria este banco de dados na primeira inicialização
+    ports:
+      - "5432:5432" # Opcional: Mapeia a porta do Postgres para sua máquina local (para conectar com um cliente de BD externo)
+
+volumes:
+  postgres_data: # Define o volume para persistir os dados do Postgres
+  bundle_cache:  # Define o volume para o cache de gems
