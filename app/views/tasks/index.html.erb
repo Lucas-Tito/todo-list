@@ -1,2 +1,19 @@
-<h1>Tasks#index</h1>
-<p>Find me in app/views/tasks/index.html.erb</p>
+<h1>Minhas Tarefas</h1>
+
+<%= link_to "Nova Tarefa", new_task_path %>
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <%= link_to task.title, task_path(task) %>
+      - Prioridade: <%= task.priority.humanize %>
+      - Status: <%= task.completed? ? "Concluída em #{l(task.completed_at, format: :short) if task.completed_at}" : "Pendente" %>
+      <% unless task.completed? %>
+        <%= button_to "Concluir", complete_task_path(task), method: :patch %>
+        <%= button_to "Adiar", snooze_task_path(task), method: :patch %>
+      <% end %>
+      <%= link_to "Editar", edit_task_path(task) %>
+      <%= button_to "Excluir", task_path(task), method: :delete, data: { confirm: "Tem certeza?" } %>
+    </li>
+  <% end %>
+</ul>

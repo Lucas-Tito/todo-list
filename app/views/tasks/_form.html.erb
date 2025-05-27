@@ -1,0 +1,41 @@
+<%= form_with(model: task) do |form| %>
+  <% if task.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <ul>
+        <% task.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :priority %>
+    <%= form.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, prompt: 'Selecione a prioridade' %>
+  </div>
+
+  <div>
+    <%= form.label :due_date, 'Data de Execução' %>
+    <%= form.date_field :due_date %>
+  </div>
+
+  <div>
+    <%= form.label :due_time, 'Hora de Execução' %>
+    <%= form.time_field :due_time %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
