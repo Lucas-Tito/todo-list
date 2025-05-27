@@ -18,4 +18,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  resources :tasks do
+    member do
+      patch :complete # Usar PATCH pois altera o estado do recurso
+      patch :snooze
+    end
+  end
+  root 'tasks#index' # Define a página inicial
 end
