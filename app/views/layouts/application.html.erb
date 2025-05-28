@@ -22,7 +22,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body>  
+  <% if notice %>
+    <p style="color: green"><%= notice %></p>
+  <% end %>
+  <%= yield %>
   </body>
 </html>
