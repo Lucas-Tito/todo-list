@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
-  enum :task_priority, { low: 0, medium: 1, high: 2 } # SÍMBOLO + HASH
+  enum :priority, { low: 0, medium: 1, high: 2 } # SÍMBOLO + HASH
   
   validates :title, presence: true
   # Adicione outras validações conforme necessário
