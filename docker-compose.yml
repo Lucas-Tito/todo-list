@@ -1,37 +1,65 @@
-version: '3.8' # Ou a versão mais recente que você tiver do Docker Compose
-
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev # Usaremos um Dockerfile específico para desenvolvimento
+      dockerfile: Dockerfile.dev
     ports:
-      - "3000:3000" # Mapeia a porta 3000 do container para a porta 3000 da sua máquina
+      - "3000:3000"
     volumes:
-      - .:/rails   # Monta o código do seu projeto no container para live-reloading
-      - bundle_cache:/usr/local/bundle # Cache das gems para acelerar builds futuras
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
     environment:
       - RAILS_ENV=development
       - POSTGRES_HOST=db
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres_password # Escolha uma senha segura
-      # - RAILS_MASTER_KEY=sua_master_key_aqui # Se você usar credentials.yml.enc em desenvolvimento
+      - POSTGRES_PASSWORD=postgres_password
     depends_on:
-      - db          # Garante que o container 'db' inicie antes do 'app'
-    stdin_open: true # Mantém o STDIN aberto, útil para debuggers como o byebug/debug
-    tty: true        # Aloca um pseudo-TTY
+      - db
+    stdin_open: true
+    tty: true
+
+  tailwind:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # Comando com mais logs para debug
+    command: bash -c "
+      echo '🎨 Iniciando Tailwind CSS...' &&
+      bundle exec rails tailwindcss:build &&
+      echo '✅ Build inicial concluído' &&
+      echo '📁 Verificando arquivos gerados:' &&
+      ls -la app/assets/builds/ &&
+      echo '📄 Primeiras linhas do CSS:' &&
+      head -10 app/assets/builds/tailwind.css &&
+      echo '👀 Iniciando modo watch...' &&
+      while true; do 
+        sleep 5
+        echo '🔄 Rebuilding CSS...' 
+        bundle exec rails tailwindcss:build
+        echo '✅ Build concluído $(date)'
+      done"
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - app
+    environment:
+      - RAILS_ENV=development
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
 
   db:
-    image: postgres:15 # Você pode escolher a versão do Postgres, ex: postgres:14, postgres:16
+    image: postgres:15
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persiste os dados do banco de dados
+      - postgres_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres_password # Use a MESMA senha definida no serviço 'app'
-      - POSTGRES_DB=app_development # Opcional: cria este banco de dados na primeira inicialização
+      - POSTGRES_PASSWORD=postgres_password
+      - POSTGRES_DB=app_development
     ports:
-      - "5432:5432" # Opcional: Mapeia a porta do Postgres para sua máquina local (para conectar com um cliente de BD externo)
+      - "5432:5432"
 
 volumes:
-  postgres_data: # Define o volume para persistir os dados do Postgres
-  bundle_cache:  # Define o volume para o cache de gems
+  postgres_data:
+  bundle_cache:

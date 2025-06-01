@@ -17,3 +17,23 @@
     </li>
   <% end %>
 </ul>
+
+<div class="max-w-sm mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden border">
+  <div class="px-6 py-4 border-b">
+    <h2 class="text-xl font-semibold text-gray-800">Engenharia Semiótica</h2>
+  </div>
+
+  <ul class="divide-y divide-gray-200">
+    <% @tasks.each do |task| %>
+      <li class="flex items-start px-6 py-4 hover:bg-gray-50">
+        <input type="checkbox" class="mt-1 mr-4 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+
+        <div class="flex-1">
+          <h3 class="text-md font-medium text-gray-900"><%= task.title %></h3>
+          <p class="text-sm text-gray-600 line-clamp-2"><%= task.description %></p>
+          <p class="text-xs text-gray-500 mt-1"><%= task.due_date.strftime('%a, %b %d') %></p>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

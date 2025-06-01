@@ -1,0 +1,44 @@
+#!/bin/bash
+
+echo "==============================================="
+echo "🎨 Iniciando Tailwind CSS Watch Mode..."
+echo "==============================================="
+
+# Build inicial
+echo "📦 Fazendo build inicial do CSS..."
+bundle exec rails tailwindcss:build
+
+if [ $? -eq 0 ]; then
+    echo "✅ Build inicial concluído com sucesso!"
+else
+    echo "❌ Erro no build inicial!"
+    exit 1
+fi
+
+echo "👀 Monitorando mudanças nos arquivos..."
+echo "   - app/views/**/*.html.erb"
+echo "   - app/helpers/**/*.rb"
+echo "   - app/components/**/*.rb"
+echo "   - app/assets/stylesheets/**/*.css"
+
+# Loop para rebuild quando detectar mudanças
+while true; do
+    # Aguarda por mudanças nos arquivos relevantes
+    inotifywait -e modify,create,delete,move \
+        -r app/views/ app/helpers/ app/components/ app/assets/stylesheets/ \
+        --format '%w%f %e' 2>/dev/null
+    
+    if [ $? -eq 0 ]; then
+        echo "🔄 Arquivos modificados! Reconstruindo CSS..."
+        bundle exec rails tailwindcss:build
+        
+        if [ $? -eq 0 ]; then
+            echo "✅ CSS reconstruído com sucesso! $(date '+%H:%M:%S')"
+        else
+            echo "❌ Erro ao reconstruir CSS! $(date '+%H:%M:%S')"
+        fi
+    fi
+    
+    # Pequena pausa para evitar builds muito frequentes
+    sleep 1
+done
