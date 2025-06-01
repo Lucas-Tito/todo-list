@@ -26,35 +26,12 @@ services:
       sh -c '
         set -e
         echo "🎨 Iniciando Tailwind CSS..."
-        
-        # Esperar um pouco para o app possivelmente finalizar algum setup inicial se necessário
-        # sleep 5 
-
+        mkdir -p app/assets/builds # Garante que o diretório exista
+        echo "📦 Executando build inicial do Tailwind CSS..."
         bundle exec rails tailwindcss:build
-        echo "✅ Build inicial do Tailwind concluído"
-        
-        echo "📁 Verificando arquivos gerados (app/assets/builds/):"
-        ls -la app/assets/builds/ || echo "Diretório app/assets/builds/ não encontrado ou vazio."
-        
-        if [ -f app/assets/builds/tailwind.css ]; then
-          echo "📄 Primeiras linhas do app/assets/builds/tailwind.css:"
-          head -10 app/assets/builds/tailwind.css
-        else
-          echo "⚠️  app/assets/builds/tailwind.css não encontrado após o build inicial."
-          echo "Verifique a configuração do tailwindcss-rails e se há erros no build."
-        fi
-        
-        echo "👀 Iniciando modo watch (loop manual)..."
-        while true; do 
-          sleep 5
-          echo "🔄 Rebuilding CSS (bundle exec rails tailwindcss:build)..." 
-          bundle exec rails tailwindcss:build
-          if [ $? -eq 0 ]; then
-            echo "✅ Build Tailwind concluído $(date)"
-          else
-            echo "❌ Erro durante o build do Tailwind $(date)"
-          fi
-        done
+        echo "✅ Build inicial concluído."
+        echo "👀 Iniciando Tailwind CSS em modo watch..."
+        bundle exec rails tailwindcss:watch # Comando otimizado e mais silencioso
       '
     volumes:
       - .:/rails

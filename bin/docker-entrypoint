@@ -9,26 +9,19 @@ fi
 # Check if we're running the Rails server
 # O comando passado (CMD no Dockerfile) é "$*"
 if [[ "$*" == *"rails server"* ]] || [[ "$*" == *"./bin/rails server"* ]]; then
-    echo "Entrypoint: Detectado comando para iniciar o servidor Rails."
-
-    echo "Entrypoint: Removendo server.pid antigo..."
+    # echo "Entrypoint: Detectado comando para iniciar o servidor Rails." # Opcional
+    # echo "Entrypoint: Removendo server.pid antigo..." # Opcional
     rm -f tmp/pids/server.pid
 
-    echo "Entrypoint: Configurando banco de dados..."
-    # Nota: ./bin/rails é executável por causa do WORKDIR /rails
-    # e porque o Gemfile provavelmente instalou o binstub do Rails.
-    ./bin/rails db:prepare # Cria o BD (se não existir), carrega o schema e roda seeds em dev/test
+    # echo "Entrypoint: Configurando banco de dados..." # Opcional
+    ./bin/rails db:prepare
 
-    # O comando db:prepare em versões mais recentes do Rails já costuma rodar as seeds
-    # em ambiente de desenvolvimento se o arquivo seeds.rb for idempotente (como parece ser o seu caso).
-    # Esta chamada explícita ao db:seed pode ser redundante, mas geralmente não causa problemas.
     if [ "$RAILS_ENV" = "development" ]; then
-      echo "Entrypoint: Populando banco de dados de desenvolvimento (se ainda não feito pelo db:prepare)..."
+      # echo "Entrypoint: Populando banco de dados de desenvolvimento..." # Opcional
       ./bin/rails db:seed
     fi
-
-    echo "Entrypoint: Configuração do banco de dados completa."
+    # echo "Entrypoint: Configuração do banco de dados completa." # Opcional
 fi
 
-echo "Entrypoint: Executando comando: $@"
+# echo "Entrypoint: Executando comando: $@" # Pode ser útil para saber o que está sendo executado
 exec "$@"
