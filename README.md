@@ -62,3 +62,17 @@ Agora, no seu terminal, na raiz do projeto:
 * **Credenciais**: Evite colocar senhas diretamente no `docker-compose.yml` se o projeto for compartilhado. Uma prática comum é usar arquivos `.env` (e adicionar `.env` ao `.gitignore`). O Docker Compose pode ler variáveis de um arquivo `.env` automaticamente.
 
 Esta configuração deve fornecer um ambiente de desenvolvimento Rails com PostgreSQL robusto e portátil usando Docker! Pode parecer muita coisa no início, mas os benefícios a longo prazo são enormes.
+
+
+
+
+
+
+
+
+
+
+
+### Others
+
+sudo docker-compose exec app rails db:migrate

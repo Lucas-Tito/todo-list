@@ -1,9 +1,30 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# db/seeds.rb
+if Task.exists?
+    puts "Seed: tarefas já existem, pulando criação."
+  else
+    puts "Seed: criando tarefas iniciais..."
+  
+    Task.create!(
+      title: "Prova de Semiótica",
+      description: "Parte básica de semiótica, a prova tem folhinha com textos e imagens.",
+      due_date: Date.today + 7.days,
+      priority: :high
+    )
+  
+    Task.create!(
+      title: "Apresentação de Artigos",
+      description: "Pesquisar artigos relacionados a semiótica e apresentar em grupo.",
+      due_date: Date.today + 14.days,
+      priority: :medium
+    )
+  
+    Task.create!(
+      title: "Trabalho Final",
+      description: "Produzir projeto de aplicação prática envolvendo semiótica.",
+      due_date: Date.today + 30.days,
+      priority: :low
+    )
+  
+    puts "Seed: tarefas criadas com sucesso!"
+  end
+  

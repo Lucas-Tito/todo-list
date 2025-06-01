@@ -6,9 +6,22 @@ if [ -z "${LD_PRELOAD+x}" ]; then
     export LD_PRELOAD
 fi
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+# Check if we're running the Rails server
+# O comando passado (CMD no Dockerfile) é "$*"
+if [[ "$*" == *"rails server"* ]] || [[ "$*" == *"./bin/rails server"* ]]; then
+    # echo "Entrypoint: Detectado comando para iniciar o servidor Rails." # Opcional
+    # echo "Entrypoint: Removendo server.pid antigo..." # Opcional
+    rm -f tmp/pids/server.pid
+
+    # echo "Entrypoint: Configurando banco de dados..." # Opcional
+    ./bin/rails db:prepare
+
+    if [ "$RAILS_ENV" = "development" ]; then
+      # echo "Entrypoint: Populando banco de dados de desenvolvimento..." # Opcional
+      ./bin/rails db:seed
+    fi
+    # echo "Entrypoint: Configuração do banco de dados completa." # Opcional
 fi
 
-exec "${@}"
+# echo "Entrypoint: Executando comando: $@" # Pode ser útil para saber o que está sendo executado
+exec "$@"

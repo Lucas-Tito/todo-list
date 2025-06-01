@@ -1,0 +1,39 @@
+<h1>Minhas Tarefas</h1>
+
+<%= link_to "Nova Tarefa", new_task_path %>
+
+<ul>
+  <% @tasks.each do |task| %>
+    <li>
+      <%= link_to task.title, task_path(task) %>
+      - Prioridade: <%= task.priority.humanize %>
+      - Status: <%= task.completed? ? "Concluída em #{l(task.completed_at, format: :short) if task.completed_at}" : "Pendente" %>
+      <% unless task.completed? %>
+        <%= button_to "Concluir", complete_task_path(task), method: :patch %>
+        <%= button_to "Adiar", snooze_task_path(task), method: :patch %>
+      <% end %>
+      <%= link_to "Editar", edit_task_path(task) %>
+      <%= button_to "Excluir", task_path(task), method: :delete, data: { confirm: "Tem certeza?" } %>
+    </li>
+  <% end %>
+</ul>
+
+<div class="max-w-sm mx-auto mt-10 bg-white shadow-lg rounded-g overflow-hidden border">
+  <div class="px-6 py-4 border-b">
+    <h2 class="text-xl font-semibold text-gray-800">Engenharia Semiótica</h2>
+  </div>
+
+  <ul class="divide-y divide-gray-200">
+    <% @tasks.each do |task| %>
+      <li class="flex items-start px-6 py-4 hover:bg-gray-50">
+        <input type="checkbox" class="mt-1 mr-4 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+
+        <div class="flex-1">
+          <h3 class="text-md font-medium text-gray-900"><%= task.title %></h3>
+          <p class="text-sm text-gray-600 line-clamp-2"><%= task.description %></p>
+          <p class="text-xs text-gray-500 mt-1"><%= task.due_date.strftime('%a, %b %d') %></p>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
