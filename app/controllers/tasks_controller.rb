@@ -1,8 +1,13 @@
+# app/controllers/tasks_controller.rb
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy, :complete, :snooze]
+  before_action :load_boards, only: [:new, :edit, :create, :update] # Adiciona esta linha
+
 
   def index
-    @tasks = Task.all # Futuramente, filtrar por usuário
+    # Você pode querer filtrar tasks por board aqui ou mostrar todos
+    @boards = Board.includes(:tasks).all # Carrega boards e suas tasks
+    # Ou apenas @tasks = Task.all se a visualização for global
   end
 
   def show
@@ -56,6 +61,10 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :priority, :due_date, :due_time)
+    params.require(:task).permit(:title, :description, :priority, :due_date, :due_time, :board_id)
+  end
+
+    def load_boards # Novo método
+    @boards = Board.all.order(:name) # Carrega todos os boards para dropdowns, por exemplo
   end
 end
