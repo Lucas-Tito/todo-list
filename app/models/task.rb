@@ -1,8 +1,10 @@
 class Task < ApplicationRecord
+  belongs_to :board
+
   enum :priority, { low: 0, medium: 1, high: 2 } # SÍMBOLO + HASH
   
   validates :title, presence: true
-  # Adicione outras validações conforme necessário
+  validates :board_id, presence: true 
 
   # Método para marcar como concluída
   def complete!
