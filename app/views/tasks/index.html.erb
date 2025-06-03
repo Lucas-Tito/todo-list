@@ -16,6 +16,9 @@
           </div>
 
           <% if board.tasks.any? %>
+            <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
+              <%= link_to "Adicionar Tarefa", new_task_path(board_id: board.id), class: "text-sm text-blue-600 hover:text-blue-800 font-medium" %>
+            </div>
             <ul class="divide-y divide-gray-200">
               <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
                 <li class="task-item flex items-start px-6 py-4 hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer border rounded-md">
@@ -69,9 +72,6 @@
           <% else %>
             <p class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</p>
           <% end %>
-          <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
-            <%= link_to "Adicionar Tarefa a '#{board.name}'", new_task_path(board_id: board.id), class: "text-sm text-blue-600 hover:text-blue-800 font-medium" %>
-          </div>
         </div>
       <% end %>
     </div>
