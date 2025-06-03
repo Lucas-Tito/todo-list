@@ -21,7 +21,7 @@
             </div>
             <ul class="divide-y divide-gray-200">
               <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
-                <li class="task-item flex items-start px-6 py-4 hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer border rounded-md">
+                <li class="task-item flex items-start px-6 py-4 hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer">
                   <%# Checkbox para status de conclusão %>
                   <%= form_with(model: task, url: complete_task_path(task), method: :patch, class: "contents") do |f| %>
                     <%= check_box_tag "task_completed_#{task.id}", 
