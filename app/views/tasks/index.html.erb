@@ -5,9 +5,9 @@
   </div>
 
   <% if @boards.any? %>
-    <div class="space-y-8">
+    <div class="flex flex-wrap gap-6">
       <% @boards.each do |board| %>
-        <div class="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200">
+        <div class="bg-white shadow-xl rounded-lg overflow-hidden border border-gray-200 w-full sm:w-[300px]">
           <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
             <h2 class="text-2xl font-semibold text-gray-700"><%= board.name %></h2>
             <% if board.description.present? %>
