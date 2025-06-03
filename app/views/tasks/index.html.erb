@@ -7,13 +7,42 @@
   <% if @boards.any? %>
     <div class="flex flex-wrap gap-6">
       <% @boards.each do |board| %>
-        <div class="bg-white shadow-xl rounded-lg border border-gray-200 w-full sm:max-w-[300px] h-fit">
+      <div class="bg-white shadow-xl rounded-lg border border-gray-200 w-full sm:max-w-[300px] h-fit">
           <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
-            <h2 class="text-2xl font-semibold text-gray-700"><%= board.name %></h2>
-            <% if board.description.present? %>
-              <p class="text-sm text-gray-600 mt-1"><%= board.description %></p>
-            <% end %>
-          </div>
+
+            <%# --- Nome Editável Inline --- %>
+            <div data-controller="inline-edit"
+                 data-inline-edit-url-value="<%= board_path(board) %>"
+                 data-inline-edit-attribute-value="name">
+
+              <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+                  data-inline-edit-target="display"
+                  data-action="click->inline-edit#edit">
+                <%= board.name.blank? ? "Clique para editar o nome" : board.name %>
+              </h2>
+
+              <input type="text"
+                     data-inline-edit-target="input"
+                     class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full hidden"
+                     data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
+            </div>
+
+            <%# --- Descrição Editável Inline --- %>
+            <div data-controller="inline-edit"
+                 data-inline-edit-url-value="<%= board_path(board) %>"
+                 data-inline-edit-attribute-value="description">
+
+              <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+                 data-inline-edit-target="display"
+                 data-action="click->inline-edit#edit">
+                <%= board.description.blank? ? "Clique para adicionar uma descrição" : board.description %>
+              </p>
+
+              <textarea data-inline-edit-target="textarea"
+                        class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
+                        rows="3"
+                        data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"></textarea>
+            </div>
 
           <% if board.tasks.any? %>
             <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
