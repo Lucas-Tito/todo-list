@@ -76,3 +76,7 @@ Esta configuração deve fornecer um ambiente de desenvolvimento Rails com Postg
 ### Others
 
 sudo docker-compose exec app rails db:migrate
+
+
+sudo lsof -i :5432
+sudo kill <pid>
