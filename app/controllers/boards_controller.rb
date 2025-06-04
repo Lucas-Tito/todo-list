@@ -58,4 +58,4 @@ class BoardsController < ApplicationController
 
   def destroy
   end
-end
+
