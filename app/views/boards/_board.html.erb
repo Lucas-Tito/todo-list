@@ -1,0 +1,67 @@
+<%# app/views/boards/_board.html.erb %>
+<% start_editing_name ||= false %> <%# Default para não iniciar editando %>
+
+<div id="<%= dom_id(board) %>" class="bg-white shadow-xl rounded-lg border border-gray-200 w-full flex-shrink-0 sm:w-[300px] h-fit">
+  <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+    <%# --- Nome Editável Inline --- %>
+    <div data-controller="inline-edit"
+         data-inline-edit-url-value="<%= board_path(board) %>"
+         data-inline-edit-attribute-value="name"
+         data-inline-edit-object-name-value="board" <%# Importante para o payload do JS %>
+         data-inline-edit-start-editing-value="<%= start_editing_name %>"
+         <%# Se este board foi recém-criado e está editando, ele deve reexibir o botão principal ao finalizar %>
+         <% if start_editing_name %>
+           data-inline-edit-main-new-board-button-id-value="main_new_board_button"
+         <% end %>
+         data-action="inline-edit:success->inline-board-add#handleExternalEditDone inline-edit:cancel->inline-board-add#handleExternalEditDone inline-edit:error->inline-board-add#handleExternalEditDone">
+        <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+            data-inline-edit-target="display"
+            data-action="click->inline-edit#edit">
+            <%= board.name.presence || "Clique para editar o nome" %>
+        </h2>
+        <input type="text" value="<%= board.name %>"
+               data-inline-edit-target="input"
+               class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full <%= 'hidden' unless start_editing_name %>"
+               data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
+    </div>
+
+    <%# --- Descrição Editável Inline --- %>
+    <div data-controller="inline-edit"
+         data-inline-edit-url-value="<%= board_path(board) %>"
+         data-inline-edit-attribute-value="description"
+         data-inline-edit-object-name-value="board"
+         <%# Não precisa de start-editing aqui, a menos que queira editar desc junto com nome %>
+         <% if start_editing_name %> <%# Pode reusar o mesmo main-button-id para simplificar %>
+           data-inline-edit-main-new-board-button-id-value="main_new_board_button"
+         <% end %>
+         data-action="inline-edit:success->inline-board-add#handleExternalEditDone inline-edit:cancel->inline-board-add#handleExternalEditDone inline-edit:error->inline-board-add#handleExternalEditDone">
+        <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+           data-inline-edit-target="display"
+           data-action="click->inline-edit#edit">
+            <%= board.description.presence || "Clique para adicionar uma descrição" %>
+        </p>
+        <textarea data-inline-edit-target="textarea" rows="3"
+                  class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
+                  data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"><%= board.description %></textarea>
+    </div>
+  </div>
+
+  <div id="flash_messages_board_<%= board.id %>"></div> <%# Para erros de tasks, etc. %>
+
+  <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
+    <%= form_with(model: [board, Task.new], url: board_tasks_path(board), method: :post, class: "inline-block", id: "new_task_form_for_board_#{board.id}") do |form| %>
+      <%= form.hidden_field :title, value: "" %>
+      <%= form.submit "Adicionar Tarefa", class: "text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1", data: { turbo_frame: "_top" } %>
+    <% end %>
+  </div>
+
+  <ul class="divide-y divide-gray-200" id="tasks_list_board_<%= board.id %>">
+    <% if board.tasks.any? %>
+      <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
+        <%= render "tasks/task", task: task, board: board %>
+      <% end %>
+    <% else %>
+      <li class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</li>
+    <% end %>
+  </ul>
+</div>

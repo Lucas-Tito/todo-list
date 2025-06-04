@@ -1,73 +1,70 @@
 // app/javascript/controllers/inline_edit_controller.js
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["display", "input", "textarea"] // Removido "form"
+  static targets = ["display", "input", "textarea"];
   static values = {
     url: String,
     attribute: String,
+    objectName: String, // "board" ou "task"
     originalText: String,
-    editing: Boolean // Para rastrear o estado de edição
-  }
+    editing: Boolean,
+    startEditing: Boolean, // Para iniciar editando
+    mainNewBoardButtonId: String // Opcional: ID do botão principal "Novo Board"
+  };
 
   connect() {
     this.editingValue = false;
-    // Esconder input/textarea inicialmente se não for feito via CSS
-    if (this.hasInputTarget) this.inputTarget.classList.add("hidden");
-    if (this.hasTextareaTarget) this.textareaTarget.classList.add("hidden");
+    this.fieldToEdit = this.hasInputTarget ? this.inputTarget : this.textareaTarget;
+
+    if (this.startEditingValue) {
+      requestAnimationFrame(() => this.edit()); // Adia para garantir que o DOM está pronto
+    } else {
+      this.switchToDisplayModeVisuals();
+    }
+  }
+
+  switchToDisplayModeVisuals() {
+    this.fieldToEdit.classList.add("hidden");
+    if (this.hasDisplayTarget) this.displayTarget.classList.remove("hidden");
+  }
+
+  switchToEditModeVisuals() {
+    if (this.hasDisplayTarget) this.displayTarget.classList.add("hidden");
+    this.fieldToEdit.value = this.originalTextValue;
+    this.fieldToEdit.classList.remove("hidden");
+    this.fieldToEdit.focus();
+    if (typeof this.fieldToEdit.select === "function") {
+      this.fieldToEdit.select();
+    }
   }
 
   edit(event) {
-    if (this.editingValue) return; // Já está editando, não faça nada
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    if (this.editingValue && this.fieldToEdit === document.activeElement) return;
 
-    event.stopPropagation();
+
     this.editingValue = true;
-    this.originalTextValue = this.displayTarget.textContent.trim();
-
-    this.displayTarget.classList.add("hidden");
-
-    let fieldToEdit;
-    if (this.attributeValue === "name" && this.hasInputTarget) {
-      fieldToEdit = this.inputTarget;
-    } else if (this.attributeValue === "description" && this.hasTextareaTarget) {
-      fieldToEdit = this.textareaTarget;
-    }
-
-    if (fieldToEdit) {
-      fieldToEdit.value = this.originalTextValue;
-      fieldToEdit.classList.remove("hidden");
-      fieldToEdit.focus();
-    } else {
-      this.revertToDisplayMode(); // Caso o target não exista
-    }
+    this.originalTextValue = this.hasDisplayTarget ? this.displayTarget.textContent.trim() : this.fieldToEdit.value.trim();
+    this.switchToEditModeVisuals();
   }
 
   async save() {
-    if (!this.editingValue) return; // Não está editando, não salve
+    if (!this.editingValue) return;
 
-    let newValue;
-    let fieldWithValue;
+    const newValue = this.fieldToEdit.value;
 
-    if (this.attributeValue === "name" && this.hasInputTarget) {
-      fieldWithValue = this.inputTarget;
-      newValue = fieldWithValue.value;
-    } else if (this.attributeValue === "description" && this.hasTextareaTarget) {
-      fieldWithValue = this.textareaTarget;
-      newValue = fieldWithValue.value;
-    } else {
-      console.error("Unknown attribute for inline edit:", this.attributeValue);
-      this.revertToDisplayMode();
-      return;
-    }
-
-    // Se o valor não mudou, apenas reverta para o modo de exibição sem chamada à API
     if (newValue === this.originalTextValue) {
-      this.revertToDisplayMode();
+      this.revertToDisplayModeAndNotify("cancel");
       return;
     }
 
-    const payload = { board: {} };
-    payload.board[this.attributeValue] = newValue;
+    const payload = {};
+    payload[this.objectNameValue] = {}; // Ex: { board: {} } ou { task: {} }
+    payload[this.objectNameValue][this.attributeValue] = newValue;
 
     const csrfToken = document.querySelector("meta[name='csrf-token']").content;
 
@@ -77,67 +74,79 @@ export default class extends Controller {
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken,
-          "Accept": "application/json"
+          Accept: "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         const data = await response.json();
-        this.displayTarget.textContent = data[this.attributeValue] || newValue;
-        this.originalTextValue = this.displayTarget.textContent; // Atualiza o valor original
+        if (this.hasDisplayTarget) {
+          this.displayTarget.textContent = data[this.attributeValue] || newValue;
+        }
+        this.originalTextValue = data[this.attributeValue] || newValue;
+        this.revertToDisplayModeAndNotify("success", data);
       } else {
-        const errorData = await response.json();
-        console.error("Failed to save:", errorData);
-        this.displayTarget.textContent = this.originalTextValue; // Reverte em caso de falha
-        // Poderia mostrar uma mensagem de erro para o usuário aqui
+        const errorData = await response.json().catch(() => ({}));
+        console.error(`Failed to save ${this.objectNameValue}:`, errorData);
+        if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+        this.fieldToEdit.value = this.originalTextValue; // Revert input on error too
+        // alert(`Error: ${errorData.errors?.[this.attributeValue]?.join(', ') || 'Could not save'}`);
+        this.revertToDisplayModeAndNotify("error", errorData);
       }
     } catch (error) {
-      console.error("Error saving:", error);
-      this.displayTarget.textContent = this.originalTextValue; // Reverte em caso de erro de rede
+      console.error(`Error saving ${this.objectNameValue}:`, error);
+      if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+      this.fieldToEdit.value = this.originalTextValue;
+      this.revertToDisplayModeAndNotify("error", { message: error.message });
     }
-    this.revertToDisplayMode();
   }
 
   cancel() {
-    if (!this.editingValue) return; // Não está editando, não cancele
-
-    this.displayTarget.textContent = this.originalTextValue;
-    this.revertToDisplayMode();
+    if (!this.editingValue) return;
+    this.fieldToEdit.value = this.originalTextValue; // Revert input before hiding
+    if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+    this.revertToDisplayModeAndNotify("cancel");
   }
 
-  revertToDisplayMode() {
+  revertToDisplayModeAndNotify(eventName, eventDetail = {}) {
     this.editingValue = false;
-    if (this.hasInputTarget) this.inputTarget.classList.add("hidden");
-    if (this.hasTextareaTarget) this.textareaTarget.classList.add("hidden");
-    this.displayTarget.classList.remove("hidden");
+    this.switchToDisplayModeVisuals();
+    this.dispatch(eventName, { detail: eventDetail });
+
+    // Se este controller estava editando um board recém-criado, reexibe o botão principal.
+    if (this.objectNameValue === "board" && this.hasMainNewBoardButtonIdValue && this.mainNewBoardButtonIdValue) {
+      const mainButton = document.getElementById(this.mainNewBoardButtonIdValue);
+      if (mainButton) mainButton.classList.remove("hidden");
+    }
   }
 
-  // Manipuladores de eventos para o input/textarea
   handleBlur(event) {
-    // Pequeno timeout para permitir que o evento de 'Escape' seja processado antes do blur,
-    // caso o usuário clique fora enquanto o foco está no campo.
-    // Sem isso, o save() pode ser chamado antes do cancel() via Escape, se o blur ocorrer rápido.
+    // Evita salvar se o clique foi em um botão de ação do próprio controller ou similar
+    if (this.element.contains(event.relatedTarget)) {
+      return;
+    }
+    // Pequeno timeout para permitir que "Enter" ou "Escape" sejam processados primeiro
     setTimeout(() => {
-      if (this.editingValue) { // Verifica se ainda estamos em modo de edição
+      if (this.editingValue && this.fieldToEdit !== document.activeElement) {
         this.save();
       }
-    }, 100);
+    }, 150);
   }
 
   handleKeydown(event) {
     if (!this.editingValue) return;
-
     if (event.key === "Escape") {
       event.preventDefault();
       this.cancel();
     } else if (event.key === "Enter") {
-      if (this.attributeValue === "name") { // Salvar com Enter apenas para o input de nome (uma linha)
+      if (this.fieldToEdit.tagName.toLowerCase() === "input") {
+        event.preventDefault();
+        this.save();
+      } else if (this.fieldToEdit.tagName.toLowerCase() === "textarea" && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         this.save();
       }
-      // Para o textarea, Enter geralmente cria uma nova linha, então não salvamos por padrão.
-      // Se você quiser salvar o textarea com Enter (ou Shift+Enter), adicione a lógica aqui.
     }
   }
 }

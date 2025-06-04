@@ -1,81 +1,23 @@
-
+<%# app/views/tasks/index.html.erb %>
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Meus Boards de Tarefas</h1>
-    <%= link_to "Novo Board", new_board_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 ease-in-out" %>
+    <%# Botão principal, agora com ID para ser controlado pelo Stimulus %>
+    <%= link_to "Novo Board", new_board_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-150 ease-in-out", id: "main_new_board_button" %>
   </div>
 
-  <% if @boards.any? %>
-    <div class="flex overflow-x-auto gap-6 pb-4">
-      <% @boards.each do |board| %>
-        <div class="bg-white shadow-xl rounded-lg border border-gray-200 w-full sm:w-[300px] h-fit">
-          <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
-            <%# --- Nome Editável Inline (Existing Code) --- %>
-            <div data-controller="inline-edit"
-                 data-inline-edit-url-value="<%= board_path(board) %>"
-                 data-inline-edit-attribute-value="name">
-                <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-                    data-inline-edit-target="display"
-                    data-action="click->inline-edit#edit">
-                    <%= board.name.blank? ? "Clique para editar o nome" : board.name %>
-                </h2>
-                <input type="text"
-                       data-inline-edit-target="input"
-                       class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full hidden"
-                       data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
-            </div>
+  <%# Container para a lista de boards e o placeholder de adicionar %>
+  <div class="flex overflow-x-auto gap-6 pb-4" id="boards_list_container">
+    <% @boards.each do |board| %>
+      <%= render "boards/board", board: board %>
+    <% end %>
+    <%# Placeholder inicial para adicionar um novo board %>
+    <%= render "boards/add_new_board_placeholder" %>
+  </div>
 
-            <%# --- Descrição Editável Inline (Existing Code) --- %>
-            <div data-controller="inline-edit"
-                 data-inline-edit-url-value="<%= board_path(board) %>"
-                 data-inline-edit-attribute-value="description">
-                <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-                   data-inline-edit-target="display"
-                   data-action="click->inline-edit#edit">
-                    <%= board.description.blank? ? "Clique para adicionar uma descrição" : board.description %>
-                </p>
-                <textarea data-inline-edit-target="textarea"
-                          class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
-                          rows="3"
-                          data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"></textarea>
-            </div>
-          </div>
-
-          <%# Container for board-specific flash messages %>
-          <div id="flash_messages_board_<%= board.id %>"></div>
-
-          <%# "Add New Task" Form %>
-          <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
-            <%= form_with(model: [board, Task.new], url: board_tasks_path(board), method: :post, class: "inline-block", id: "new_task_form_for_board_#{board.id}") do |form| %>
-              <%# The title will be defaulted to "New Task" by the controller. %>
-              <%= form.hidden_field :title, value: "" %>
-              <%= form.submit "Adicionar Tarefa", class: "text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1", data: { turbo_frame: "_top" } %>
-            <% end %>
-          </div>
-
-          <%# Task List Container - ensure this <ul> has the target ID %>
-          <ul class="divide-y divide-gray-200" id="tasks_list_board_<%= board.id %>">
-            <% if board.tasks.any? %>
-              <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
-                <%= render "tasks/task", task: task, board: board %>
-              <% end %>
-            <% else %>
-              <%# Still render the <ul> with an ID even if empty for Turbo Stream targeting.
-                  The <p> tag will be replaced or tasks appended.
-                  Alternatively, ensure the append works even if the target is just a div that contains this <p> and then later the <ul>
-              %>
-              <li class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="text-center py-10">
-      <p class="text-xl text-gray-500">Nenhum board encontrado.</p>
-      <p class="mt-2">
-        <%= link_to "Que tal criar seu primeiro board?", new_board_path, class: "text-blue-600 hover:text-blue-800 font-semibold" %>
-      </p>
+  <% if @boards.empty? %> <%# Mensagem se não houver boards, mas o placeholder ainda está acima %>
+    <div class="text-center py-10 mt-[-2rem]"> <%# Ajuste de margem para compensar o placeholder se ele estiver vazio %>
+      <p class="text-xl text-gray-500">Nenhum board encontrado ainda.</p>
     </div>
   <% end %>
 </div>
@@ -94,5 +36,15 @@
         actions.classList.toggle("hidden");
       });
     });
+
+    // Nova lógica para o botão principal "Novo Board" ser gerenciado globalmente
+    // Esta é uma forma de garantir que o botão principal fique visível se não houver
+    // um processo de adição inline ativo.
+    const mainButton = document.getElementById("main_new_board_button");
+    if (mainButton) {
+        // Se houver um elemento indicando adição em progresso (você precisaria definir isso),
+        // mantenha-o escondido. Caso contrário, mostre.
+        // Esta lógica pode ser mais bem gerenciada pelo Stimulus controller.
+    }
   });
 </script>
