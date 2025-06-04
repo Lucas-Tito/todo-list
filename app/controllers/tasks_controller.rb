@@ -146,4 +146,27 @@ class TasksController < ApplicationController
   def task_params_for_update
     params.require(:task).permit(:title, :description, :priority, :due_date, :due_time, :completed_at)
   end
+
+  def load_boards_for_forms
+    @boards = Board.all.order(:name) #
+  end
+
+  def set_board_for_creation
+    @board = Board.find(params[:board_id])
+  end
+
+  def set_task_and_board
+    @task = Task.find(params[:id])
+    @board = @task.board # Set @board from the task
+  end
+
+  def task_params_for_create
+    # Permit attributes sent from the "add new task" form
+    params.require(:task).permit(:title, :description, :priority, :due_date, :due_time)
+  end
+
+  def task_params_for_update
+    # Permit attributes for updating an existing task via inline edit or form
+    params.require(:task).permit(:title, :description, :priority, :due_date, :due_time, :completed_at)
+  end
 end
