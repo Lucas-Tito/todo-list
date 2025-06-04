@@ -19,7 +19,16 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :boards
+  resources :boards do
+    # Tasks are nested under boards for creation (index, new, create)
+    # Shallow nesting makes routes for individual tasks (show, edit, update, destroy) top-level (e.g., /tasks/:id)
+    resources :tasks, shallow: true do
+      member do
+        patch :complete
+        patch :snooze
+      end
+    end
+  end
 
   root 'tasks#index' # Define a página inicial
 end

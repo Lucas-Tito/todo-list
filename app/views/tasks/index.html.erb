@@ -1,3 +1,4 @@
+
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Meus Boards de Tarefas</h1>
@@ -7,97 +8,66 @@
   <% if @boards.any? %>
     <div class="flex flex-wrap gap-6">
       <% @boards.each do |board| %>
-      <div class="bg-white shadow-xl rounded-lg border border-gray-200 w-full sm:w-[300px] h-fit">
-    <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+        <div class="bg-white shadow-xl rounded-lg border border-gray-200 w-full sm:w-[300px] h-fit">
+          <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
+            <%# --- Nome Editável Inline (Existing Code) --- %>
+            <div data-controller="inline-edit"
+                 data-inline-edit-url-value="<%= board_path(board) %>"
+                 data-inline-edit-attribute-value="name">
+                <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+                    data-inline-edit-target="display"
+                    data-action="click->inline-edit#edit">
+                    <%= board.name.blank? ? "Clique para editar o nome" : board.name %>
+                </h2>
+                <input type="text"
+                       data-inline-edit-target="input"
+                       class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full hidden"
+                       data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
+            </div>
 
-        <%# --- Nome Editável Inline --- %>
-        <div data-controller="inline-edit"
-             data-inline-edit-url-value="<%= board_path(board) %>"
-             data-inline-edit-attribute-value="name">
-            <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-                data-inline-edit-target="display"
-                data-action="click->inline-edit#edit">
-                <%= board.name.blank? ? "Clique para editar o nome" : board.name %>
-            </h2>
-            <input type="text"
-                   data-inline-edit-target="input"
-                   class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full hidden" <%# Atenção ao w-full aqui %>
-                   data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
-        </div>
+            <%# --- Descrição Editável Inline (Existing Code) --- %>
+            <div data-controller="inline-edit"
+                 data-inline-edit-url-value="<%= board_path(board) %>"
+                 data-inline-edit-attribute-value="description">
+                <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+                   data-inline-edit-target="display"
+                   data-action="click->inline-edit#edit">
+                    <%= board.description.blank? ? "Clique para adicionar uma descrição" : board.description %>
+                </p>
+                <textarea data-inline-edit-target="textarea"
+                          class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
+                          rows="3"
+                          data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"></textarea>
+            </div>
+          </div>
 
-        <%# --- Descrição Editável Inline --- %>
-        <div data-controller="inline-edit"
-             data-inline-edit-url-value="<%= board_path(board) %>"
-             data-inline-edit-attribute-value="description">
-            <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-               data-inline-edit-target="display"
-               data-action="click->inline-edit#edit">
-                <%= board.description.blank? ? "Clique para adicionar uma descrição" : board.description %>
-            </p>
-            <textarea data-inline-edit-target="textarea"
-                      class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
-                      rows="3"
-                      data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"></textarea>
-        </div>
-    </div>
-     <% if board.tasks.any? %>
-        <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
-            <%= link_to "Adicionar Tarefa", new_task_path(board_id: board.id), class: "text-sm text-blue-600 hover:text-blue-800 font-medium" %>
-        </div>
-        <ul class="divide-y divide-gray-200">
-            <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
-            <li class="task-item flex items-start px-6 py-4 hover:bg-gray-50 transition duration-150 ease-in-out cursor-pointer">
-                <%# Checkbox para status de conclusão %>
-                <%= form_with(model: task, url: complete_task_path(task), method: :patch, class: "contents") do |f| %>
-                <%= check_box_tag "task_completed_#{task.id}", 
-                                    task.id, 
-                                    task.completed?, 
-                                    class: "mt-1.5 mr-4 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer",
-                                    onchange: "this.form.requestSubmit();",
-                                    title: task.completed? ? "Marcar como pendente" : "Marcar como concluída" %>
-                <% end %>
+          <%# Container for board-specific flash messages %>
+          <div id="flash_messages_board_<%= board.id %>"></div>
 
-                <div class="flex-1">
-                <h3 class="text-lg font-medium text-gray-900">
-                    <%= link_to task.title, task_path(task), class: "hover:text-blue-600" %>
-                </h3>
-                <% if task.description.present? %>
-                    <p class="text-sm text-gray-600 mt-1 line-clamp-2"><%= task.description %></p>
-                <% end %>
-                <div class="text-xs text-gray-500 mt-2 space-y-0.5">
-                    <p>
-                    <strong>Status:</strong> <%= task.completed? ? "Concluída em #{l(task.completed_at, format: :short) if task.completed_at.present?}" : "Pendente" %>
-                    </p>
-                    <p>
-                    <strong>Prioridade:</strong> <span class="font-semibold"><%= task.priority.humanize %></span>
-                    </p>
-                    <% if task.due_date? %>
-                    <p><strong>Vencimento:</strong> <%= task.due_date.strftime('%a, %d de %b de %Y') %>
-                        <% if task.due_time? %>
-                        às <%= task.due_time.strftime('%H:%M') %>
-                        <% end %>
-                    </p>
-                    <% else %>
-                    <p>Sem data de vencimento</p>
-                    <% end %>
-                </div>
-                
-                <div class="task-actions mt-3 flex flex-wrap gap-2 items-center hidden">
-                    <% unless task.completed? %>
-                    <%= button_to "Adiar", snooze_task_path(task), method: :patch, class: "text-xs bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
-                    <% end %>
-                    <%= link_to "Editar", edit_task_path(task), class: "text-xs bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
-                    <%= button_to "Excluir", task_path(task), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" }, class: "text-xs bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
-                </div>
-
-                </div>
-            </li>
+          <%# "Add New Task" Form %>
+          <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
+            <%= form_with(model: [board, Task.new], url: board_tasks_path(board), method: :post, class: "inline-block", id: "new_task_form_for_board_#{board.id}") do |form| %>
+              <%# The title will be defaulted to "New Task" by the controller. %>
+              <%= form.hidden_field :title, value: "" %>
+              <%= form.submit "Adicionar Tarefa", class: "text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1", data: { turbo_frame: "_top" } %>
             <% end %>
-        </ul>
-    <% else %>
-        <p class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</p>
-    <% end %>
-</div>
+          </div>
+
+          <%# Task List Container - ensure this <ul> has the target ID %>
+          <ul class="divide-y divide-gray-200" id="tasks_list_board_<%= board.id %>">
+            <% if board.tasks.any? %>
+              <% board.tasks.order(completed_at: :asc, due_date: :asc, priority: :desc).each do |task| %>
+                <%= render "tasks/task", task: task, board: board %>
+              <% end %>
+            <% else %>
+              <%# Still render the <ul> with an ID even if empty for Turbo Stream targeting.
+                  The <p> tag will be replaced or tasks appended.
+                  Alternatively, ensure the append works even if the target is just a div that contains this <p> and then later the <ul>
+              %>
+              <li class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</li>
+            <% end %>
+          </ul>
+        </div>
       <% end %>
     </div>
   <% else %>
@@ -110,19 +80,17 @@
   <% end %>
 </div>
 
-
-
+<%# Update the existing script to use turbo:load and a more robust target check %>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("turbo:load", function () {
     document.querySelectorAll(".task-item").forEach(function (taskEl) {
       taskEl.addEventListener("click", function (e) {
-        // Impede que links ou botões dentro da task acionem o toggle
-        if (e.target.closest("a, button, input")) return;
+        // Prevent toggling if clicking on interactive elements
+        if (e.target.closest("a, button, input, textarea, [data-action], .task-field")) return;
 
         const actions = taskEl.querySelector(".task-actions");
         if (!actions) return;
 
-        // Alterna a visibilidade dos botões
         actions.classList.toggle("hidden");
       });
     });
