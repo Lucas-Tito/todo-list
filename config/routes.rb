@@ -19,7 +19,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :boards
+  resources :boards do
+    resources :tasks, shallow: true do # Creates nested routes for index, new, create
+                                     # And shallow routes for show, edit, update, destroy (e.g., /tasks/:id)
+      member do
+        patch :complete
+        patch :snooze
+      end
+    end
+  end
 
   root 'tasks#index' # Define a página inicial
 end
