@@ -1,0 +1,80 @@
+<%# app/views/tasks/_task.html.erb %>
+<% board ||= task.board # Ensure board object is available %>
+<% start_editing_title ||= false # Default to false %>
+
+<li id="<%= dom_id(task) %>" class="task-item flex items-start px-6 py-4 hover:bg-gray-50 transition duration-150 ease-in-out">
+  <%# Checkbox (from your existing code) %>
+  <%= form_with(model: task, url: complete_task_path(task), method: :patch, class: "contents") do |f| %>
+    <%= check_box_tag "task_completed_#{task.id}",
+                      task.id,
+                      task.completed?,
+                      class: "mt-1.5 mr-4 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer",
+                      onchange: "this.form.requestSubmit();", # Submits form on change
+                      title: task.completed? ? "Marcar como pendente" : "Marcar como concluída" %>
+  <% end %>
+
+  <div class="flex-1">
+    <%# Inline Editable Title %>
+    <div class="task-field mb-1"
+         data-controller="inline-task-edit"
+         data-inline-task-edit-url-value="<%= task_path(task) %>" <%# Shallow route %>
+         data-inline-task-edit-attribute-value="title"
+         data-inline-task-edit-start-editing-value="<%= start_editing_title %>">
+
+      <h3 data-inline-task-edit-target="display"
+          class="text-lg font-medium text-gray-900 cursor-pointer hover:text-blue-600 p-1 rounded hover:bg-gray-100 <%= 'hidden' if start_editing_title %>"
+          data-action="click->inline-task-edit#edit">
+        <%= task.title.presence || "Clique para editar" %>
+      </h3>
+      <input type="text" data-inline-task-edit-target="input" value="<%= task.title %>"
+             class="text-lg font-medium text-gray-900 border border-blue-300 p-1 rounded w-full <%= 'hidden' unless start_editing_title %>"
+             data-action="blur->inline-task-edit#save keydown->inline-task-edit#handleKeydown">
+    </div>
+
+    <%# Inline Editable Description %>
+    <div class="task-field text-sm text-gray-600"
+         data-controller="inline-task-edit"
+         data-inline-task-edit-url-value="<%= task_path(task) %>"
+         data-inline-task-edit-attribute-value="description"
+         data-inline-task-edit-start-editing-value="false"> <%# Don't auto-edit description %>
+
+      <p data-inline-task-edit-target="display"
+         class="mt-1 line-clamp-2 cursor-pointer hover:bg-gray-100 p-1 rounded min-h-[1.5em]" <%# Adicionado min-h para clique mais fácil %>
+         data-action="click->inline-task-edit#edit"> <%# <--- CORREÇÃO AQUI: Adicionada a data-action %>
+        <%= task.description.presence || "Adicionar descrição..." %>
+      </p>
+      <textarea data-inline-task-edit-target="input"
+                class="mt-1 border border-blue-300 p-1 rounded w-full hidden"
+                rows="2"
+                data-action="blur->inline-task-edit#save keydown->inline-task-edit#handleKeydown"><%= task.description %></textarea>
+    </div>
+
+    <%# Other task details (Status, Priority, Due Date - from your existing code) %>
+    <div class="text-xs text-gray-500 mt-2 space-y-0.5">
+      <p>
+        <strong>Status:</strong> <%= task.completed? ? "Concluída em #{l(task.completed_at, format: :short) if task.completed_at.present?}" : "Pendente" %>
+      </p>
+      <p>
+        <strong>Prioridade:</strong> <span class="font-semibold"><%= task.priority.humanize if task.priority? %></span>
+      </p>
+      <% if task.due_date? %>
+      <p><strong>Vencimento:</strong> <%= task.due_date.strftime('%a, %d de %b de %Y') %>
+          <% if task.due_time? %>
+          às <%= task.due_time.strftime('%H:%M') %>
+          <% end %>
+      </p>
+      <% else %>
+      <p>Sem data de vencimento</p>
+      <% end %>
+    </div>
+
+    <%# Task Actions (Delete, Snooze, etc.) - from your existing code, hidden by default %>
+    <div class="task-actions mt-3 flex flex-wrap gap-2 items-center hidden">
+        <% unless task.completed? %>
+        <%= button_to "Adiar", snooze_task_path(task), method: :patch, class: "text-xs bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
+        <% end %>
+        <%= link_to "Detalhes", edit_task_path(task), class: "text-xs bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
+        <%= button_to "Excluir", task_path(task), method: :delete, data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" }, class: "text-xs bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded-md shadow-sm transition duration-150 ease-in-out" %>
+    </div>
+  </div>
+</li>
