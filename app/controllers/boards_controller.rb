@@ -16,22 +16,25 @@ class BoardsController < ApplicationController
   def create
     # --- Linhas de Diagnóstico ---
     Rails.logger.debug "--- BOARDS_CONTROLLER#CREATE ---"
-    Rails.logger.debug "Request Format Symbol: #{request.format.symbol.inspect}"
+    Rails.logger.debug "Request Format Symbol: #{request.format.symbol.inspect}" # Crucial!
     Rails.logger.debug "Request Content-Type: #{request.content_type.inspect}"
     Rails.logger.debug "Request Accept Header: #{request.headers['Accept'].inspect}"
-    Rails.logger.debug "Is Turbo Stream request? (helper): #{turbo_stream_request?.inspect}"
+    # A linha com turbo_stream_request? foi removida.
+    # Em vez disso, podemos usar request.format.turbo_stream? se precisarmos de uma verificação booleana.
+    Rails.logger.debug "Is request.format.turbo_stream?: #{request.format.turbo_stream?.inspect}"
+
     if Mime::Type.lookup_by_extension(:turbo_stream)
       Rails.logger.debug "Mime[:turbo_stream] symbol: #{Mime[:turbo_stream].symbol.inspect}"
       Rails.logger.debug "Mime[:turbo_stream] string: #{Mime[:turbo_stream].to_s.inspect}"
     else
-      Rails.logger.warn "Mime type for :turbo_stream NOT FOUND!"
+      Rails.logger.warn "Mime type for :turbo_stream NOT FOUND in Mime::Type lookup!"
     end
     # --- Fim das Linhas de Diagnóstico ---
 
     @board = Board.new(board_params_for_create)
     @board.name = "Novo Board" if @board.name.blank?
 
-    respond_to do |format| # Esta é a linha 20 do seu erro
+    respond_to do |format|
       if @board.save
         format.turbo_stream do
           Rails.logger.debug "Board SAVED - Responding with TURBO_STREAM"
@@ -49,11 +52,11 @@ class BoardsController < ApplicationController
         end
       else
         format.turbo_stream do
-          Rails.logger.debug "Board NOT SAVED - Responding with TURBO_STREAM (errors)"
+          Rails.logger.debug "Board NOT SAVED - Responding with TURBO_STREAM (errors), Status: unprocessable_entity"
           render turbo_stream: turbo_stream.prepend("boards_list_container",
                                                    partial: "shared/turbo_flash",
                                                    locals: { alert: @board.errors.full_messages.join(", ") }),
-                 status: :unprocessable_entity # Adicionar status é importante para o cliente
+                 status: :unprocessable_entity
         end
         format.html do
           Rails.logger.debug "Board NOT SAVED - Responding with HTML (errors)"

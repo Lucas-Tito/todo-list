@@ -9,16 +9,17 @@
                       task.id,
                       task.completed?,
                       class: "mt-1.5 mr-4 h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer",
-                      onchange: "this.form.requestSubmit();", # Submits form on change
+                      onchange: "this.form.requestSubmit();", # CORREÇÃO: Comentário Ruby
                       title: task.completed? ? "Marcar como pendente" : "Marcar como concluída" %>
   <% end %>
 
   <div class="flex-1">
     <%# Inline Editable Title %>
     <div class="task-field mb-1"
-         data-controller="inline-task-edit"
-         data-inline-task-edit-url-value="<%= task_path(task) %>" <%# Shallow route %>
+         data-controller="inline-task-edit" <%# Certifique-se que 'inline-task-edit' está correto e registrado %>
+         data-inline-task-edit-url-value="<%= task_path(task) %>"
          data-inline-task-edit-attribute-value="title"
+         data-inline-task-edit-object-name-value="task" <%# Adicionado para consistência com inline-edit %>
          data-inline-task-edit-start-editing-value="<%= start_editing_title %>">
 
       <h3 data-inline-task-edit-target="display"
@@ -33,14 +34,15 @@
 
     <%# Inline Editable Description %>
     <div class="task-field text-sm text-gray-600"
-         data-controller="inline-task-edit"
+         data-controller="inline-task-edit" <%# Certifique-se que 'inline-task-edit' está correto e registrado %>
          data-inline-task-edit-url-value="<%= task_path(task) %>"
          data-inline-task-edit-attribute-value="description"
-         data-inline-task-edit-start-editing-value="false"> <%# Don't auto-edit description %>
+         data-inline-task-edit-object-name-value="task" <%# Adicionado para consistência com inline-edit %>
+         data-inline-task-edit-start-editing-value="false">
 
       <p data-inline-task-edit-target="display"
-         class="mt-1 line-clamp-2 cursor-pointer hover:bg-gray-100 p-1 rounded min-h-[1.5em]" <%# Adicionado min-h para clique mais fácil %>
-         data-action="click->inline-task-edit#edit"> <%# <--- CORREÇÃO AQUI: Adicionada a data-action %>
+         class="mt-1 line-clamp-2 cursor-pointer hover:bg-gray-100 p-1 rounded min-h-[1.5em]"
+         data-action="click->inline-task-edit#edit">
         <%= task.description.presence || "Adicionar descrição..." %>
       </p>
       <textarea data-inline-task-edit-target="input"
