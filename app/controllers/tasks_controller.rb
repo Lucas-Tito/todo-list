@@ -103,24 +103,71 @@ class TasksController < ApplicationController
     end
   end
 
-  def complete
-    # @task é definido por :set_task_and_board_via_task e o método agora alterna o estado
+def complete
+  # @task is set by :set_task_and_board_via_task
+  
+  # Captura o status atual antes da mudança
+  was_completed = @task.completed?
+  
+  # Se a tarefa já estiver concluída, desmarca ela
+  if was_completed
+    @task.update(completed_at: nil)
+  else
+    # Caso contrário marca como concluída
     @task.complete!
-    @board = @task.board # Pega o quadro associado para a resposta
-
-    respond_to do |format|
-      format.turbo_stream do
-        # Substitui o contêiner de tarefas inteiro do quadro para atualizar ambas as listas.
-        # Isso requer um novo parcial 'boards/tasks_container' e um wrapper div no parcial '_board'.
-        render turbo_stream: turbo_stream.replace(
-          "board_#{@board.id}_tasks_container",
-          partial: "boards/tasks_container",
-          locals: { board: @board }
-        )
-      end
-      format.html { redirect_to tasks_path, notice: 'Status da tarefa atualizado.' }
-    end
   end
+  
+  respond_to do |format|
+    format.turbo_stream do
+      # Remove a tarefa da posição atual
+      streams = [turbo_stream.remove(dom_id(@task))]
+      
+      # Adiciona a tarefa na seção correta
+      if @task.completed?
+        # Adiciona na seção de tarefas concluídas
+        streams << turbo_stream.append(
+          "completed_tasks_board_#{@task.board.id}",
+          partial: "tasks/task",
+          locals: { task: @task, board: @task.board }
+        )
+        
+        # Força a atualização do contador de tarefas concluídas
+        completed_count = @task.board.tasks.completed.count
+        streams << turbo_stream.update(
+          "completed_tasks_toggle_board_#{@task.board.id}",
+          partial: "boards/completed_tasks_toggle",
+          locals: { board: @task.board, completed_count: completed_count }
+        )
+      else
+        # Adiciona na seção de tarefas pendentes
+        streams << turbo_stream.append(
+          "tasks_list_board_#{@task.board.id}",
+          partial: "tasks/task",
+          locals: { task: @task, board: @task.board }
+        )
+        
+        # Atualiza o contador quando desmarca uma tarefa
+        completed_count = @task.board.tasks.completed.count
+        if completed_count > 0
+          streams << turbo_stream.update(
+            "completed_tasks_toggle_board_#{@task.board.id}",
+            partial: "boards/completed_tasks_toggle",
+            locals: { board: @task.board, completed_count: completed_count }
+          )
+        else
+          # Esconde a seção se não há mais tarefas concluídas
+          streams << turbo_stream.remove("completed_tasks_toggle_board_#{@task.board.id}")
+        end
+      end
+      
+      render turbo_stream: streams
+    end
+    format.html { 
+      notice_message = was_completed ? 'Tarefa desmarcada como concluída.' : 'Tarefa marcada como concluída.'
+      redirect_to tasks_path, notice: notice_message 
+    }
+  end
+end
 
   def snooze
     # @task is set by :set_task_and_board_via_task

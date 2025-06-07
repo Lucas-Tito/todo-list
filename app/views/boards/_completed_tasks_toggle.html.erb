@@ -1,0 +1,8 @@
+<% if completed_count > 0 %>
+  <button type="button" 
+          class="text-sm text-gray-600 hover:text-gray-800 font-medium cursor-pointer p-2"
+          data-action="click->toggle-completed#toggle"
+          data-toggle-completed-board-id="<%= board.id %>">
+    <%= completed_count %> tarefa<%= 's' if completed_count != 1 %> concluída<%= 's' if completed_count != 1 %>
+  </button>
+<% end %>
