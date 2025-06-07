@@ -20,7 +20,7 @@
   <div class="flex justify-between items-start">
     <%# Título da Tarefa (agora dentro do flex) %>
     <div class="flex-grow">
-      <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= start_editing_title if local_assigns.has_key?(:start_editing_title) %>" class="w-full">
+      <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_title, false) %>" class="w-full">
         <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if task.completed? %>"><%= task.title %></h3>
         <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-lg font-bold border-gray-300 rounded-md" %>
       </div>
