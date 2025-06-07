@@ -104,11 +104,21 @@ class TasksController < ApplicationController
   end
 
   def complete
-    # @task is set by :set_task_and_board_via_task
-    @task.complete! #
+    # @task é definido por :set_task_and_board_via_task e o método agora alterna o estado
+    @task.complete!
+    @board = @task.board # Pega o quadro associado para a resposta
+
     respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(dom_id(@task), partial: "tasks/task", locals: { task: @task, board: @task.board }) }
-        format.html { redirect_to tasks_path, notice: 'Tarefa marcada como concluída.' }
+      format.turbo_stream do
+        # Substitui o contêiner de tarefas inteiro do quadro para atualizar ambas as listas.
+        # Isso requer um novo parcial 'boards/tasks_container' e um wrapper div no parcial '_board'.
+        render turbo_stream: turbo_stream.replace(
+          "board_#{@board.id}_tasks_container",
+          partial: "boards/tasks_container",
+          locals: { board: @board }
+        )
+      end
+      format.html { redirect_to tasks_path, notice: 'Status da tarefa atualizado.' }
     end
   end
 
@@ -124,6 +134,7 @@ class TasksController < ApplicationController
   private
 
   def load_all_boards
+    # O .includes(:tasks) otimiza o carregamento, prevenindo queries N+1.
     @boards = Board.includes(:tasks).order(:name)
   end
 
