@@ -13,16 +13,41 @@
     data: {
       controller: "task-card",
       action: "click->task-card#select",
-      "task-card-active-class": "ring-2 ring-blue-500 shadow-md" # Classe para o estado ativo
+      "task-card-active-class": "ring-2 ring-blue-500 shadow-md"
     } do %>
 
-  <div class="flex-grow">
-    <%# --- Título da Tarefa (Editável) --- %>
-    <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= start_editing_title if local_assigns.has_key?(:start_editing_title) %>" class="w-full">
-      <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if task.completed? %>"><%= task.title %></h3>
-      <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-lg font-bold border-gray-300 rounded-md" %>
+  <%# --- CABEÇALHO COM TÍTULO E MENU --- %>
+  <div class="flex justify-between items-start">
+    <%# Título da Tarefa (agora dentro do flex) %>
+    <div class="flex-grow">
+      <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= start_editing_title if local_assigns.has_key?(:start_editing_title) %>" class="w-full">
+        <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if task.completed? %>"><%= task.title %></h3>
+        <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-lg font-bold border-gray-300 rounded-md" %>
+      </div>
     </div>
 
+    <%# NOVO: Dropdown Menu (Três Pontos) %>
+    <div class="relative ml-2 flex-shrink-0"
+         data-controller="dropdown"
+         data-action="click@window->dropdown#hide"
+         data-dropdown-hidden-class="hidden">
+      <button type="button" class="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600" data-action="dropdown#toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+        </svg>
+      </button>
+      <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+        <div class="py-1">
+          <%= button_to "Excluir Tarefa", task_path(task),
+                method: :delete,
+                class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
+                data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-grow">
     <%# --- Descrição da Tarefa (Editável) --- %>
     <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="description" data-inline-edit-object-name-value="task" class="w-full mt-1">
       <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="text-gray-600 p-1 <%= 'line-through' if task.completed? %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
@@ -53,39 +78,39 @@
     <% end %>
   </div>
 
-<%# --- Barra de Opções (Adicionar Atributos) --- %>
-<div data-task-card-target="options" class="hidden pt-2 mt-2 border-t border-gray-100">
-  <div class="flex items-center gap-2">
+  <%# --- Barra de Opções (Adicionar Atributos) --- %>
+  <div data-task-card-target="options" class="hidden pt-2 mt-2 border-t border-gray-100">
+    <div class="flex items-center gap-2">
 
-    <%# Adicionar Data de Vencimento %>
-    <% if task.due_date.blank? %>
-      <div class="relative">
-        <button data-action="click->task-card#showAddDateForm" data-task-card-target="addDateButton" title="Adicionar data" class="p-1.5 rounded-full hover:bg-gray-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-        </button>
-        <%= form_with model: task, url: task_path(task), method: :patch,
-              class: "hidden items-center gap-2",
-              data: { "task-card-target": "addDateForm" } do |f| %>
-          <%= f.date_field :due_date, class: "border-gray-300 rounded-md text-sm p-1 w-36" %>
-          <%= f.submit "Salvar", class: "bg-blue-600 text-white text-xs font-bold py-1.5 px-3 rounded-md hover:bg-blue-700" %>
-        <% end %>
-      </div>
-    <% end %>
+      <%# Adicionar Data de Vencimento %>
+      <% if task.due_date.blank? %>
+        <div class="relative">
+          <button data-action="click->task-card#showAddDateForm" data-task-card-target="addDateButton" title="Adicionar data" class="p-1.5 rounded-full hover:bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          </button>
+          <%= form_with model: task, url: task_path(task), method: :patch,
+                class: "hidden items-center gap-2",
+                data: { "task-card-target": "addDateForm" } do |f| %>
+            <%= f.date_field :due_date, class: "border-gray-300 rounded-md text-sm p-1 w-36" %>
+            <%= f.submit "Salvar", class: "bg-blue-600 text-white text-xs font-bold py-1.5 px-3 rounded-md hover:bg-blue-700" %>
+          <% end %>
+        </div>
+      <% end %>
 
-    <%# Adicionar Prioridade %>
-    <% if task.priority.blank? %>
-      <div class="relative">
-        <button data-action="click->task-card#showAddPriorityForm" data-task-card-target="addPriorityButton" title="Adicionar prioridade" class="p-1.5 rounded-full hover:bg-gray-200">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18" /><path stroke-linecap="round" stroke-linejoin="round" d="M7 15l4-4 4 4 4-4" /></svg>
-        </button>
-        <%= form_with model: task, url: task_path(task), method: :patch,
-              class: "hidden items-center gap-2",
-              data: { "task-card-target": "addPriorityForm" } do |f| %>
-          <%= f.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, {}, { class: "border-gray-300 rounded-md text-sm p-1" } %>
-          <%= f.submit "Salvar", class: "bg-blue-600 text-white text-xs font-bold py-1.5 px-3 rounded-md hover:bg-blue-700" %>
-        <% end %>
-      </div>
-    <% end %>
+      <%# Adicionar Prioridade %>
+      <% if task.priority.blank? %>
+        <div class="relative">
+          <button data-action="click->task-card#showAddPriorityForm" data-task-card-target="addPriorityButton" title="Adicionar prioridade" class="p-1.5 rounded-full hover:bg-gray-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18" /><path stroke-linecap="round" stroke-linejoin="round" d="M7 15l4-4 4 4 4-4" /></svg>
+          </button>
+          <%= form_with model: task, url: task_path(task), method: :patch,
+                class: "hidden items-center gap-2",
+                data: { "task-card-target": "addPriorityForm" } do |f| %>
+            <%= f.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, {}, { class: "border-gray-300 rounded-md text-sm p-1" } %>
+            <%= f.submit "Salvar", class: "bg-blue-600 text-white text-xs font-bold py-1.5 px-3 rounded-md hover:bg-blue-700" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
 <% end %>
