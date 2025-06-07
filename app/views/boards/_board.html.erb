@@ -3,44 +3,69 @@
 
 <div id="<%= dom_id(board) %>" class="bg-white shadow-xl rounded-lg border border-gray-200 w-full flex-shrink-0 sm:w-[300px] h-fit">
   <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
-    <%# --- Nome Editável Inline --- %>
-    <div data-controller="inline-edit"
-         data-inline-edit-url-value="<%= board_path(board) %>"
-         data-inline-edit-attribute-value="name"
-         data-inline-edit-object-name-value="board"
-         data-inline-edit-start-editing-value="<%= start_editing_name %>"
-         <%# Passa o ID do botão principal para o controller de edição inline %>
-         <% if start_editing_name %>
-           data-inline-edit-main-new-board-button-id-value="main_new_board_button"
-         <% end %>
-        >
-        <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-            data-inline-edit-target="display"
-            data-action="click->inline-edit#edit">
-            <%= board.name.presence || "Clique para editar o nome" %>
-        </h2>
-        <input type="text" value="<%= board.name %>"
-               data-inline-edit-target="input"
-               class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full <%= 'hidden' unless start_editing_name %>"
-               data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
-    </div>
+    <div class="flex justify-between items-start">
+      <%# Coluna da Esquerda: Conteúdo Editável %>
+      <div class="flex-grow">
+        <%# --- Nome Editável Inline --- %>
+        <div data-controller="inline-edit"
+             data-inline-edit-url-value="<%= board_path(board) %>"
+             data-inline-edit-attribute-value="name"
+             data-inline-edit-object-name-value="board"
+             data-inline-edit-start-editing-value="<%= start_editing_name %>"
+             <% if start_editing_name %>
+               data-inline-edit-main-new-board-button-id-value="main_new_board_button"
+             <% end %>>
+            <h2 class="text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+                data-inline-edit-target="display"
+                data-action="click->inline-edit#edit">
+                <%= board.name.presence || "Clique para editar o nome" %>
+            </h2>
+            <input type="text" value="<%= board.name %>"
+                   data-inline-edit-target="input"
+                   class="text-2xl font-semibold text-gray-700 border border-blue-300 p-1 rounded w-full <%= 'hidden' unless start_editing_name %>"
+                   data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown">
+        </div>
 
-    <%# --- Descrição Editável Inline --- %>
-    <div data-controller="inline-edit"
-         data-inline-edit-url-value="<%= board_path(board) %>"
-         data-inline-edit-attribute-value="description"
-         data-inline-edit-object-name-value="board">
-        <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
-           data-inline-edit-target="display"
-           data-action="click->inline-edit#edit">
-            <%= board.description.presence || "Clique para adicionar uma descrição" %>
-        </p>
-        <textarea data-inline-edit-target="textarea" rows="3"
-                  class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
-                  data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"><%= board.description %></textarea>
+        <%# --- Descrição Editável Inline --- %>
+        <div data-controller="inline-edit"
+             data-inline-edit-url-value="<%= board_path(board) %>"
+             data-inline-edit-attribute-value="description"
+             data-inline-edit-object-name-value="board">
+            <p class="text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1 min-h-[1.5em]"
+               data-inline-edit-target="display"
+               data-action="click->inline-edit#edit">
+                <%= board.description.presence || "Clique para adicionar uma descrição" %>
+            </p>
+            <textarea data-inline-edit-target="textarea" rows="3"
+                      class="text-sm text-gray-600 mt-1 border border-blue-300 p-1 rounded w-full hidden"
+                      data-action="blur->inline-edit#handleBlur keydown->inline-edit#handleKeydown"><%= board.description %></textarea>
+        </div>
+      </div>
+
+      <%# Coluna da Direita: Dropdown Menu (Três Pontos) %>
+      <div class="relative ml-2 flex-shrink-0"
+           data-controller="dropdown"
+           data-action="click@window->dropdown#hide"
+           data-dropdown-hidden-class="hidden">
+        <button type="button" class="p-1 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-700" data-action="dropdown#toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+          </svg>
+        </button>
+
+        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+          <div class="py-1">
+            <%= button_to "Excluir Board", board_path(board),
+                  method: :delete,
+                  class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
+                  data: { turbo_confirm: "Tem certeza que deseja excluir este board e todas as suas tarefas?" } %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <%# O restante do seu arquivo continua aqui... %>
   <div id="flash_messages_board_<%= board.id %>"></div>
 
   <div class="px-6 py-3 border-t border-gray-200 bg-gray-50 text-right">
