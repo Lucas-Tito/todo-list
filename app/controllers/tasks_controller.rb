@@ -1,5 +1,8 @@
 # app/controllers/tasks_controller.rb
 class TasksController < ApplicationController
+
+  before_action :set_completed_task_count_before_action, only: [:complete]
+
   # For the main index page that shows all boards
   before_action :load_all_boards, only: [:index]
 
@@ -103,14 +106,77 @@ class TasksController < ApplicationController
     end
   end
 
+  def set_completed_task_count_before_action
+    # Precisamos encontrar a tarefa primeiro para acessar o quadro
+    task = Task.find(params[:id])
+    @completed_tasks_before_action = task.board.tasks.completed.count
+  end
+
+  # app/controllers/tasks_controller.rb
+
   def complete
-    # @task is set by :set_task_and_board_via_task
-    @task.complete! #
+    # @task e @board já são definidos pelo before_action :set_task_and_board_via_task
+    was_completed = @task.completed?
+
+    if was_completed
+      @task.update(completed_at: nil)
+    else
+      @task.complete!
+    end
+
     respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(dom_id(@task), partial: "tasks/task", locals: { task: @task, board: @task.board }) }
-        format.html { redirect_to tasks_path, notice: 'Tarefa marcada como concluída.' }
+      format.turbo_stream do
+        # Se esta foi a PRIMEIRA tarefa a ser concluída neste quadro
+        if @task.completed? && @completed_tasks_before_action == 0
+          # Renderiza a seção inteira de tarefas concluídas pela primeira vez
+          render turbo_stream: [
+            turbo_stream.remove(dom_id(@task)), # Remove da lista de pendentes
+            turbo_stream.append(
+              dom_id(@board, :tasks_container), # Adiciona a seção ao contêiner principal do quadro
+              partial: "boards/completed_tasks_section",
+              # CORREÇÃO 1: Passa a variável 'completed_tasks' que estava faltando
+              locals: { board: @board, completed_tasks: @board.tasks.completed }
+            )
+          ]
+        else
+          # Lógica para mover a tarefa entre seções existentes
+          streams = [turbo_stream.remove(dom_id(@task))]
+          completed_count = @board.tasks.completed.count
+
+          if @task.completed?
+            # Adiciona à lista de tarefas concluídas
+            streams << turbo_stream.append("completed_tasks_list_board_#{@board.id}", # ID corrigido para a lista
+                                          partial: "tasks/task",
+                                          locals: { task: @task, board: @board })
+          else
+            # Adiciona de volta à lista de tarefas pendentes
+            streams << turbo_stream.append("tasks_list_board_#{@board.id}",
+                                          partial: "tasks/task",
+                                          locals: { task: @task, board: @board })
+          end
+
+          # Atualiza ou remove o toggle/contador
+          if completed_count > 0
+            # CORREÇÃO 2 (MELHORIA): Garante que a partial do toggle sempre receba a contagem atualizada
+            # e que a seção inteira seja substituída para manter a consistência
+            streams << turbo_stream.replace(dom_id(@board, :completed_tasks_section),
+                                            partial: "boards/completed_tasks_section",
+                                            locals: { board: @board, completed_tasks: @board.tasks.completed })
+          else
+            # Remove a seção inteira se não houver mais tarefas concluídas
+            streams << turbo_stream.remove(dom_id(@board, :completed_tasks_section))
+          end
+
+          render turbo_stream: streams
+        end
+      end
+      format.html do
+        notice_message = was_completed ? 'Tarefa desmarcada como concluída.' : 'Tarefa marcada como concluída.'
+        redirect_to tasks_path, notice: notice_message
+      end
     end
   end
+
 
   def snooze
     # @task is set by :set_task_and_board_via_task
@@ -124,6 +190,7 @@ class TasksController < ApplicationController
   private
 
   def load_all_boards
+    # O .includes(:tasks) otimiza o carregamento, prevenindo queries N+1.
     @boards = Board.includes(:tasks).order(:name)
   end
 

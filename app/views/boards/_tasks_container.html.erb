@@ -1,0 +1,29 @@
+<%#
+  locals:
+    board: o objeto do quadro
+%>
+<%
+  uncompleted_tasks, completed_tasks = board.tasks.partition { |t| !t.completed? }
+  uncompleted_tasks.sort_by!(&:created_at)
+%>
+
+<%# 1. Contêiner principal que será o alvo do nosso Turbo Stream. %>
+<div id="<%= dom_id(board, :tasks_container) %>">
+
+  <%# 2. Lista de tarefas pendentes (seu código, praticamente inalterado) %>
+  <div id="tasks_list_board_<%= board.id %>" class="divide-y divide-gray-200">
+    <% if uncompleted_tasks.any? %>
+      <% uncompleted_tasks.each do |task| %>
+        <%= render "tasks/task", task: task, board: board %>
+      <% end %>
+    <% elsif completed_tasks.empty? %>
+      <div class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</div>
+    <% end %>
+  </div>
+
+  <%# 3. Renderiza a seção de concluídas APENAS se já existirem no carregamento inicial. %>
+  <%# O controller cuidará de adicioná-la dinamicamente caso contrário. %>
+  <% if completed_tasks.any? %>
+    <%= render 'boards/completed_tasks_section', board: board, completed_tasks: completed_tasks %>
+  <% end %>
+</div>

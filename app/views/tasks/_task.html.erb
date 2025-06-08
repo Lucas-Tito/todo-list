@@ -4,8 +4,10 @@
     start_editing_title: (Opcional) Booleano para iniciar no modo de edição
 %>
 <%
-  task_container_classes = "bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-2 flex flex-col cursor-pointer transition-all duration-200"
-  task_container_classes += " opacity-60" if task.completed?
+  is_completed = task.completed?
+  # --- ALTERAÇÃO AQUI: As classes 'border' e 'border-gray-200' foram removidas ---
+  task_container_classes = "bg-white p-4 rounded-lg mb-2 flex flex-col cursor-pointer transition-all duration-200"
+  task_container_classes += " opacity-60" if is_completed
 %>
 <%= content_tag :div,
     id: dom_id(task),
@@ -16,17 +18,29 @@
       "task-card-active-class": "ring-2 ring-blue-500 shadow-md"
     } do %>
 
-  <%# --- CABEÇALHO COM TÍTULO E MENU --- %>
+  <%# O restante do arquivo permanece igual... %>
   <div class="flex justify-between items-start">
-    <%# Título da Tarefa (agora dentro do flex) %>
     <div class="flex-grow">
       <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_title, false) %>" class="w-full">
-        <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if task.completed? %>"><%= task.title %></h3>
+        
+        <%= button_to complete_task_path(task),
+              method: :patch,
+              "data-turbo-stream": true,
+              class: "float-left mr-4 mt-1.5 border-none bg-transparent p-0 cursor-pointer" do %>
+          <div class="task-checkbox <%= 'checked' if is_completed %>">
+            <% if is_completed %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            <% end %>
+          </div>
+        <% end %>
+        
+        <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if is_completed %>"><%= task.title %></h3>
         <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-lg font-bold border-gray-300 rounded-md" %>
       </div>
     </div>
 
-    <%# NOVO: Dropdown Menu (Três Pontos) %>
     <div class="relative ml-2 flex-shrink-0"
          data-controller="dropdown"
          data-action="click@window->dropdown#hide"
@@ -48,14 +62,12 @@
   </div>
 
   <div class="flex-grow">
-    <%# --- Descrição da Tarefa (Editável) --- %>
     <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="description" data-inline-edit-object-name-value="task" class="w-full mt-1">
-      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="text-gray-600 p-1 <%= 'line-through' if task.completed? %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
+      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="text-gray-600 p-1 <%= 'line-through' if is_completed %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
       <%= text_area_tag 'task[description]', task.description, data: { inline_edit_target: "textarea", action: "blur->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-gray-600 border-gray-300 rounded-md", rows: 2 %>
     </div>
   </div>
 
-  <%# --- Cards de Atributos (Data e Prioridade) --- %>
   <div class="mt-3 flex items-center flex-wrap gap-2">
     <% if task.due_date.present? %>
       <div class="relative group flex items-center gap-x-1.5 bg-gray-100 text-gray-800 text-xs font-medium pl-2.5 pr-3 py-1 rounded-full">
@@ -78,11 +90,8 @@
     <% end %>
   </div>
 
-  <%# --- Barra de Opções (Adicionar Atributos) --- %>
   <div data-task-card-target="options" class="hidden pt-2 mt-2 border-t border-gray-100">
     <div class="flex items-center gap-2">
-
-      <%# Adicionar Data de Vencimento %>
       <% if task.due_date.blank? %>
         <div class="relative">
           <button data-action="click->task-card#showAddDateForm" data-task-card-target="addDateButton" title="Adicionar data" class="p-1.5 rounded-full hover:bg-gray-200">
@@ -96,8 +105,6 @@
           <% end %>
         </div>
       <% end %>
-
-      <%# Adicionar Prioridade %>
       <% if task.priority.blank? %>
         <div class="relative">
           <button data-action="click->task-card#showAddPriorityForm" data-task-card-target="addPriorityButton" title="Adicionar prioridade" class="p-1.5 rounded-full hover:bg-gray-200">
