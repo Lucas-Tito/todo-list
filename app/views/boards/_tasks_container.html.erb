@@ -1,44 +1,29 @@
 <%#
-  Este parcial é responsável por renderizar as listas de tarefas
-  pendentes e concluídas para um determinado quadro.
-  É o alvo da substituição do Turbo Stream.
   locals:
     board: o objeto do quadro
 %>
 <%
-  # Particiona as tarefas já carregadas para evitar novas queries
-  uncompleted_tasks, completed_tasks = board.tasks.partition { |task| !task.completed? }
-
-  # Ordena as listas
-  uncompleted_tasks.sort_by! { |t| t.created_at || Time.now }
-  completed_tasks.sort_by! { |t| t.completed_at || Time.at(0) }.reverse!
+  uncompleted_tasks, completed_tasks = board.tasks.partition { |t| !t.completed? }
+  uncompleted_tasks.sort_by!(&:created_at)
 %>
 
-<%# LISTA DE TAREFAS PENDENTES %>
-<%# Este ID é importante para o botão "Adicionar Tarefa" funcionar %>
-<div id="tasks_list_board_<%= board.id %>" class="divide-y divide-gray-200">
-  <% if uncompleted_tasks.any? %>
-    <% uncompleted_tasks.each do |task| %>
-      <%= render "tasks/task", task: task, board: board %>
+<%# 1. Contêiner principal que será o alvo do nosso Turbo Stream. %>
+<div id="<%= dom_id(board, :tasks_container) %>">
+
+  <%# 2. Lista de tarefas pendentes (seu código, praticamente inalterado) %>
+  <div id="tasks_list_board_<%= board.id %>" class="divide-y divide-gray-200">
+    <% if uncompleted_tasks.any? %>
+      <% uncompleted_tasks.each do |task| %>
+        <%= render "tasks/task", task: task, board: board %>
+      <% end %>
+    <% elsif completed_tasks.empty? %>
+      <div class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</div>
     <% end %>
-  <% elsif completed_tasks.empty? %>
-    <div class="px-6 py-4 text-sm text-gray-500">Nenhuma tarefa neste board ainda.</div>
+  </div>
+
+  <%# 3. Renderiza a seção de concluídas APENAS se já existirem no carregamento inicial. %>
+  <%# O controller cuidará de adicioná-la dinamicamente caso contrário. %>
+  <% if completed_tasks.any? %>
+    <%= render 'boards/completed_tasks_section', board: board, completed_tasks: completed_tasks %>
   <% end %>
 </div>
-
-<%# SEÇÃO DE TAREFAS CONCLUÍDAS %>
-<% if completed_tasks.any? %>
-  <div class="px-6 pt-4 pb-2" data-controller="toggle">
-    <div class="flex items-center cursor-pointer select-none text-sm text-gray-600 hover:text-gray-900" data-action="click->toggle#fire">
-      <h4 class="font-semibold">Concluídas (<%= completed_tasks.size %>)</h4>
-      <svg data-toggle-target="icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </div>
-    <div data-toggle-target="toggleable" class="hidden mt-2 divide-y divide-gray-200">
-      <% completed_tasks.each do |task| %>
-        <%= render 'tasks/task', task: task, board: board %>
-      <% end %>
-    </div>
-  </div>
-<% end %>
