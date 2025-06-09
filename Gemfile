@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem 'acts_as_list'
 # Adds tailwind
 gem "tailwindcss-rails"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
