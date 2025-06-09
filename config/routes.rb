@@ -19,8 +19,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :boards do
-    # Tasks are nested under boards for creation (index, new, create)
+  resources :lists do
+    # Tasks are nested under lists for creation (index, new, create)
     # Shallow nesting makes routes for individual tasks (show, edit, update, destroy) top-level (e.g., /tasks/:id)
     resources :tasks, shallow: true do
       member do
