@@ -1,6 +1,6 @@
 class List < ApplicationRecord
     # acts_as_list gerencia a coluna 'position'
-    acts_as_list scope: :id # O escopo pode ser ajustado conforme a necessidade
+    acts_as_list
 
     has_many :tasks, dependent: :destroy
     validates :name, presence: true
