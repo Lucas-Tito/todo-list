@@ -1,10 +1,10 @@
 class Task < ApplicationRecord
-  belongs_to :board
+  belongs_to :list
 
   enum :priority, { low: 0, medium: 1, high: 2 } # SÍMBOLO + HASH
 
   validates :title, presence: true
-  validates :board_id, presence: true
+  validates :list_id, presence: true
 
   # Scopes para separar tarefas concluídas e não concluídas
   scope :completed, -> { where.not(completed_at: nil).order(completed_at: :desc) }
