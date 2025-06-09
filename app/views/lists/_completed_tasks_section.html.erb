@@ -1,17 +1,16 @@
 <%#
   locals:
-    board: o objeto do quadro
+    list: o objeto do quadro
     completed_tasks: a lista de tarefas concluídas
 %>
 <%
-  # Se a variável 'completed_tasks' não for passada, busca a partir do 'board'.
-  completed_tasks ||= board.tasks.completed
-  # CORREÇÃO: Usamos .sort_by (sem '!') e reatribuímos o resultado
+  # Se a variável 'completed_tasks' não for passada, busca a partir do 'list'.
+  completed_tasks ||= list.tasks.completed
   completed_tasks = completed_tasks.sort_by(&:completed_at).reverse
 %>
 
 <%# ID para que possamos remover esta seção inteira quando a última tarefa for desmarcada %>
-<div id="<%= dom_id(board, :completed_tasks_section) %>" class="px-6 pt-4 pb-2" data-controller="toggle">
+<div id="<%= dom_id(list, :completed_tasks_section) %>" class="px-6 pt-4 pb-2" data-controller="toggle">
   
   <%# Seu código para o botão de toggle %>
   <div class="flex items-center cursor-pointer select-none text-sm text-gray-600 hover:text-gray-900" data-action="click->toggle#fire">
@@ -22,9 +21,9 @@
   </div>
   
   <%# A lista que será exibida/ocultada. ID estável aqui. %>
-  <div id="completed_tasks_list_board_<%= board.id %>" data-toggle-target="toggleable" class="hidden mt-2 divide-y divide-gray-200">
+  <div id="completed_tasks_list_list_<%= list.id %>" data-toggle-target="toggleable" class="hidden mt-2 divide-y divide-gray-200">
     <% completed_tasks.each do |task| %>
-      <%= render 'tasks/task', task: task, board: board %>
+      <%= render 'tasks/task', task: task, list: list %>
     <% end %>
   </div>
 </div>
