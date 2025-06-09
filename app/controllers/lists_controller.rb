@@ -10,7 +10,8 @@ class ListsController < ApplicationController
 
   # GET /lists
   def index
-    @lists = List.order(created_at: :asc)
+    # Only show lists from the current board.
+    @lists = @current_board.lists.order(:position)
   end
 
   # GET /list/new
@@ -20,8 +21,8 @@ class ListsController < ApplicationController
 
   # POST /lists or /lists.json
   def create
-    @list = List.new(list_params_for_create)
-    @list.name = "Nova Lista" if @list.name.blank?
+    @list = List.find(params[:list_id]) # Ensure the list is found.
+    @task = @list.tasks.build(task_params_for_create)
 
     respond_to do |format|
       if @list.save

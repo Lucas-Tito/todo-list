@@ -14,15 +14,16 @@ class TasksController < ApplicationController
   before_action :set_task_and_list_via_task, only: [:show, :edit, :update, :destroy, :complete, :snooze]
 
   def index
-    # @lists is loaded by the :load_all_lists before_action.
-    # The view (tasks/index.html.erb) iterates through @lists to display them and their tasks.
+    # Load all boards for the sidebar.
+    @boards = Board.order(:name)
+    # Load only the lists that belong to the current board.
+    @lists = @current_board.lists.includes(:tasks).order(:position)
   end
 
   # POST /lists/:list_id/tasks
   def create
-    # @list is set by :set_list_from_url_params
+    @list = List.find(params[:list_id]) # Ensure the list is found.
     @task = @list.tasks.build(task_params_for_create)
-    @task.title = "Nova Tarefa" if @task.title.blank? # Default title
 
     respond_to do |format|
       if @task.save
