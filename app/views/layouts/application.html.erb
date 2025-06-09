@@ -22,10 +22,29 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>  
-  <% if notice %>
-    <p style="color: green"><%= notice %></p>
-  <% end %>
-  <%= yield %>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <%# Renderiza a barra lateral. Ela só aparecerá se @boards estiver definido no controller. %>
+      <%= render "layouts/sidebar" if @boards %>
+
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <%# Uma área dedicada e estilizada para notificações (flash messages) %>
+        <div id="flash" class="mb-4">
+          <% if notice %>
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+              <p><%= notice %></p>
+            </div>
+          <% end %>
+          <% if alert %>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+              <p><%= alert %></p>
+            </div>
+          <% end %>
+        </div>
+
+        <%# O conteúdo principal da sua página (como a lista de tarefas) será renderizado aqui %>
+        <%= yield %>
+      </main>
+    </div>
   </body>
 </html>
