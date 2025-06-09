@@ -1,7 +1,7 @@
 <%# app/views/lists/_list.html.erb %>
 <% start_editing_name ||= false %>
 
-<div id="<%= dom_id(list) %>" class="bg-white shadow-xl rounded-lg border border-gray-200 w-full flex-shrink-0 sm:w-[300px] h-fit flex flex-col">
+<div id="<%= dom_id(list) %>" data-list-id="<%= list.id %>" class="bg-white shadow-xl rounded-lg border border-gray-200 w-full flex-shrink-0 sm:w-[300px] h-fit flex flex-col ">
   
   <%# --- CABEÇALHO DA LIST (INTOCADO) --- %>
   <div class="px-6 py-5 border-b border-gray-200 bg-gray-50">
