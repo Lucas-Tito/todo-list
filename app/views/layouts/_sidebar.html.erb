@@ -1,0 +1,22 @@
+<aside class="w-64 bg-gray-50 border-r flex flex-col flex-shrink-0">
+  <div class="p-4">
+    <h2 class="text-lg font-semibold text-gray-700">Meus Boards</h2>
+  </div>
+
+  <nav id="boards_list" class="flex-grow p-4 overflow-y-auto">
+    <% @boards.each do |board| %>
+      <%# Link to switch boards. The currently active board is highlighted. %>
+      <%= link_to board.name, root_path(board_id: board.id), class: "block py-2 px-3 rounded-md text-sm font-medium #{board == @current_board ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}" %>
+    <% end %>
+  </nav>
+
+  <div id="new_board_form_container" class="p-4 border-t">
+    <%# Form to create a new board. It submits to the BoardsController. %>
+    <%= form_with(model: Board.new, url: boards_path, html: { "data-turbo-frame": "_top" }) do |form| %>
+      <div class="flex flex-col">
+        <%= form.text_field :name, placeholder: "Novo board...", class: "block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <%= form.submit "+ Adicionar Board", class: "mt-2 w-full bg-blue-500 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</aside>
