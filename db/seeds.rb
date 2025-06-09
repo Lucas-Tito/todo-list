@@ -1,23 +1,32 @@
 # db/seeds.rb
 
-# Criar Lists
+# 1. Primeiro, crie ou encontre um Board padrão.
+puts "Seed: garantindo a existência de um board padrão..."
+default_board = Board.find_or_create_by!(name: "Meu Primeiro Board")
+puts "Seed: board padrão '#{default_board.name}' pronto."
+
+
+# 2. Agora, crie as Lists DENTRO do board padrão.
 puts "Seed: criando lists..."
-work_list = List.find_or_create_by!(name: "Trabalho") do |list|
+# Note a mudança: default_board.lists.find_or_create_by!
+work_list = default_board.lists.find_or_create_by!(name: "Trabalho") do |list|
   list.description = "Tarefas relacionadas ao trabalho."
 end
 
-personal_list = List.find_or_create_by!(name: "Pessoal") do |list|
+personal_list = default_board.lists.find_or_create_by!(name: "Pessoal") do |list|
   list.description = "Tarefas pessoais e do dia a dia."
 end
 
-study_list = List.find_or_create_by!(name: "Estudos") do |list|
+study_list = default_board.lists.find_or_create_by!(name: "Estudos") do |list|
   list.description = "Tarefas e metas de estudo."
 end
 puts "Seed: lists criados com sucesso!"
 
-# Criar Tarefas e associá-las a Lists
+
+# 3. Criar Tarefas e associá-las a Lists (esta parte não precisa de alteração)
+# A associação com o board já está garantida através da lista.
 if Task.exists?
-  puts "Seed: tarefas já existem, associando a lists ou pulando criação."
+  puts "Seed: tarefas já existem, pulando criação."
 else
   puts "Seed: criando tarefas iniciais e associando a lists..."
 
