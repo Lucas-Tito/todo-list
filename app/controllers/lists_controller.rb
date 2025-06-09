@@ -1,6 +1,13 @@
 class ListsController < ApplicationController
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
+
+  def move
+    @list = List.find(params[:id])
+    @list.insert_at(params[:position].to_i)
+    head :ok
+  end
+
   # GET /lists
   def index
     @lists = List.order(created_at: :asc)
@@ -94,7 +101,7 @@ class ListsController < ApplicationController
   private
 
   def set_list
-    @list = list.find(params[:id])
+    @list = List.find(params[:id])
   end
 
   def list_params

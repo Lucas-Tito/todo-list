@@ -4,7 +4,7 @@
     <h1 class="text-3xl font-bold text-gray-800">Meus Lists de Tarefas</h1>
   </div>
 
-  <div class="flex overflow-x-auto gap-6 pb-4" id="lists_list_container">
+  <div class="flex overflow-x-auto gap-6 pb-4" id="lists_list_container" data-controller="sortable" data-sortable-url-value="/lists/:id/move">
     <% @lists.each do |list| %>
       <%= render "lists/list", list: list %>
     <% end %>
