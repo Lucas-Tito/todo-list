@@ -38,9 +38,9 @@
   </div>
 
   <div>
-    <%= form.label :board_id, "Board" %>
-    <%# @boards é carregado pelo before_action :load_boards no controller %>
-    <%= form.collection_select :board_id, @boards, :id, :name, prompt: 'Selecione um Board' %>
+    <%= form.label :list_id, "List" %>
+    <%# @lists é carregado pelo before_action :load_lists no controller %>
+    <%= form.collection_select :list_id, @lists, :id, :name, prompt: 'Selecione um List' %>
   </div>
 
   <div>

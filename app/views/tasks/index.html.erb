@@ -1,20 +1,20 @@
 <%# app/views/tasks/index.html.erb %>
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-3xl font-bold text-gray-800">Meus Boards de Tarefas</h1>
+    <h1 class="text-3xl font-bold text-gray-800">Meus Lists de Tarefas</h1>
   </div>
 
-  <div class="flex overflow-x-auto gap-6 pb-4" id="boards_list_container">
-    <% @boards.each do |board| %>
-      <%= render "boards/board", board: board %>
+  <div class="flex overflow-x-auto gap-6 pb-4" id="lists_list_container">
+    <% @lists.each do |list| %>
+      <%= render "lists/list", list: list %>
     <% end %>
     <%# Renderiza o placeholder (que é um formulário) no final %>
-    <%= render "boards/add_new_board_placeholder" %>
+    <%= render "lists/add_new_list_placeholder" %>
   </div>
 
-  <% if @boards.empty? %>
+  <% if @lists.empty? %>
     <div class="text-center py-10 mt-[-2rem]">
-      <p class="text-xl text-gray-500">Nenhum board encontrado ainda.</p>
+      <p class="text-xl text-gray-500">Nenhum list encontrado ainda.</p>
     </div>
   <% end %>
 </div>
