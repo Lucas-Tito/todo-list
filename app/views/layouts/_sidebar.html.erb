@@ -1,22 +1,48 @@
-<aside class="w-64 bg-gray-50 border-r flex flex-col flex-shrink-0">
-  <div class="p-4">
-    <h2 class="text-lg font-semibold text-gray-700">Meus Boards</h2>
-  </div>
+<%# app/views/layouts/_sidebar.html.erb %>
+<div data-controller="toggle" class="relative">
+  <%# --- Botão Sanduíche --- %>
+  <%# Este botão fica sempre visível e controla a sidebar %>
+  <button type="button" data-action="click->toggle#fire" class="p-2 text-gray-500 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+    <span class="sr-only">Abrir menu</span>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+    </svg>
+  </button>
 
-  <nav id="boards_list" class="flex-grow p-4 overflow-y-auto">
-    <% @boards.each do |board| %>
-      <%# Link to switch boards. The currently active board is highlighted. %>
-      <%= link_to board.name, root_path(board_id: board.id), class: "block py-2 px-3 rounded-md text-sm font-medium #{board == @current_board ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}" %>
-    <% end %>
-  </nav>
+  <%# --- Painel da Sidebar --- %>
+  <%#
+    - `data-toggle-target="toggleable"`: Marca este elemento para ser controlado.
+    - `hidden`: Começa escondido.
+    - `absolute`, `z-20`, `h-screen`: Posiciona o menu sobre o conteúdo da página.
+  %>
+  <aside data-toggle-target="toggleable" class="hidden absolute top-0 left-0 z-20 w-64 h-screen bg-gray-50 border-r flex flex-col flex-shrink-0">
 
-  <div id="new_board_form_container" class="p-4 border-t">
-    <%# Form to create a new board. It submits to the BoardsController. %>
-    <%= form_with(model: Board.new, url: boards_path, html: { "data-turbo-frame": "_top" }) do |form| %>
-      <div class="flex flex-col">
-        <%= form.text_field :name, placeholder: "Novo board...", class: "block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
-        <%= form.submit "+ Adicionar Board", class: "mt-2 w-full bg-blue-500 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
-      </div>
-    <% end %>
-  </div>
-</aside>
+    <%# Cabeçalho da Sidebar com botão de fechar %>
+    <div class="p-4 flex justify-between items-center">
+      <h2 class="text-lg font-semibold text-gray-700">Meus Boards</h2>
+      <button type="button" data-action="click->toggle#fire" class="p-1 text-gray-400 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <span class="sr-only">Fechar menu</span>
+        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <%# Seu código original para a navegação %>
+    <nav id="boards_list" class="flex-grow p-4 overflow-y-auto">
+      <% @boards.each do |board| %>
+        <%= link_to board.name, root_path(board_id: board.id), class: "block py-2 px-3 rounded-md text-sm font-medium #{board == @current_board ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100'}" %>
+      <% end %>
+    </nav>
+
+    <%# Seu código original para o formulário %>
+    <div id="new_board_form_container" class="p-4 border-t">
+      <%= form_with(model: Board.new, url: boards_path, html: { "data-turbo-frame": "_top" }) do |form| %>
+        <div class="flex flex-col">
+          <%= form.text_field :name, placeholder: "Novo board...", class: "block w-full text-sm border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" %>
+          <%= form.submit "+ Adicionar Board", class: "mt-2 w-full bg-blue-500 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  </aside>
+</div>
