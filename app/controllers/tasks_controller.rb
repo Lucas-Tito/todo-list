@@ -48,7 +48,7 @@ class TasksController < ApplicationController
   def respond_to_turbo_stream_update
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
+        render turbo_stream: turbo_stream.update(
           dom_id(@list, :tasks_container),
           partial: "lists/tasks_container",
           locals: { list: @list, start_editing_title_for_task_id: @task&.id }
