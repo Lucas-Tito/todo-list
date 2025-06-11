@@ -3,7 +3,7 @@ class BoardsController < ApplicationController
 
   # POST /boards or /boards.turbo_stream
   def create
-    @board = Board.new(board_params_with_defaults)
+    @board = Board.new(board_params)
 
     respond_to do |format|
       if @board.save
@@ -73,19 +73,4 @@ class BoardsController < ApplicationController
     params.fetch(:board, {}).permit(:name)
   end
 
-  # Lida com a criação de um nome padrão se nenhum for enviado
-  def board_params_with_defaults
-    p = board_params
-    if p[:name].blank?
-      base_name = "Novo Board"
-      new_name = base_name
-      i = 1
-      while Board.exists?(name: new_name)
-        new_name = "#{base_name} (#{i})"
-        i += 1
-      end
-      p[:name] = new_name
-    end
-    p
-  end
 end
