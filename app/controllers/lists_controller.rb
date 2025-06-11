@@ -64,17 +64,6 @@ class ListsController < ApplicationController
     end
   end
 
-  # GET /lists/:id
-  def show
-    # @list is defined by before_action
-  end
-
-  # GET /lists/:id/edit
-  def edit
-    # @list is defined by before_action
-  end
-
-  # PATCH/PUT /lists/:id or /lists/:id.json
   def update
     # @list is defined by before_action
     respond_to do |format|
