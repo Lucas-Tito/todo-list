@@ -23,10 +23,8 @@
           </svg>
         </button>
         
-        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20" data-action="click@window->dropdown#hide">
+        <div data-dropdown-target="menu" class="hidden float-menu" data-action="click@window->dropdown#hide">
           
-          <%# --- LINHA MODIFICADA ABAIXO --- %>
-          <%# Trocamos o link <a> por um botão <button> para a ação de renomear %>
           <button type="button" data-action="click->inline-edit#edit click->dropdown#toggle" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Renomear</button>
           
           <%= link_to "Excluir", board_path(board),

@@ -48,7 +48,7 @@
             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
           </svg>
         </button>
-        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+        <div data-dropdown-target="menu" class="hidden float-menu">
           <div class="py-1">
             <%= button_to "Excluir Lista", list_path(list),
                   method: :delete,
@@ -66,7 +66,7 @@
   <div class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-right">
     <%= form_with(model: [list, Task.new], url: list_tasks_path(list), method: :post, class: "inline-block", id: "new_task_form_for_list_#{list.id}") do |form| %>
       <%# O título é definido no controller, então o campo oculto é removido %>
-      <%= form.submit "Adicionar Tarefa", class: "text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1" %>
+      <%= form.submit "Adicionar Tarefa", class: "button-primary" %>
     <% end %>
   </div>
 
