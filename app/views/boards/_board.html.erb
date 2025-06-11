@@ -1,0 +1,42 @@
+<%# app/views/boards/_board.html.erb %>
+<% is_current = (board == current_board) %>
+
+<div id="<%= dom_id(board) %>"
+     class="board-item-container"
+     data-controller="inline-edit"
+     data-inline-edit-url-value="<%= board_path(board) %>"
+     data-inline-edit-attribute-value="name"
+     data-inline-edit-object-name-value="board"
+     data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_name, false) %>">
+
+    <div data-inline-edit-target="display" class="group flex justify-between items-center w-full px-3 py-2 rounded-md #{is_current ? 'bg-blue-100' : 'hover:bg-gray-100'}">
+      
+      <%= link_to board.name,
+                  root_path(board_id: board.id),
+                  class: "flex-grow truncate min-w-0 text-sm font-medium #{is_current ? 'text-blue-600' : 'text-gray-600'}",
+                  data: { 'turbo-frame': '_top', 'inline-edit-target': 'nameDisplay' } %>
+
+      <div class="relative ml-2 flex-shrink-0" data-controller="dropdown">
+        <button type="button" data-action="click->dropdown#toggle" class="opacity-0 group-hover:opacity-100 p-1 rounded-full hover:bg-gray-200 focus:opacity-100">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10 3a2 2 0 100 4 2 2 0 000-4zM10 9a2 2 0 100 4 2 2 0 000-4zM10 15a2 2 0 100 4 2 2 0 000-4z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        
+        <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20" data-action="click@window->dropdown#hide">
+          <a href="#" data-action="click.prevent->inline-edit#edit click->dropdown#toggle" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Renomear</a>
+          <%= link_to "Excluir", board_path(board),
+                      data: { "turbo-method": :delete, "turbo-confirm": "Tem certeza?" },
+                      class: "block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" %>
+        </div>
+      </div>
+    </div>
+
+    <%= tag.input type: "text",
+                  value: board.name,
+                  class: "hidden px-3 py-2 w-full text-sm font-medium border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500",
+                  data: {
+                    inline_edit_target: "input",
+                    action: "blur->inline-edit#save keydown->inline-edit#handleKeydown"
+                  } %>
+</div>

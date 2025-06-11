@@ -2,20 +2,20 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["display", "input", "textarea"];
+  // Adicionamos "nameDisplay" como um target opcional
+  static targets = ["display", "input", "textarea", "nameDisplay"];
   static values = {
     url: String,
     attribute: String,
-    objectName: String, // "board" ou "task"
+    objectName: String,
     originalText: String,
     editing: Boolean,
     startEditing: Boolean,
-    mainNewBoardButtonId: String // Opcional: ID do botão principal "Novo Board"
+    mainNewBoardButtonId: String
   };
 
   connect() {
     this.editingValue = false;
-    // Determina qual campo de input usar (input ou textarea)
     this.fieldToEdit = this.hasInputTarget ? this.inputTarget : (this.hasTextareaTarget ? this.textareaTarget : null);
 
     if (!this.fieldToEdit) {
@@ -24,11 +24,9 @@ export default class extends Controller {
     }
 
     if (this.startEditingValue) {
-      // Esconde o botão principal se estivermos começando a editar um NOVO board
       if (this.objectNameValue === "board" && this.hasMainNewBoardButtonIdValue) {
-        this.manageMainButtonVisibility(false); // false para esconder
+        this.manageMainButtonVisibility(false);
       }
-      // Adia a chamada para edit() para garantir que o DOM esteja pronto, especialmente após Turbo Streams
       requestAnimationFrame(() => this.edit());
     } else {
       this.switchToDisplayModeVisuals();
@@ -57,13 +55,18 @@ export default class extends Controller {
       event.stopPropagation();
       event.preventDefault();
     }
-    // Evita reentrar no modo de edição se já estiver editando e o campo de input já estiver focado
     if (this.editingValue && this.fieldToEdit === document.activeElement) return;
 
-    if (!this.fieldToEdit) return; // Não faz nada se não houver campo de edição
+    if (!this.fieldToEdit) return;
 
     this.editingValue = true;
-    this.originalTextValue = this.hasDisplayTarget ? this.displayTarget.textContent.trim() : this.fieldToEdit.value.trim();
+    
+    // *** LÓGICA CORRIGIDA ***
+    // Se o target específico 'nameDisplay' existir, usa ele para ler o texto.
+    // Senão, usa o comportamento antigo com 'displayTarget'.
+    const textSource = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
+    this.originalTextValue = this.hasDisplayTarget ? textSource.textContent.trim() : this.fieldToEdit.value.trim();
+
     this.switchToEditModeVisuals();
   }
 
@@ -89,29 +92,40 @@ export default class extends Controller {
         headers: {
           "Content-Type": "application/json",
           "X-CSRF-Token": csrfToken,
-          Accept: "application/json", // Espera JSON de volta para atualizar o display
+          Accept: "application/json",
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
         const data = await response.json();
+
+        // *** LÓGICA CORRIGIDA ***
+        // Se o target 'nameDisplay' existir, atualiza o texto nele.
+        // Senão, usa o comportamento antigo.
+        const textTarget = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
         if (this.hasDisplayTarget) {
-          this.displayTarget.textContent = data[this.attributeValue] || newValue;
+          textTarget.textContent = data[this.attributeValue] || newValue;
         }
+        
         this.originalTextValue = data[this.attributeValue] || newValue;
         this.revertToDisplayModeAndNotify("success", data);
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error(`Failed to save ${this.objectNameValue}:`, errorData);
-        if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+        if (this.hasDisplayTarget) {
+          const textTarget = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
+          textTarget.textContent = this.originalTextValue;
+        }
         this.fieldToEdit.value = this.originalTextValue;
-        // alert(`Error: ${errorData.errors?.[this.attributeValue]?.join(', ') || 'Could not save'}`);
         this.revertToDisplayModeAndNotify("error", errorData);
       }
     } catch (error) {
       console.error(`Error saving ${this.objectNameValue}:`, error);
-      if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+      if (this.hasDisplayTarget) {
+        const textTarget = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
+        textTarget.textContent = this.originalTextValue;
+      }
       this.fieldToEdit.value = this.originalTextValue;
       this.revertToDisplayModeAndNotify("error", { message: error.message });
     }
@@ -120,7 +134,10 @@ export default class extends Controller {
   cancel() {
     if (!this.editingValue || !this.fieldToEdit) return;
     this.fieldToEdit.value = this.originalTextValue;
-    if (this.hasDisplayTarget) this.displayTarget.textContent = this.originalTextValue;
+    if (this.hasDisplayTarget) {
+      const textTarget = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
+      textTarget.textContent = this.originalTextValue;
+    }
     this.revertToDisplayModeAndNotify("cancel");
   }
 
@@ -129,9 +146,8 @@ export default class extends Controller {
     this.switchToDisplayModeVisuals();
     this.dispatch(eventName, { detail: eventDetail });
 
-    // Se este controller estava editando um board recém-criado, reexibe o botão principal.
     if (this.objectNameValue === "board" && this.hasMainNewBoardButtonIdValue) {
-      this.manageMainButtonVisibility(true); // true para mostrar
+      this.manageMainButtonVisibility(true);
     }
   }
 
@@ -139,11 +155,7 @@ export default class extends Controller {
     if (this.hasMainNewBoardButtonIdValue) {
       const mainButton = document.getElementById(this.mainNewBoardButtonIdValue);
       if (mainButton) {
-        if (show) {
-          mainButton.classList.remove("hidden");
-        } else {
-          mainButton.classList.add("hidden");
-        }
+        mainButton.classList[show ? "remove" : "add"]("hidden");
       }
     }
   }
