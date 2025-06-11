@@ -1,7 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
-
   def move
     @list = List.find(params[:id])
     @list.insert_at(params[:position].to_i)
@@ -10,33 +9,45 @@ class ListsController < ApplicationController
 
   # GET /lists
   def index
-    @lists = List.order(created_at: :asc)
+    # Only show lists from the current board.
+    @lists = @current_board.lists.order(:position)
   end
 
   # GET /list/new
   def new
-    @list = List.new
+    @list = @current_board.lists.build
   end
 
   # POST /lists or /lists.json
   def create
-    @list = List.new(list_params_for_create)
-    @list.name = "Nova Lista" if @list.name.blank?
+    permitted_params = list_params
+
+    # Set a default name if it's blank, ensuring it's unique
+    if permitted_params[:name].blank?
+      base_name = "Nova Lista"
+      new_name = base_name
+      i = 1
+      while @current_board.lists.exists?(name: new_name)
+        new_name = "#{base_name} (#{i})"
+        i += 1
+      end
+      permitted_params[:name] = new_name
+    end
+
+    @list = @current_board.lists.build(permitted_params)
 
     respond_to do |format|
       if @list.save
         format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace("add_new_list_placeholder",
-                                 partial: "lists/list",
-                                 locals: { list: @list, start_editing_name: true }),
-            turbo_stream.append("lists_list_container",
-                                partial: "lists/add_new_list_placeholder")
-          ]
+          # Alterado de 'append' para 'before' para inserir a nova lista
+          # antes do botão "Nova Lista" (o placeholder).
+          render turbo_stream: turbo_stream.before(
+            "add_new_list_placeholder",
+            partial: "lists/list",
+            locals: { list: @list, start_editing_name: true }
+          )
         end
-        format.html do
-          redirect_to tasks_path, notice: "List criado com sucesso."
-        end
+        format.html { redirect_to root_path, notice: "List was successfully created." }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.prepend("lists_list_container",
@@ -45,9 +56,9 @@ class ListsController < ApplicationController
                  status: :unprocessable_entity
         end
         format.html do
-          @lists = List.order(:name)
+          @lists = @current_board.lists.order(:position)
           flash.now[:alert] = @list.errors.full_messages.join(", ")
-          render :new, status: :unprocessable_entity
+          render 'tasks/index', status: :unprocessable_entity
         end
       end
     end
@@ -55,17 +66,17 @@ class ListsController < ApplicationController
 
   # GET /lists/:id
   def show
-    # @list é definido pelo before_action
+    # @list is defined by before_action
   end
 
   # GET /lists/:id/edit
   def edit
-    # @list é definido pelo before_action
+    # @list is defined by before_action
   end
 
   # PATCH/PUT /lists/:id or /lists/:id.json
   def update
-    # @list é definido pelo before_action
+    # @list is defined by before_action
     respond_to do |format|
       if @list.update(list_params)
         format.turbo_stream do
@@ -90,11 +101,11 @@ class ListsController < ApplicationController
 
   # DELETE /lists/:id
   def destroy
-    # @list é definido pelo before_action
+    # @list is defined by before_action
     @list.destroy
     respond_to do |format|
       format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@list)) }
-      format.html { redirect_to tasks_path, notice: "list excluído com sucesso.", status: :see_other }
+      format.html { redirect_to tasks_path, notice: "list excluded successfully.", status: :see_other }
     end
   end
 
@@ -107,9 +118,4 @@ class ListsController < ApplicationController
   def list_params
     params.require(:list).permit(:name, :description, :color)
   end
-
-  def list_params_for_create
-    params.fetch(:list, {}).permit(:name, :description, :color)
-  end
-
 end

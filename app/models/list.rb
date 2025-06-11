@@ -1,11 +1,16 @@
 class List < ApplicationRecord
-    # acts_as_list gerencia a coluna 'position'
-    acts_as_list
+  # Include the acts_as_list gem functionality, scoping it to the board_id.
+  # This means the position of a list is relative to other lists on the same board.
+  acts_as_list scope: :board
 
-    has_many :tasks, dependent: :destroy
-    validates :name, presence: true
+  # Each list belongs to a single board.
+  belongs_to :board
+  # A list can have many tasks. If a list is deleted, its tasks are also deleted.
+  has_many :tasks, dependent: :destroy
 
-    # O default_scope para ordenar por posição é uma boa prática com acts_as_list
-    default_scope { order(position: :asc) }
+  # The name of the list is mandatory.
+  validates :name, presence: true
 
+  # The default order for lists is by their position in ascending order.
+  default_scope { order(position: :asc) }
 end

@@ -1,29 +1,19 @@
-<%#
-  locals:
-    list: o objeto do quadro
-    completed_tasks: a lista de tarefas concluídas
-%>
-<%
-  # Se a variável 'completed_tasks' não for passada, busca a partir do 'list'.
-  completed_tasks ||= list.tasks.completed
-  completed_tasks = completed_tasks.sort_by(&:completed_at).reverse
-%>
+<%# app/views/lists/_completed_tasks_section.html.erb %>
+<%# locals: list, completed_tasks %>
 
-<%# ID para que possamos remover esta seção inteira quando a última tarefa for desmarcada %>
-<div id="<%= dom_id(list, :completed_tasks_section) %>" class="px-6 pt-4 pb-2" data-controller="toggle">
-  
-  <%# Seu código para o botão de toggle %>
-  <div class="flex items-center cursor-pointer select-none text-sm text-gray-600 hover:text-gray-900" data-action="click->toggle#fire">
-    <h4 class="font-semibold">Concluídas (<%= completed_tasks.size %>)</h4>
-    <svg data-toggle-target="icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-    </svg>
+<% if completed_tasks.any? %>
+  <div class="mt-4 px-2" data-controller="toggle">
+    <button data-action="click->toggle#fire" class="w-full flex justify-between items-center text-left text-sm font-medium text-gray-500 p-2 hover:bg-gray-100 rounded-md">
+      <span>Concluídas (<%= completed_tasks.count %>)</span>
+      <svg data-toggle-target="icon" class="h-5 w-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+
+    <div data-toggle-target="toggleable" class="hidden mt-2 divide-y divide-gray-200">
+      <% completed_tasks.sort_by(&:completed_at).reverse.each do |task| %>
+        <%= render 'tasks/task', task: task, list: list %>
+      <% end %>
+    </div>
   </div>
-  
-  <%# A lista que será exibida/ocultada. ID estável aqui. %>
-  <div id="completed_tasks_list_list_<%= list.id %>" data-toggle-target="toggleable" class="hidden mt-2 divide-y divide-gray-200">
-    <% completed_tasks.each do |task| %>
-      <%= render 'tasks/task', task: task, list: list %>
-    <% end %>
-  </div>
-</div>
+<% end %>

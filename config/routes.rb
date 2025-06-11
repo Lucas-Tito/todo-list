@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :boards, only: [:create, :update, :destroy]
+
   resources :lists do
     member do
       patch :move
