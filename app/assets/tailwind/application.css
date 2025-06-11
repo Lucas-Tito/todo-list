@@ -16,3 +16,11 @@
 .rotate-180 {
   transform: rotate(180deg);
 }
+
+.button-primary {
+  @apply text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1;
+}
+
+.float-menu{
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
+}
