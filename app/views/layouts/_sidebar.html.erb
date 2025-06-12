@@ -1,32 +1,49 @@
 <div data-controller="toggle" class="relative">
-  <%# --- Botão Sanduíche --- %>
-  <button type="button" data-action="click->toggle#fire" class="p-2 text-gray-500 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+  <%# --- Botão Sanduíche (Adicionado estilo dark mode) --- %>
+  <button type="button" data-action="click->toggle#fire" class="p-2 text-gray-500 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700">
     <span class="sr-only">Abrir menu</span>
     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
     </svg>
   </button>
 
-  <%# --- Painel da Sidebar --- %>
-  <aside data-toggle-target="toggleable" class="hidden absolute top-0 left-0 z-20 w-64 h-screen bg-gray-50 border-r flex flex-col flex-shrink-0">
+  <%# --- Painel da Sidebar (Adicionado estilo dark mode) --- %>
+  <aside data-toggle-target="toggleable" class="hidden absolute top-0 left-0 z-20 w-64 h-screen bg-gray-50 border-r border-gray-200 dark:bg-gray-900 dark:border-gray-800 flex flex-col flex-shrink-0">
 
-    <%# Cabeçalho da Sidebar %>
-    <div class="p-4 flex justify-between items-center">
-      <h2 class="text-lg font-semibold text-gray-700">Meus Boards</h2>
-      <button type="button" data-action="click->toggle#fire" class="p-1 text-gray-400 rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <span class="sr-only">Fechar menu</span>
-        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
+    <%# Cabeçalho da Sidebar (Modificado para incluir o botão de tema) %>
+    <div class="p-4 flex justify-between items-center border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-100">Meus Boards</h2>
+
+      <div class="flex items-center space-x-2">
+        <%# --- INÍCIO: Bloco do Botão de Tema --- %>
+        <div data-controller="theme">
+          <button type="button" data-action="click->theme#toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-900">
+            <svg data-theme-target="moon" class="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <svg data-theme-target="sun" class="h-5 w-5 hidden text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
+        </div>
+        <%# --- FIM: Bloco do Botão de Tema --- %>
+
+        <%# Botão de Fechar %>
+        <button type="button" data-action="click->toggle#fire" class="p-1 text-gray-400 rounded-md hover:text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:hover:text-white dark:hover:bg-gray-700">
+          <span class="sr-only">Fechar menu</span>
+          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
     </div>
 
+    <%# Corpo da Sidebar (Adicionado estilo dark mode) %>
     <nav id="boards_list_container" class="flex-grow p-4 overflow-y-auto">
       <%= render partial: "boards/board", collection: @boards, as: :board, locals: { current_board: @current_board } %>
 
-      <%# CORREÇÃO: Adicionado id: "new_board_form" %>
       <%= form_with(model: Board.new, url: boards_path(format: :turbo_stream), class: "mt-2", id: "new_board_form") do |form| %>
-        <%= form.button class: "w-full text-left flex items-center px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:bg-gray-100 rounded-md border-none bg-transparent p-0 focus:outline-none focus:ring-2 focus:ring-blue-500" do %>
+        <%= form.button class: "w-full text-left flex items-center px-3 py-2 text-sm font-medium text-gray-500 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-400 rounded-md border-none bg-transparent p-0 focus:outline-none focus:ring-2 focus:ring-blue-500" do %>
           <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
