@@ -1,3 +1,18 @@
+.task-container{
+    @apply bg-white p-4 rounded-lg mb-2 cursor-pointer;
+    @apply dark:bg-black;
+}
+
+.task-title{
+    @apply text-lg font-bold border-gray-300 rounded-md p-1;
+    @apply dark:text-white;
+}
+
+.task-description{
+    @apply text-gray-600 p-1;
+    @apply dark:text-white
+}
+
 .task-checkbox {
   @apply w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 ease-in-out;
   @apply dark:border-gray-600;
