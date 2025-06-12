@@ -1,0 +1,19 @@
+.list{
+  @apply bg-white shadow-xl rounded-lg border border-gray-200;
+  @apply dark:bg-black dark:border-red-500;
+}
+
+.list-header{
+  @apply px-6 py-5 border-b border-gray-200 bg-gray-50;
+  @apply dark:border-green-200 dark:bg-red-50
+}
+
+.list-name{
+  @apply text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 rounded;
+  @apply dark:text-red-700 dark:hover:bg-white;
+}
+
+.list-description{
+  @apply text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1;
+  @apply dark:text-white dark:hover:bg-gray-100
+}

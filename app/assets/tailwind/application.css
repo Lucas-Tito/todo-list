@@ -3,13 +3,18 @@
 
 /* Este @import carrega todos os utilitários do Tailwind */
 @import "tailwindcss";
+@import "./_lists.css";
+@import "./_tasks.css";
+
+body{
+  @apply bg-gray-50;
+  @apply dark:bg-gray-700
+}
 
 .button-primary {
-  @apply py-2 px-3 bg-blue-600 text-white font-semibold rounded-md shadow-sm;
-  @apply hover:bg-blue-700;
-  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
+  @apply text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1;
   /* Estilos do dark mode DENTRO da própria classe do componente */
-  @apply dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-offset-gray-900;
+  @apply dark:text-red-600 dark:hover:text-red-800;
 }
 
 .button-secondary {
@@ -20,22 +25,11 @@
   @apply dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:focus:ring-offset-gray-900;
 }
 
-.task-checkbox {
-  @apply w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 ease-in-out;
-  @apply dark:border-gray-600;
-}
-
-.task-checkbox:hover {
-  @apply border-blue-500 scale-110;
-  @apply dark:border-blue-400;
-}
-
-.task-checkbox.checked {
-  @apply bg-blue-600 border-blue-600;
-  @apply dark:bg-blue-500 dark:border-blue-500;
-}
-
 /* Classe para a rotação do ícone da seta */
 .rotate-180 {
   transform: rotate(180deg);
+}
+
+.float-menu{
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
 }
