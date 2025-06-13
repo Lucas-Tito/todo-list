@@ -17,3 +17,8 @@
   @apply text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1;
   @apply dark:text-white dark:hover:bg-gray-100
 }
+
+.list-add-task-container{
+  @apply px-6 py-3 border-b border-gray-200 bg-gray-50 text-right;
+  @apply dark:bg-black
+}
