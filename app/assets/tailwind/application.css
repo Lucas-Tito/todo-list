@@ -6,8 +6,35 @@
 @import "./_lists.css";
 @import "./_tasks.css";
 
+@layer base {
+  /*
+    :root representa o tema padrão (claro)
+  */
+  :root {
+    /* Valores RGB para as cores. Ex: #3b82f6 -> 59 130 246 */
+    --color-primary: 59 130 246;          /* blue-500 */
+    --color-primary-hover: 37 99 235;     /* blue-600 */
+    --color-secondary: 107 114 128;       /* gray-500 */
+    --color-surface: 255 255 255;         /* white */
+    --color-on-surface: 17 24 39;         /* gray-900 */
+    --color-on-surface-muted: 75 85 99;   /* gray-600 */
+  }
+
+  /*
+    Quando a classe .dark estiver no <html>, estes valores serão usados no lugar.
+  */
+  .dark {
+    --color-primary: 96 165 250;          /* blue-400 */
+    --color-primary-hover: 59 130 246;    /* blue-500 */
+    --color-secondary: 156 163 175;       /* gray-400 */
+    --color-surface: 17 24 39;            /* gray-900 */
+    --color-on-surface: 229 231 235;      /* gray-200 */
+    --color-on-surface-muted: 156 163 175;/* gray-400 */
+  }
+}
+
 body{
-  @apply bg-gray-50;
+  @apply bg-primary;
   @apply dark:bg-gray-700
 }
 
