@@ -3,11 +3,6 @@ class TasksController < ApplicationController
   # Garantindo que todas as actions necessárias estejam aqui
   before_action :set_task_and_list_via_task, only: [:update, :destroy, :complete, :snooze]
 
-  def index
-    @boards = Board.order(:name)
-    @lists = @current_board.lists.includes(:tasks).order(:position) if @current_board
-  end
-
   def create
     @task = @list.tasks.build(title: "Nova Tarefa")
     @task.save

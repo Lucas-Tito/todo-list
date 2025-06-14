@@ -1,6 +1,12 @@
 class BoardsController < ApplicationController
   before_action :set_board, only: [:update, :destroy]
 
+
+  def index
+    @boards = Board.order(:name)
+    @lists = @current_board.lists.includes(:tasks).order(:position) if @current_board
+  end
+
   # POST /boards or /boards.turbo_stream
   def create
     @board = Board.new(board_params)
