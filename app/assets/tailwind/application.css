@@ -1,6 +1,14 @@
 :root {
-  --primary-color: oklch(54.6% 0.245 262.881);
-  --primary-color-hover: oklch(42.4% 0.199 265.638);
+  --color-accent: oklch(54.6% 0.245 262.881);
+  --color-accent-hover: oklch(42.4% 0.199 265.638);
+
+  --color-primary: oklch(21% 0.034 264.665);
+  --color-secondary: oklch(37.3% 0.034 259.733);
+  --color-tertiary: oklch(55.1% 0.027 264.364);
+
+  --color-surface: oklch(92.8% 0.006 264.531);
+  --color-background: oklch(98.5% 0.002 247.839);
+  --color-background-hover: oklch(96.7% 0.003 264.542);
 
 
   /* Dark Mode */
@@ -16,14 +24,15 @@
 @import "tailwindcss";
 @import "./_lists.css";
 @import "./_tasks.css";
+@import "./_sidebar.css";
 
 body{
-  @apply bg-gray-50;
+  @apply bg-[var(--color-background)];
   @apply dark:bg-gray-700
 }
 
 .button-primary {
-  @apply text-sm text-[var(--primary-color)] hover:text-[var(--primary-color-hover)] font-medium cursor-pointer p-1;
+  @apply text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] font-medium cursor-pointer p-1;
   
   @apply dark:text-red-600 dark:hover:text-red-800;
 }
