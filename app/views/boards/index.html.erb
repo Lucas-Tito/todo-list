@@ -1,4 +1,3 @@
-<%# app/views/tasks/index.html.erb %>
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold text-gray-800">Meus Lists de Tarefas</h1>
@@ -18,17 +17,3 @@
     </div>
   <% end %>
 </div>
-
-<%# Script para toggle de actions da task (existente) %>
-<script>
-  document.addEventListener("turbo:load", function () {
-    document.querySelectorAll(".task-item").forEach(function (taskEl) {
-      taskEl.addEventListener("click", function (e) {
-        if (e.target.closest("a, button, input, textarea, [data-action], .task-field")) return;
-        const actions = taskEl.querySelector(".task-actions");
-        if (!actions) return;
-        actions.classList.toggle("hidden");
-      });
-    });
-  });
-</script>

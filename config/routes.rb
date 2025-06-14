@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  resources :boards, only: [:create, :update, :destroy]
+  resources :boards, only: [:create, :update, :destroy, :index]
 
   resources :lists do
     member do
@@ -28,5 +28,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root 'tasks#index' # Define a página inicial
+  root 'boards#index' # Define a página inicial
 end
