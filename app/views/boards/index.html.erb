@@ -17,17 +17,3 @@
     </div>
   <% end %>
 </div>
-
-<%# Script para toggle de actions da task (existente) %>
-<script>
-  document.addEventListener("turbo:load", function () {
-    document.querySelectorAll(".task-item").forEach(function (taskEl) {
-      taskEl.addEventListener("click", function (e) {
-        if (e.target.closest("a, button, input, textarea, [data-action], .task-field")) return;
-        const actions = taskEl.querySelector(".task-actions");
-        if (!actions) return;
-        actions.classList.toggle("hidden");
-      });
-    });
-  });
-</script>
