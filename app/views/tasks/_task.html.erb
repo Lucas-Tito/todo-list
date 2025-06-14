@@ -5,9 +5,15 @@
 %>
 <%
   is_completed = task.completed?
-  # --- ALTERAÇÃO AQUI: As classes 'border' e 'border-gray-200' foram removidas ---
-  task_container_classes = "bg-white p-4 rounded-lg mb-2 flex flex-col cursor-pointer transition-all duration-200"
+  # Classes de componente definidas no CSS para um HTML mais limpo
+  task_container_classes = "task-container"
   task_container_classes += " opacity-60" if is_completed
+
+  task_title_classes = "task-title"
+  task_title_classes += " line-through" if is_completed
+
+  task_description_classes = "task-description"
+  task_description_classes += " line-through" if is_completed
 %>
 <%= content_tag :div,
     id: dom_id(task),
@@ -15,10 +21,10 @@
     data: {
       controller: "task-card",
       action: "click->task-card#select",
-      "task-card-active-class": "ring-2 ring-blue-500 shadow-md"
+      # Usamos a classe 'active' para que o CSS possa estilizá-la
+      "task-card-active-class": "active"
     } do %>
 
-  <%# O restante do arquivo permanece igual... %>
   <div class="flex justify-between items-start">
     <div class="flex-grow">
       <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="title" data-inline-edit-object-name-value="task" data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_title, false) %>" class="w-full">
@@ -36,8 +42,8 @@
           </div>
         <% end %>
         
-        <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="font-bold text-lg p-1 <%= 'line-through' if is_completed %>"><%= task.title %></h3>
-        <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-lg font-bold border-gray-300 rounded-md" %>
+        <h3 data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_title_classes %>"><%= task.title %></h3>
+        <%= text_field_tag 'task[title]', task.title, data: { inline_edit_target: "input", action: "blur->inline-edit#save keydown.enter->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full task-title" %>
       </div>
     </div>
 
@@ -63,8 +69,8 @@
 
   <div class="flex-grow">
     <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="description" data-inline-edit-object-name-value="task" class="w-full mt-1">
-      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="text-gray-600 p-1 <%= 'line-through' if is_completed %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
-      <%= text_area_tag 'task[description]', task.description, data: { inline_edit_target: "textarea", action: "blur->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full text-gray-600 border-gray-300 rounded-md", rows: 2 %>
+      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_description_classes %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
+      <%= text_area_tag 'task[description]', task.description, data: { inline_edit_target: "textarea", action: "blur->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full task-description border-gray-300 rounded-md", rows: 2 %>
     </div>
   </div>
 
@@ -73,7 +79,8 @@
       <div class="relative group flex items-center gap-x-1.5 bg-gray-100 text-gray-800 text-xs font-medium pl-2.5 pr-3 py-1 rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         <span><%= l(task.due_date, format: :short) rescue task.due_date.to_s %></span>
-        <%= button_to task_path(task, task: { due_date: nil }), method: :patch, class: "hidden absolute -top-1.5 -right-1.5 bg-gray-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs", data: { "task-card-target": "removeIcon" } do %>
+        <%# A classe 'hidden' foi removida. O CSS agora controla a visibilidade. %>
+        <%= button_to task_path(task, task: { due_date: nil }), method: :patch, class: "task-badge-remove-icon", data: { "task-card-target": "removeIcon" } do %>
           &times;
         <% end %>
       </div>
@@ -83,7 +90,8 @@
       <div class="relative group flex items-center gap-x-1.5 <%= priority_classes %> text-xs font-medium pl-2.5 pr-3 py-1 rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18" /><path stroke-linecap="round" stroke-linejoin="round" d="M7 15l4-4 4 4 4-4" /></svg>
         <span><%= task.priority.humanize %></span>
-        <%= button_to task_path(task, task: { priority: nil }), method: :patch, class: "hidden absolute -top-1.5 -right-1.5 bg-gray-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs", data: { "task-card-target": "removeIcon" } do %>
+        <%# A classe 'hidden' foi removida. O CSS agora controla a visibilidade. %>
+        <%= button_to task_path(task, task: { priority: nil }), method: :patch, class: "task-badge-remove-icon", data: { "task-card-target": "removeIcon" } do %>
           &times;
         <% end %>
       </div>

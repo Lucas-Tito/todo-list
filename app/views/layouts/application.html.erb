@@ -8,6 +8,15 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script>
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
+    
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
@@ -22,7 +31,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-50">
+  <body>
     <div class="flex h-screen">
       <%# Renderiza a barra lateral. Ela só aparecerá se @boards estiver definido no controller. %>
       <%= render "layouts/sidebar" if @boards %>
@@ -42,7 +51,7 @@
           <% end %>
         </div>
 
-        <%# O conteúdo principal da sua página (como a lista de tarefas) será renderizado aqui %>
+        <%# O conteúdo principal da página é renderizado aqui %>
         <%= yield %>
       </main>
     </div>

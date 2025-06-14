@@ -1,18 +1,60 @@
+:root {
+  --color-accent: oklch(54.6% 0.245 262.881);
+  --color-accent-hover: oklch(42.4% 0.199 265.638);
+
+  --color-primary: oklch(21% 0.034 264.665);
+  --color-secondary: oklch(37.3% 0.034 259.733);
+  --color-tertiary: oklch(55.1% 0.027 264.364);
+
+  --color-border: oklch(92.8% 0.006 264.531);
+
+  --color-surface: oklch(92.8% 0.006 264.531);
+  --color-background: oklch(98.5% 0.002 247.839);
+  --color-background-hover: oklch(96.7% 0.003 264.542);
+}
+
+:root.dark {
+  --color-accent: oklch(70% 0.245 262.881); 
+  --color-accent-hover: oklch(60% 0.199 265.638);
+
+  --color-primary: oklch(85% 0.034 264.665);   
+  --color-secondary: oklch(75% 0.034 259.733);
+  --color-tertiary: oklch(65% 0.027 264.364);
+
+  --color-border: oklch(30% 0.01 260);
+
+  --color-surface: oklch(25% 0.006 264.531);   
+  --color-background: oklch(15% 0.002 247.839); 
+  --color-background-hover: oklch(22% 0.003 264.542);
+}
+
+@config "../../../config/tailwind.config.js";
+
+/* Este @import carrega todos os utilitários do Tailwind */
 @import "tailwindcss";
+@import "./_lists.css";
+@import "./_tasks.css";
+@import "./_sidebar.css";
 
-.task-checkbox {
-  @apply w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 ease-in-out;
+body{
+  @apply bg-[var(--color-background)];
 }
 
-.task-checkbox:hover {
-  @apply border-blue-500 scale-110;
+.button-primary {
+  @apply text-sm text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] font-medium cursor-pointer p-1;
 }
 
-.task-checkbox.checked {
-  @apply bg-blue-600 border-blue-600;
+.button-secondary {
+  @apply py-2 px-3 bg-gray-200 text-gray-800 font-semibold rounded-md;
+  @apply hover:bg-gray-300;
+  @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400;
 }
 
 /* Classe para a rotação do ícone da seta */
 .rotate-180 {
   transform: rotate(180deg);
+}
+
+.float-menu{
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
 }

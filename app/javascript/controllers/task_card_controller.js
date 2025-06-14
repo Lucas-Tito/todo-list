@@ -13,18 +13,21 @@ export default class extends Controller {
 
   // Ação principal, chamada ao clicar no card.
   select(event) {
+    // Impede que a seleção aconteça ao clicar em botões, links, etc.
     if (event.target.closest('a, button, input, textarea, select, form, [data-controller~="inline-edit"]')) {
       return
     }
 
     const isAlreadySelected = this.element.classList.contains(this.activeClass)
 
+    // Deseleciona todos os outros cards
     document.querySelectorAll('[data-controller="task-card"]').forEach(controllerElement => {
       if (this.element !== controllerElement) {
         this.application.getControllerForElementAndIdentifier(controllerElement, "task-card")?.deselect()
       }
     });
 
+    // Alterna a seleção do card atual
     if (isAlreadySelected) {
       this.deselect()
     } else {
@@ -35,15 +38,15 @@ export default class extends Controller {
   // Ativa o modo de "seleção" no card.
   selectCard() {
     this.element.classList.add(this.activeClass)
+    // Mostra o container de opções (formulários de data/prioridade)
     if (this.hasOptionsTarget) this.optionsTarget.classList.remove("hidden")
-    this.removeIconTargets.forEach(icon => icon.classList.remove("hidden"))
   }
 
   // Desativa o modo de "seleção".
   deselect() {
     this.element.classList.remove(this.activeClass)
+    // Esconde o container de opções
     if (this.hasOptionsTarget) this.optionsTarget.classList.add("hidden")
-    this.removeIconTargets.forEach(icon => icon.classList.add("hidden"))
 
     // Garante que os formulários de adição sejam escondidos ao desmarcar
     if (this.hasAddDateFormTarget) this.addDateFormTarget.classList.add('hidden');

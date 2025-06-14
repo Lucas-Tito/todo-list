@@ -1,0 +1,35 @@
+.task-container {
+  @apply flex flex-col bg-[var(--color-background)] p-4 rounded-lg mb-2 cursor-pointer transition-all duration-200;
+}
+
+.task-container.active {
+  @apply ring-2 ring-blue-500 shadow-md;
+}
+
+.task-badge-remove-icon {
+  @apply hidden;
+}
+
+.task-container.active .task-badge-remove-icon {
+  @apply absolute -top-1.5 -right-1.5 bg-[var(--color-secondary)] text-[var(--color-primary)] rounded-full w-4 h-4 flex items-center justify-center text-xs;
+}
+
+.task-title {
+  @apply text-[var(--color-secondary)] text-lg font-bold rounded-md p-1;
+}
+
+.task-description {
+  @apply text-[var(--color-tertiary)] p-1;
+}
+
+.task-checkbox {
+  @apply w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center cursor-pointer transition-all duration-150 ease-in-out;
+}
+
+.task-checkbox:hover {
+  @apply border-[var(--color-accent)] scale-110;
+}
+
+.task-checkbox.checked {
+  @apply bg-text-[var(--color-accent)] border-text-[var(--color-accent)];
+}
