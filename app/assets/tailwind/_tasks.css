@@ -31,5 +31,5 @@
 }
 
 .task-checkbox.checked {
-  @apply bg-text-[var(--color-accent)] border-text-[var(--color-accent)];
+  @apply bg-[var(--color-accent)] border-[var(--color-accent)];
 }
