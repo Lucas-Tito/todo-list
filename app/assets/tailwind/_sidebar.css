@@ -1,34 +1,27 @@
 .panel-toggle-btn{
     @apply text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500;
-    @apply dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700;
 }
 
 .sidebar-panel{
     @apply bg-[var(--color-background)] border-r border-gray-200;
-    @apply dark:bg-gray-900 dark:border-gray-800;
 }
 
 .sidebar-header{
     @apply justify-between items-center border-b border-gray-200;
-    @apply dark:border-gray-700;
 }
 
 .sidebar-header-text{
     @apply text-lg font-semibold text-[var(--color-secondary)];
-    @apply dark:text-gray-100;
 }
 
 .theme-switcher-btn{
     @apply text-[var(--color-tertiary)] rounded-full hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500;
-    @apply dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900;
 }
 
 .close-sidebar-btn{
     @apply text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-blue-500;
-    @apply dark:hover:text-white dark:hover:bg-gray-700;
 }
 
 .new-board-btn{
     @apply text-sm font-medium text-[var(--color-tertiary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
-    @apply dark:hover:bg-gray-700 dark:text-gray-400;
 }
