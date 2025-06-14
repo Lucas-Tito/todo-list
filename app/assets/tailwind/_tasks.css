@@ -1,5 +1,5 @@
 .task-container {
-  @apply flex flex-col bg-surface p-4 rounded-lg mb-2 cursor-pointer transition-all duration-200;
+  @apply flex flex-col bg-white p-4 rounded-lg mb-2 cursor-pointer transition-all duration-200;
   @apply dark:bg-black;
 }
 
@@ -12,17 +12,17 @@
 }
 
 .task-container.active .task-badge-remove-icon {
-  @apply absolute -top-1.5 -right-1.5 bg-gray-600 text-surface rounded-full w-4 h-4 flex items-center justify-center text-xs;
+  @apply absolute -top-1.5 -right-1.5 bg-gray-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs;
 }
 
 .task-title {
   @apply text-lg font-bold border-gray-300 rounded-md p-1;
-  @apply dark:text-surface;
+  @apply dark:text-white;
 }
 
 .task-description {
   @apply text-gray-600 p-1;
-  @apply dark:text-surface;
+  @apply dark:text-white;
 }
 
 .task-checkbox {

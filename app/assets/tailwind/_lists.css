@@ -1,5 +1,5 @@
 .list{
-  @apply bg-surface shadow-xl rounded-lg border border-gray-200;
+  @apply bg-white shadow-xl rounded-lg border border-gray-200;
   @apply dark:bg-black dark:border-red-500;
 }
 
@@ -10,12 +10,12 @@
 
 .list-name{
   @apply text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 rounded;
-  @apply dark:text-red-700 dark:hover:bg-surface;
+  @apply dark:text-red-700 dark:hover:bg-white;
 }
 
 .list-description{
   @apply text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1;
-  @apply dark:text-surface dark:hover:bg-gray-100
+  @apply dark:text-white dark:hover:bg-gray-100
 }
 
 .list-add-task-container{

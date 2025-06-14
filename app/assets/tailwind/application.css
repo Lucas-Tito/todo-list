@@ -1,18 +1,30 @@
+:root {
+  --primary-color: oklch(54.6% 0.245 262.881);
+  --primary-color-hover: oklch(42.4% 0.199 265.638);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+  /* Dark Mode */
+  --cor-primaria-dark: 220 38 38;
+  --cor-texto-base-dark: 229 231 235;
+  --cor-fundo-dark: 55 65 81;
+}
+
+/* Este @config é importante, mantenha-o no topo */
+@config "../../../config/tailwind.config.js";
+
+/* Este @import carrega todos os utilitários do Tailwind */
+@import "tailwindcss";
 @import "./_lists.css";
 @import "./_tasks.css";
 
 body{
-  @apply bg-danger;
+  @apply bg-gray-50;
   @apply dark:bg-gray-700
 }
 
 .button-primary {
-  @apply text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer p-1;
-  /* Estilos do dark mode DENTRO da própria classe do componente */
+  @apply text-sm text-[var(--primary-color)] hover:text-[var(--primary-color-hover)] font-medium cursor-pointer p-1;
+  
   @apply dark:text-red-600 dark:hover:text-red-800;
 }
 
@@ -30,5 +42,5 @@ body{
 }
 
 .float-menu{
-  @apply absolute right-0 mt-2 w-48 bg-surface rounded-md shadow-lg z-20;
+  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
 }
