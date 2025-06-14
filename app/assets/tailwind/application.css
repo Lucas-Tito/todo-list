@@ -6,6 +6,8 @@
   --color-secondary: oklch(37.3% 0.034 259.733);
   --color-tertiary: oklch(55.1% 0.027 264.364);
 
+  --color-border: oklch(92.8% 0.006 264.531);
+
   --color-surface: oklch(92.8% 0.006 264.531);
   --color-background: oklch(98.5% 0.002 247.839);
   --color-background-hover: oklch(96.7% 0.003 264.542);
@@ -18,6 +20,8 @@
   --color-primary: oklch(85% 0.034 264.665);   
   --color-secondary: oklch(75% 0.034 259.733);
   --color-tertiary: oklch(65% 0.027 264.364);
+
+  --color-border: oklch(30% 0.01 260);
 
   --color-surface: oklch(25% 0.006 264.531);   
   --color-background: oklch(15% 0.002 247.839); 

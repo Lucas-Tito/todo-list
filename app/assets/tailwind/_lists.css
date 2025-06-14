@@ -1,19 +1,19 @@
 .list{
-  @apply bg-white shadow-xl rounded-lg border border-gray-200;
+  @apply bg-[var(--color-background)] shadow-xl rounded-lg border border-[var(--color-border)];
 }
 
 .list-header{
-  @apply px-6 py-5 border-b border-gray-200 bg-gray-50;
+  @apply px-6 py-5 border-b border-[var(--color-border)] bg-[var(--color-surface)];
 }
 
 .list-name{
-  @apply text-2xl font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 p-1 rounded;
+  @apply text-2xl font-semibold text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] p-1 rounded;
 }
 
 .list-description{
-  @apply text-sm text-gray-600 mt-1 cursor-pointer hover:bg-gray-100 p-1;
+  @apply text-sm text-[var(--color-tertiary)] mt-1 cursor-pointer hover:bg-[var(--color-background-hover)] p-1;
 }
 
 .list-add-task-container{
-  @apply px-6 py-3 border-b border-gray-200 bg-gray-50 text-right;
+  @apply px-6 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)] text-right;
 }

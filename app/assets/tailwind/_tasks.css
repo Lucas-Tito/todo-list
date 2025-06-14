@@ -1,5 +1,5 @@
 .task-container {
-  @apply flex flex-col bg-white p-4 rounded-lg mb-2 cursor-pointer transition-all duration-200;
+  @apply flex flex-col bg-[var(--color-background)] p-4 rounded-lg mb-2 cursor-pointer transition-all duration-200;
 }
 
 .task-container.active {
@@ -11,15 +11,15 @@
 }
 
 .task-container.active .task-badge-remove-icon {
-  @apply absolute -top-1.5 -right-1.5 bg-gray-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs;
+  @apply absolute -top-1.5 -right-1.5 bg-[var(--color-secondary)] text-[var(--color-primary)] rounded-full w-4 h-4 flex items-center justify-center text-xs;
 }
 
 .task-title {
-  @apply text-lg font-bold border-gray-300 rounded-md p-1;
+  @apply text-[var(--color-secondary)] text-lg font-bold rounded-md p-1;
 }
 
 .task-description {
-  @apply text-gray-600 p-1;
+  @apply text-[var(--color-tertiary)] p-1;
 }
 
 .task-checkbox {
@@ -27,9 +27,9 @@
 }
 
 .task-checkbox:hover {
-  @apply border-blue-500 scale-110;
+  @apply border-[var(--color-accent)] scale-110;
 }
 
 .task-checkbox.checked {
-  @apply bg-blue-600 border-blue-600;
+  @apply bg-text-[var(--color-accent)] border-text-[var(--color-accent)];
 }
