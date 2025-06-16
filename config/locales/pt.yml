@@ -1,0 +1,10 @@
+pt:
+  lists:
+    add-task: "Adicionar Tarefa"
+    delete-list: "Excluir Lista"
+    new-list: "+ Nova Lista"
+  tasks:
+    delete-task: "Excluir Tarefa"
+  boards:
+    my-boards: "Meus Boards"
+    new-board: "+ Criar Novo Board"
