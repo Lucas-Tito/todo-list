@@ -1,12 +1,9 @@
-// app/javascript/controllers/theme_controller.js
-
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["sun", "moon"]
 
   connect() {
-    // A função applyTheme já faz o que precisamos na conexão inicial.
     this.applyTheme();
     this.updateIcons();
   }
@@ -30,7 +27,7 @@ export default class extends Controller {
   }
 
   updateIcons() {
-    // Verifica se os targets existem antes de tentar usá-los
+    // verify if the targets exist before trying to use them
     if (this.hasSunTarget && this.hasMoonTarget) {
       if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         this.sunTarget.classList.remove('hidden');
