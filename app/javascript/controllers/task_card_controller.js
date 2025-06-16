@@ -11,6 +11,18 @@ export default class extends Controller {
   ]
   static classes = [ "active" ]
 
+  connect() {
+    // A função 'bind' é necessária para que o 'this' se refira ao controller
+    // dentro da função 'deselectIfOutside' quando ela for chamada pelo clique.
+    this.boundDeselectIfOutside = this.deselectIfOutside.bind(this);
+  }
+
+  disconnect() {
+    // Garante que o listener seja removido se o controller for desconectado da DOM,
+    // evitando memory leaks.
+    document.removeEventListener("click", this.boundDeselectIfOutside);
+  }
+
   // Ação principal, chamada ao clicar no card.
   select(event) {
     // Impede que a seleção aconteça ao clicar em botões, links, etc.
@@ -40,6 +52,9 @@ export default class extends Controller {
     this.element.classList.add(this.activeClass)
     // Mostra o container de opções (formulários de data/prioridade)
     if (this.hasOptionsTarget) this.optionsTarget.classList.remove("hidden")
+
+    // ouve cliques no documento inteiro para garantir que o card seja deselecionado no out of focus.
+    document.addEventListener("click", this.boundDeselectIfOutside);
   }
 
   // Desativa o modo de "seleção".
@@ -54,6 +69,15 @@ export default class extends Controller {
 
     if (this.hasAddPriorityFormTarget) this.addPriorityFormTarget.classList.add('hidden');
     if (this.hasAddPriorityButtonTarget) this.addPriorityButtonTarget.classList.remove('hidden');
+
+    // Para de "ouvir" os cliques para não gastar recursos à toa.
+    document.removeEventListener("click", this.boundDeselectIfOutside);
+  }
+
+  deselectIfOutside(event) {
+    if (!this.element.contains(event.target)) {
+      this.deselect();
+    }
   }
 
   // Ação para revelar o formulário de adicionar data
