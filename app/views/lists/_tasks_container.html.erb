@@ -1,7 +1,4 @@
-<%# app/views/lists/_tasks_container.html.erb %>
-<%# locals: list, start_editing_title_for_task_id %>
 <%
-  # Este parcial não tem mais um div com ID em sua raiz.
   start_editing_id = local_assigns.fetch(:start_editing_title_for_task_id, nil)
   uncompleted_tasks, completed_tasks = list.tasks.partition { |t| !t.completed? }
 %>
@@ -9,13 +6,13 @@
 <% if uncompleted_tasks.empty? && completed_tasks.empty? %>
   <p class="text-center text-sm text-gray-500 p-4">Nenhuma tarefa neste list ainda.</p>
 <% else %>
-  <%# Lista de tarefas pendentes %>
+  <%# Pending tasks list %>
   <div id="<%= dom_id(list, :uncompleted_tasks) %>" class="divide-y divide-gray-200">
     <% uncompleted_tasks.sort_by(&:created_at).each do |task| %>
       <%= render "tasks/task", task: task, list: list, start_editing_title_for_task_id: start_editing_id %>
     <% end %>
   </div>
 
-  <%# Seção de tarefas concluídas %>
+  <%# Completed tasks section %>
   <%= render 'lists/completed_tasks_section', list: list, completed_tasks: completed_tasks %>
 <% end %>
