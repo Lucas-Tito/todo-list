@@ -15,16 +15,15 @@ export default class extends Controller {
           "X-CSRF-Token": csrfToken,
           "Accept": "application/vnd.turbo-stream.html",
         },
-        body: JSON.stringify({ board: { name: "" } }), // O controller definirá um nome padrão
+        body: JSON.stringify({ board: { name: "" } }), // Controller defines default name
       });
 
       if (!response.ok) {
         throw new Error("Falha ao criar o board.");
       }
-      // A resposta turbo-stream será processada automaticamente pelo Turbo
     } catch (error) {
       console.error(error);
-      this.element.classList.remove("hidden"); // Reaparece o botão se der erro
+      this.element.classList.remove("hidden"); // Re render button if there is a error
       alert("Ocorreu um erro ao criar o board.");
     }
   }
