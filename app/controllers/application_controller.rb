@@ -3,9 +3,23 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   # This action will run before any other action in your application.
+  before_action :set_locale
   before_action :set_current_board
 
   private
+
+  # Define language based on browser language
+  def set_locale
+    I18n.locale = extract_locale_from_accept_language_header || I18n.default_locale
+  end
+
+  # Try to extracts the first two characteres from browser language
+  def extract_locale_from_accept_language_header
+    return unless request.env['HTTP_ACCEPT_LANGUAGE']
+
+    browser_locale = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    I18n.available_locales.map(&:to_s).include?(browser_locale) ? browser_locale : nil
+  end
 
   # This method sets the currently active board.
   def set_current_board
