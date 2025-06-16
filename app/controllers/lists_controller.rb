@@ -39,8 +39,7 @@ class ListsController < ApplicationController
     respond_to do |format|
       if @list.save
         format.turbo_stream do
-          # Alterado de 'append' para 'before' para inserir a nova lista
-          # antes do botão "Nova Lista" (o placeholder).
+          # Inserts new list before "New List" button.
           render turbo_stream: turbo_stream.before(
             "add_new_list_placeholder",
             partial: "lists/list",
