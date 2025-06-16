@@ -58,7 +58,7 @@
       </button>
       <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
         <div class="py-1">
-          <%= button_to "Excluir Tarefa", task_path(task),
+          <%= button_to t("tasks.delete-task"), task_path(task),
                 method: :delete,
                 class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
                 data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
