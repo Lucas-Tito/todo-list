@@ -1,13 +1,12 @@
-<%# app/views/lists/_add_new_list_placeholder.html.erb %>
 <%= form_with(model: List.new, url: lists_path, method: :post,
-              id: "add_new_list_placeholder", # ID estático para ser alvo de replace
+              id: "add_new_list_placeholder", # static ID estático to be replace event target
               data: {
                 controller: "placeholder-form-manager",
                 placeholder_form_manager_main_button_id_value: "main_new_list_button",
-                turbo_frame: "_top" # Garante que a resposta do stream afete a página toda, não um frame específico
+                turbo_frame: "_top" # Ensures the stream response affects the whole page, not a specific frame
               }) do |form| %>
 
-  <%# O controller definirá o nome padrão se este vier vazio %>
+  <%# Controller will define default name %>
   <%= form.hidden_field :name, value: "" %>
 
   <button type="submit"
