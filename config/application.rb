@@ -23,5 +23,10 @@ module TodoList
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Languages config
+    config.i18n.default_locale = :en         # Default Language
+    config.i18n.available_locales = [:en, :pt]  # Idiomas suportados
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')] # Inclui subpastas de locales
   end
 end
