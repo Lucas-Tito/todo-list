@@ -1,4 +1,3 @@
-<%# app/views/tasks/_form.html.erb %>
 <%= form_with(model: task) do |form| %>
   <% if task.errors.any? %>
     <div style="color: red">
@@ -23,7 +22,7 @@
 
   <div>
     <%= form.label :priority %>
-    <%# Usando o enum para popular o select. As chaves do enum são strings. %>
+    <%# Uses enum to populate select. Enum keys are strings. %>
     <%= form.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, prompt: 'Selecione a Prioridade' %>
   </div>
 
@@ -39,7 +38,7 @@
 
   <div>
     <%= form.label :list_id, "List" %>
-    <%# @lists é carregado pelo before_action :load_lists no controller %>
+    <%# @lists is loaded by the before_action :load_lists in controller %>
     <%= form.collection_select :list_id, @lists, :id, :name, prompt: 'Selecione um List' %>
   </div>
 
