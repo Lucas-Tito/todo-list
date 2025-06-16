@@ -1,9 +1,8 @@
-<%# app/views/lists/_list.html.erb %>
 <% start_editing_name ||= false %>
 
 <div id="<%= dom_id(list) %>" data-list-id="<%= list.id %>" class="list w-full flex-shrink-0 flex flex-col sm:w-[300px] h-fit">
   
-  <%# --- CABEÇALHO DA LIST --- %>
+  <%# --- LIST HEADER --- %>
   <div class="list-header">
     <div class="flex justify-between items-start">
       <div class="flex-grow">
@@ -62,7 +61,7 @@
 
   <div id="flash_messages_list_<%= list.id %>"></div>
 
-  <%# --- BOTÃO DE ADICIONAR TAREFA --- %>
+  <%# --- TASK ADD BUTOON --- %>
   <div class="list-add-task-container">
     <%= form_with(model: [list, Task.new], url: list_tasks_path(list), method: :post, class: "inline-block", id: "new_task_form_for_list_#{list.id}") do |form| %>
       <%# O título é definido no controller, então o campo oculto é removido %>
@@ -70,8 +69,8 @@
     <% end %>
   </div>
 
-  <%# --- SEÇÃO DE TAREFAS --- %>
-  <%# Este é o container PAI. Ele tem o ID que o controller usa como alvo. %>
+  <%# --- TASKS SECTIONS --- %>
+  <%# Parent container which contains the ID targeted by the controller. %>
   <div class="flex-grow" id="<%= dom_id(list, :tasks_container) %>">
     <%= render 'lists/tasks_container', list: list %>
   </div>

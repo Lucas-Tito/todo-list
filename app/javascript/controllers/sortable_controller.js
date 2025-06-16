@@ -29,7 +29,7 @@ export default class extends Controller {
     const listId = event.item.dataset.listId;
     const url = this.urlValue.replace(":id", listId);
 
-    // Buscamos o token CSRF da página para autenticar a requisição no Rails.
+    // Searchs for CSRF token from the page to authenticate the request in Rails.
     const csrfToken = document.querySelector("meta[name='csrf-token']").content;
 
     fetch(url, {
@@ -42,11 +42,11 @@ export default class extends Controller {
     })
     .then(response => {
       if (!response.ok) {
-        // Opcional: Tratar erros se o servidor responder com status de falha.
+        // Treat errors if the server respond with a fail.
         console.error('Falha ao mover o item.');
       }
-      // Se a resposta for OK, o Rails executou a ação `move` com sucesso.
-      // Não precisamos fazer mais nada aqui.
+      // If responde is Ok, Rails executes the move action with success.
+      // No further action is needed
     })
     .catch(error => console.error('Erro de rede:', error));
   }

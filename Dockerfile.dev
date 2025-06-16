@@ -1,15 +1,14 @@
-# syntax=docker/dockerfile:1
-ARG RUBY_VERSION=3.4.4 # Mantenha a mesma versão do seu .ruby-version
+ARG RUBY_VERSION=3.4.4 # Should be the same as .ruby-version
 FROM ruby:$RUBY_VERSION-slim
 
-# Variáveis de ambiente
+# Enverioment variables
 ENV RAILS_ENV=development \
     APP_HOME=/rails
 
-# Cria o diretório da aplicação
+# Creates application directory
 WORKDIR $APP_HOME
 
-# Instala dependências do sistema
+# Install dependencies
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
@@ -19,28 +18,28 @@ RUN apt-get update -qq && \
     netcat-openbsd && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 
-# Copia os arquivos de gerenciamento de gem
+# Copy gem management files
 COPY Gemfile Gemfile.lock ./
 
-# Instala as gems (BUNDLE_WITHOUT vazio para incluir gems de development e test)
+# Install gems (BUNDLE_WITHOUT empty to include development and test gems)
 ENV BUNDLE_WITHOUT=""
 RUN bundle install
 
-# Copia o restante do código da aplicação para o container
-# Isso inclui o seu script bin/docker-entrypoint LOCAL no momento do build.
-# No entanto, por causa do volume .: /rails no docker-compose,
-# o script LOCAL será usado em tempo de execução.
+# Copies the rest of the application code into the container
+# This includes your LOCAL bin/docker-entrypoint script at build time.
+# However, because of the volume .:/rails in docker-compose,
+# the LOCAL script will be used at runtime.
 COPY . .
 
-# Certifique-se de que o script de entrypoint copiado para a imagem tenha permissão de execução
-# Isso é uma boa prática, embora o volume vá sobrepor com o local.
+# Make sure the entrypoint script copied to the image has execute permissions
+# This is a good practice, even though the volume will override it with the local one.
 RUN chmod +x /rails/bin/docker-entrypoint
 
-# Expõe a porta padrão do Rails
+# Exposes the default Rails port
 EXPOSE 3000
 
-# Define o entrypoint que irá executar o script antes do CMD
+# Sets the entrypoint that will run the script before the CMD
 ENTRYPOINT ["/rails/bin/docker-entrypoint"] 
 
-# Comando padrão para iniciar o servidor Rails (será passado como "$@" para o entrypoint)
+# Default command to start the Rails server (will be passed as "$@" to the entrypoint)
 CMD ["./bin/rails", "server", "-b", "0.0.0.0"]

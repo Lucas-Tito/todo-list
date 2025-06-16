@@ -1,5 +1,5 @@
 module.exports = {
-  // habilita o dark mode baseado em classe
+  // enables dark mode based in classes
   darkMode: 'class',
 
   content: [

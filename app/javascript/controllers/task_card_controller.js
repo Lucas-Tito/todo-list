@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 /**
- * Controla o estado de seleção de um card de tarefa.
+ * Manages the active state of a task_card.
  */
 export default class extends Controller {
   static targets = [
@@ -12,34 +12,34 @@ export default class extends Controller {
   static classes = [ "active" ]
 
   connect() {
-    // A função 'bind' é necessária para que o 'this' se refira ao controller
-    // dentro da função 'deselectIfOutside' quando ela for chamada pelo clique.
+    // "bind" function is necessary to the "this" refers to the controller
+    // inside 'deselectIfOutside' when it's called by click.
     this.boundDeselectIfOutside = this.deselectIfOutside.bind(this);
   }
 
   disconnect() {
-    // Garante que o listener seja removido se o controller for desconectado da DOM,
-    // evitando memory leaks.
+    // Ensures the listener will be removed if the controller is disconnected from DOM,
+    // preventing memory leaks.
     document.removeEventListener("click", this.boundDeselectIfOutside);
   }
 
-  // Ação principal, chamada ao clicar no card.
+  // Main action, called when card is clicked in.
   select(event) {
-    // Impede que a seleção aconteça ao clicar em botões, links, etc.
+    // Prevents the selection happen when buttons or links are clicked.
     if (event.target.closest('a, button, input, textarea, select, form, [data-controller~="inline-edit"]')) {
       return
     }
 
     const isAlreadySelected = this.element.classList.contains(this.activeClass)
 
-    // Deseleciona todos os outros cards
+    // Deselect all other cards
     document.querySelectorAll('[data-controller="task-card"]').forEach(controllerElement => {
       if (this.element !== controllerElement) {
         this.application.getControllerForElementAndIdentifier(controllerElement, "task-card")?.deselect()
       }
     });
 
-    // Alterna a seleção do card atual
+    // Toggle card selection
     if (isAlreadySelected) {
       this.deselect()
     } else {
@@ -47,30 +47,31 @@ export default class extends Controller {
     }
   }
 
-  // Ativa o modo de "seleção" no card.
+  // Activte selection mode in card.
   selectCard() {
     this.element.classList.add(this.activeClass)
-    // Mostra o container de opções (formulários de data/prioridade)
+    // Shows date and priority forms
     if (this.hasOptionsTarget) this.optionsTarget.classList.remove("hidden")
 
-    // ouve cliques no documento inteiro para garantir que o card seja deselecionado no out of focus.
+    // Listen for clicks in the entire document to 
+    // esure the card is deselect when a click happen out of focus.
     document.addEventListener("click", this.boundDeselectIfOutside);
   }
 
-  // Desativa o modo de "seleção".
+  // Desable the selection mode.
   deselect() {
     this.element.classList.remove(this.activeClass)
-    // Esconde o container de opções
+    // Hide date and priority options
     if (this.hasOptionsTarget) this.optionsTarget.classList.add("hidden")
 
-    // Garante que os formulários de adição sejam escondidos ao desmarcar
+    // Ensure the add forms will be hidden when unselected
     if (this.hasAddDateFormTarget) this.addDateFormTarget.classList.add('hidden');
     if (this.hasAddDateButtonTarget) this.addDateButtonTarget.classList.remove('hidden');
 
     if (this.hasAddPriorityFormTarget) this.addPriorityFormTarget.classList.add('hidden');
     if (this.hasAddPriorityButtonTarget) this.addPriorityButtonTarget.classList.remove('hidden');
 
-    // Para de "ouvir" os cliques para não gastar recursos à toa.
+    // Stop listening for click to save resources.
     document.removeEventListener("click", this.boundDeselectIfOutside);
   }
 
@@ -80,16 +81,16 @@ export default class extends Controller {
     }
   }
 
-  // Ação para revelar o formulário de adicionar data
+  // Action to reveal date form
   showAddDateForm(event) {
     event.preventDefault()
-    event.stopPropagation() // Impede que o card seja desmarcado
+    event.stopPropagation() // Prevent the card diselection
     this.addDateButtonTarget.classList.add("hidden")
     this.addDateFormTarget.classList.remove("hidden")
     this.addDateFormTarget.querySelector('input[type="date"]').focus()
   }
 
-  // Ação para revelar o formulário de adicionar prioridade
+  // Action to reveal priority form
   showAddPriorityForm(event) {
     event.preventDefault()
     event.stopPropagation()

@@ -1,8 +1,6 @@
-// app/javascript/controllers/inline_edit_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  // Adicionamos "nameDisplay" como um target opcional
   static targets = ["display", "input", "textarea", "nameDisplay"];
   static values = {
     url: String,
@@ -61,9 +59,8 @@ export default class extends Controller {
 
     this.editingValue = true;
     
-    // *** LÓGICA CORRIGIDA ***
-    // Se o target específico 'nameDisplay' existir, usa ele para ler o texto.
-    // Senão, usa o comportamento antigo com 'displayTarget'.
+    // If nameDisplay target exists, read text from it.
+    // Else, uses old logic with 'displayTarget'.
     const textSource = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
     this.originalTextValue = this.hasDisplayTarget ? textSource.textContent.trim() : this.fieldToEdit.value.trim();
 
@@ -100,9 +97,8 @@ export default class extends Controller {
       if (response.ok) {
         const data = await response.json();
 
-        // *** LÓGICA CORRIGIDA ***
-        // Se o target 'nameDisplay' existir, atualiza o texto nele.
-        // Senão, usa o comportamento antigo.
+        // If 'nameDisplay' target exists, update text in it.
+        // Else, use old logic.
         const textTarget = this.hasNameDisplayTarget ? this.nameDisplayTarget : this.displayTarget;
         if (this.hasDisplayTarget) {
           textTarget.textContent = data[this.attributeValue] || newValue;

@@ -1,6 +1,5 @@
 class TasksController < ApplicationController
   before_action :set_list_from_url_params, only: [:create]
-  # Garantindo que todas as actions necessárias estejam aqui
   before_action :set_task_and_list_via_task, only: [:update, :destroy, :complete, :snooze]
 
   def create
@@ -31,10 +30,9 @@ class TasksController < ApplicationController
     end
   end
 
-  # *** AÇÃO SNOOZE ADICIONADA AQUI ***
   def snooze
-    @task.snooze! # Chama o método do seu modelo Task
-    # Após o snooze, a data muda, então atualizamos a UI da mesma forma
+    @task.snooze! 
+    # After snoozer, the date updates, so the UI is updated
     respond_to_turbo_stream_update
   end
 
@@ -63,7 +61,6 @@ class TasksController < ApplicationController
   end
 
   def task_params_for_update
-    # Adicionando de volta :completed_at para que o formulário de edição funcione, se necessário
     params.require(:task).permit(:title, :description, :priority, :due_date, :due_time, :completed_at)
   end
 end

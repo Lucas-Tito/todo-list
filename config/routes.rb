@@ -28,5 +28,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root 'boards#index' # Define a página inicial
+  root 'boards#index' # Defines initial page
 end

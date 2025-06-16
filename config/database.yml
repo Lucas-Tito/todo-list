@@ -2,9 +2,9 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("POSTGRES_HOST") { 'localhost' } %> # Usará 'db' de Docker Compose
-  username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %> # Usará 'postgres' de Docker Compose
-  password: <%= ENV["POSTGRES_PASSWORD"] %> # Usará 'postgres_password' de Docker Compose
+  host: <%= ENV.fetch("POSTGRES_HOST") { 'localhost' } %> # Uses 'db' from Docker Compose
+  username: <%= ENV.fetch("POSTGRES_USER") { 'postgres' } %> # Uses 'postgres' from Docker Compose
+  password: <%= ENV["POSTGRES_PASSWORD"] %> # Uses 'postgres_password' from Docker Compose
 
 development:
   <<: *default
@@ -12,10 +12,10 @@ development:
 
 test:
   <<: *default
-  database: app_test # Você pode configurar um POSTGRES_DB_TEST se quiser
+  database: app_test # It's possible to config a POSTGRES_DB_TEST
 
-# Ajuste a configuração de produção conforme necessário,
-# ela não será usada por este docker-compose de desenvolvimento.
+# Adjust production config as needed,
+# wont't be used by docker-compose in development.
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %> # Exemplo, se você usar DATABASE_URL em produção
+  url: <%= ENV['DATABASE_URL'] %> # Ex, if you use DATABASE_URL in production

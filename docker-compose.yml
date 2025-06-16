@@ -35,14 +35,14 @@ services:
       '
     volumes:
       - .:/rails
-      - bundle_cache:/usr/local/bundle # Compartilha o mesmo cache de gems
+      - bundle_cache:/usr/local/bundle # Shares same cache as gems
     depends_on:
       - app
     environment:
       - RAILS_ENV=development
     stdin_open: true
     tty: true
-    restart: unless-stopped # Reinicia se o script falhar (exceto se parado manualmente)
+    restart: unless-stopped
 
 
   db:

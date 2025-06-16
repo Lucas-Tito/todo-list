@@ -17,18 +17,18 @@ class BoardsController < ApplicationController
 
         format.turbo_stream do
           render turbo_stream: [
-            # Insere o novo board ANTES do formulário/botão de criação
+            # Insert new board BEFORE create button
             turbo_stream.before("new_board_form", partial: "boards/board",
               locals: { board: @board, current_board: @board, start_editing_name: true }),
             
-            # Limpa as listas e tarefas da tela para exibir as do novo board (que estão vazias)
+            # Clear lists and tasks from screen to show the ones from the new board (which are empty)
             turbo_stream.update("lists_container", "")
           ]
         end
         format.html { redirect_to root_path, notice: 'Board criado com sucesso.' }
       else
         format.html do
-          # Lógica para lidar com erro em requisição HTML
+          # Error logic to handle html request
           @boards = Board.order(:name)
           @lists = @current_board&.lists&.includes(:tasks)&.order(:position)
           flash.now[:alert] = @board.errors.full_messages.join(", ")
@@ -53,16 +53,17 @@ class BoardsController < ApplicationController
   def destroy
     @board.destroy
 
-    # Se o board excluído era o que estava ativo na sessão,
-    # define o primeiro board da lista como o novo ativo.
+    # If the deleted board was the active one,
+    # defines first board from list as active.
     if session[:board_id] == @board.id
       session[:board_id] = Board.order(:name).first&.id
     end
 
     respond_to do |format|
-      # Para requisições Turbo Stream e HTML, a melhor resposta é um redirecionamento.
-      # O Turbo vai interceptar e fazer a transição de forma inteligente.
-      # A notice garante que o usuário veja uma confirmação.
+
+      # For Turbo Stream and HTML requests, the best response is a redirect.
+      # Turbo will intercept and handle the transition intelligently.
+      # The notice ensures that the user sees a confirmation.
       format.turbo_stream { redirect_to root_path, notice: 'Board excluído com sucesso.' }
       format.html { redirect_to root_path, notice: "Board excluído com sucesso.", status: :see_other }
     end
@@ -74,7 +75,7 @@ class BoardsController < ApplicationController
     @board = Board.find(params[:id])
   end
 
-  # Usa .fetch para não quebrar se o param 'board' não existir
+  # Use .fetch to prevent crash if 'board' param doesn't exists
   def board_params
     params.fetch(:board, {}).permit(:name)
   end
