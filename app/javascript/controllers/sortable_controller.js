@@ -9,11 +9,22 @@ export default class extends Controller {
   connect() {
     this.sortable = Sortable.create(this.element, {
       animation: 150,
+      ghostClass: "sortable-ghost-custom",
+      onStart: this.onStart.bind(this),
       onEnd: this.onEnd.bind(this),
     });
   }
 
+  /**
+   * Hides the original element when dragging starts.
+  */
+  onStart(event) {
+    event.item.classList.add("sortable-item-dragging");
+  }
+
   onEnd(event) {
+    event.item.classList.remove("sortable-item-dragging");
+    
     const { newIndex } = event;
     const listId = event.item.dataset.listId;
     const url = this.urlValue.replace(":id", listId);
