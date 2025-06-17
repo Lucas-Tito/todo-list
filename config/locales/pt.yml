@@ -1,6 +1,7 @@
 pt:
   lists:
     default-name: "Nova Lista"
+    default-description: "Clique para adicionar uma descrição"
     add-task: "Adicionar Tarefa"
     delete-list: "Excluir Lista"
     new-list: "+ Nova Lista"
