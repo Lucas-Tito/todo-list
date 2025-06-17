@@ -61,7 +61,7 @@
 
   <div id="flash_messages_list_<%= list.id %>"></div>
 
-  <%# --- TASK ADD BUTOON --- %>
+  <%# --- TASK ADD BUTTON --- %>
   <div class="list-add-task-container">
     <%= form_with(model: [list, Task.new], url: list_tasks_path(list), method: :post, class: "inline-block", id: "new_task_form_for_list_#{list.id}") do |form| %>
       <%# O título é definido no controller, então o campo oculto é removido %>

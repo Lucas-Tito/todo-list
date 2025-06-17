@@ -1,10 +1,18 @@
 en:
   lists:
+    default-name: "New List"
     add-task: "Add Task"
     delete-list: "Delete List"
     new-list: "+ New List"
   tasks:
+    default-name: "New Task"
     delete-task: "Delete Task"
+    completed-tasks: "Completed"
+    priorities:
+      low: "Low"
+      medium: "Medium"
+      high: "High"
   boards:
+    default-name: "New Board"
     my-boards: "My Boards"
     new-board: "+ Create New Board"

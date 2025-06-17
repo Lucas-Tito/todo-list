@@ -20,21 +20,7 @@ class ListsController < ApplicationController
 
   # POST /lists or /lists.json
   def create
-    permitted_params = list_params
-
-    # Set a default name if it's blank, ensuring it's unique
-    if permitted_params[:name].blank?
-      base_name = "Nova Lista"
-      new_name = base_name
-      i = 1
-      while @current_board.lists.exists?(name: new_name)
-        new_name = "#{base_name} (#{i})"
-        i += 1
-      end
-      permitted_params[:name] = new_name
-    end
-
-    @list = @current_board.lists.build(permitted_params)
+    @list = @current_board.lists.build(list_params)
 
     respond_to do |format|
       if @list.save

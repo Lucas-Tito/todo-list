@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task_and_list_via_task, only: [:update, :destroy, :complete, :snooze]
 
   def create
-    @task = @list.tasks.build(title: "Nova Tarefa")
+    @task = @list.tasks.build
     @task.save
     respond_to_turbo_stream_update
   end
