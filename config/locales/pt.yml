@@ -5,6 +5,7 @@ pt:
     new-list: "+ Nova Lista"
   tasks:
     delete-task: "Excluir Tarefa"
+    completed-tasks: "Concluídas"
     priorities:
       low: "Baixa"
       medium: "Média"

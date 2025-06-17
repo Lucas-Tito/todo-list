@@ -5,6 +5,7 @@ en:
     new-list: "+ New List"
   tasks:
     delete-task: "Delete Task"
+    completed-tasks: "Completed"
     priorities:
       low: "Low"
       medium: "Medium"
