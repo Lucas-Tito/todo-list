@@ -63,7 +63,7 @@
 
   <div class="flex-grow">
     <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="description" data-inline-edit-object-name-value="task" class="w-full mt-1">
-      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_description_classes %>"><%= task.description.presence || "Adicione uma descrição..." %></p>
+      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_description_classes %>"><%= task.description.presence || t("tasks.default-description") %></p>
       <%= text_area_tag 'task[description]', task.description, data: { inline_edit_target: "textarea", action: "blur->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full task-description border-gray-300 rounded-md", rows: 2 %>
     </div>
   </div>

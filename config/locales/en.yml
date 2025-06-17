@@ -1,11 +1,13 @@
 en:
   lists:
     default-name: "New List"
+    default-description: "Click here to add a description"
     add-task: "Add Task"
     delete-list: "Delete List"
     new-list: "+ New List"
   tasks:
     default-name: "New Task"
+    default-description: "Add a description..."
     delete-task: "Delete Task"
     completed-tasks: "Completed"
     priorities:

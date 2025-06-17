@@ -1,9 +1,13 @@
 pt:
   lists:
+    default-name: "Nova Lista"
+    default-description: "Clique para adicionar uma descrição"
     add-task: "Adicionar Tarefa"
     delete-list: "Excluir Lista"
     new-list: "+ Nova Lista"
   tasks:
+    default-name: "Nova Task"
+    default-description: "Adicione uma descrição..."
     delete-task: "Excluir Tarefa"
     completed-tasks: "Concluídas"
     priorities:
@@ -11,5 +15,6 @@ pt:
       medium: "Média"
       high: "Alta"
   boards:
+    default-name: "Novo Board"
     my-boards: "Meus Boards"
     new-board: "+ Criar Novo Board"

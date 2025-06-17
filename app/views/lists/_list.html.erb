@@ -31,7 +31,7 @@
             <p class="list-description min-h-[1.5em]"
                data-inline-edit-target="display"
                data-action="click->inline-edit#edit">
-                <%= list.description.presence || "Clique para adicionar uma descrição" %>
+                <%= list.description.presence || t("lists.default-description") %>
             </p>
             <textarea data-inline-edit-target="textarea" rows="3"
                       class="list-description w-full hidden"
