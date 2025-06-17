@@ -9,7 +9,8 @@ export default class extends Controller {
   connect() {
     this.sortable = Sortable.create(this.element, {
       animation: 150,
-      ghostClass: "sortable-ghost-custom",
+      ghostClass: "sortable-ghost-custom",  
+      draggable: ".list",
       onStart: this.onStart.bind(this),
       onEnd: this.onEnd.bind(this),
     });
