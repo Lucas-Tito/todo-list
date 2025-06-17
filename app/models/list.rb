@@ -13,4 +13,22 @@ class List < ApplicationRecord
 
   # The default order for lists is by their position in ascending order.
   default_scope { order(position: :asc) }
+
+  before_validation :set_default_name, on: :create
+
+  private
+
+  def set_default_name
+    return if name.present? || board.nil?
+
+    base_name = I18n.t('lists.default-name')
+    new_name = base_name
+    i = 1
+    # Ensure list name is unique
+    while board.lists.exists?(name: new_name)
+      new_name = "#{base_name} (#{i})"
+      i += 1
+    end
+    self.name = new_name
+  end
 end
