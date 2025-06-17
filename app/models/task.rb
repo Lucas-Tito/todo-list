@@ -10,7 +10,7 @@ class Task < ApplicationRecord
   scope :completed, -> { where.not(completed_at: nil).order(completed_at: :desc) }
   scope :uncompleted, -> { where(completed_at: nil).order(created_at: :asc) }
 
-  # Metho to conclude a task
+  # Method to conclude a task
   def complete!
     if completed?
       update(completed_at: nil) 
