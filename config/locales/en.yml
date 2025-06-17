@@ -5,6 +5,10 @@ en:
     new-list: "+ New List"
   tasks:
     delete-task: "Delete Task"
+    priorities:
+      low: "Low"
+      medium: "Medium"
+      high: "High"
   boards:
     my-boards: "My Boards"
     new-board: "+ Create New Board"
