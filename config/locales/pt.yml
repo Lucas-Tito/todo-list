@@ -6,6 +6,7 @@ pt:
     new-list: "+ Nova Lista"
   tasks:
     default-name: "Nova Task"
+    default-description: "Adicione uma descrição..."
     delete-task: "Excluir Tarefa"
     completed-tasks: "Concluídas"
     priorities:
