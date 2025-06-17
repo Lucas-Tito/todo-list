@@ -4,7 +4,7 @@
 %>
 
 <% if uncompleted_tasks.empty? && completed_tasks.empty? %>
-  <p class="text-center text-sm text-gray-500 p-4">Nenhuma tarefa neste list ainda.</p>
+  <p class="text-center text-sm text-gray-500 p-4"> <%= t("lists.default-empty-list-message") %></p>
 <% else %>
   <%# Pending tasks list %>
   <div id="<%= dom_id(list, :uncompleted_tasks) %>" class="divide-y divide-gray-200">
