@@ -18,9 +18,10 @@ en:
       medium: "Medium"
       high: "High"
   boards:
-    default-name: "New Board"
-    my-boards: "My Boards"
-    new-board: "+ Create New Board"
+    defaults:
+      name: "New Board"
+      my-boards: "My Boards"
+      new-board: "+ Create New Board"
   date:
     formats:
       default: "%Y-%m-%d"

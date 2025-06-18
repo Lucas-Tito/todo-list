@@ -18,9 +18,10 @@ pt:
       medium: "Média"
       high: "Alta"
   boards:
-    default-name: "Novo Board"
-    my-boards: "Meus Boards"
-    new-board: "+ Criar Novo Board"
+    defaults:
+      name: "Novo Board"
+      my-boards: "Meus Boards"
+      new-board: "+ Criar Novo Board"
   date:
     formats:
       default: "%d/%m/%Y"

@@ -9,7 +9,7 @@ class Board < ApplicationRecord
   def set_default_name
     return if name.present?
 
-    base_name = I18n.t('boards.default-name')
+    base_name = I18n.t('boards.defaults.name')
     new_name = base_name
     i = 1
     # Ensure name is unique
