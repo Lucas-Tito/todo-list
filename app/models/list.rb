@@ -21,7 +21,7 @@ class List < ApplicationRecord
   def set_default_name
     return if name.present? || board.nil?
 
-    base_name = I18n.t('lists.default-name')
+    base_name = I18n.t('lists.defaults.name')
     new_name = base_name
     i = 1
     # Ensure list name is unique

@@ -1,11 +1,12 @@
 en:
   lists:
-    default-name: "New List"
-    default-description: "Click here to add a description"
-    default-empty-list-message: "No tasks added yet."
-    add-task: "Add Task"
-    delete-list: "Delete List"
-    new-list: "+ New List"
+    defaults:
+      name: "New List"
+      description: "Click here to add a description"
+      empty-list: "No tasks added yet."
+      add-task: "Add Task"
+      delete-list: "Delete List"
+      new-list: "+ New List"
   tasks:
     default-name: "New Task"
     default-description: "Add a description..."

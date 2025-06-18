@@ -1,11 +1,12 @@
 pt:
   lists:
-    default-name: "Nova Lista"
-    default-description: "Clique para adicionar uma descrição"
-    default-empty-list-message: "Nenhuma tarefa adicionada ainda."
-    add-task: "Adicionar Tarefa"
-    delete-list: "Excluir Lista"
-    new-list: "+ Nova Lista"
+    defaults:
+      name: "Nova Lista"
+      description: "Clique para adicionar uma descrição"
+      empty-list: "Nenhuma tarefa adicionada ainda."
+      add-task: "Adicionar Tarefa"
+      delete-list: "Excluir Lista"
+      new-list: "+ Nova Lista"
   tasks:
     default-name: "Nova Task"
     default-description: "Adicione uma descrição..."
