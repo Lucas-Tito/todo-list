@@ -8,10 +8,11 @@ en:
       delete-list: "Delete List"
       new-list: "+ New List"
   tasks:
-    default-name: "New Task"
-    default-description: "Add a description..."
-    delete-task: "Delete Task"
-    completed-tasks: "Completed"
+    defaults:
+      name: "New Task"
+      description: "Add a description..."
+      delete-task: "Delete Task"
+      completed-tasks: "Completed"
     priorities:
       low: "Low"
       medium: "Medium"

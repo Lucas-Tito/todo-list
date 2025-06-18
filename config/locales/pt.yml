@@ -8,10 +8,11 @@ pt:
       delete-list: "Excluir Lista"
       new-list: "+ Nova Lista"
   tasks:
-    default-name: "Nova Task"
-    default-description: "Adicione uma descrição..."
-    delete-task: "Excluir Tarefa"
-    completed-tasks: "Concluídas"
+    defaults:
+      name: "Nova Task"
+      description: "Adicione uma descrição..."
+      delete-task: "Excluir Tarefa"
+      completed-tasks: "Concluídas"
     priorities:
       low: "Baixa"
       medium: "Média"

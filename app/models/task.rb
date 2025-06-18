@@ -35,6 +35,6 @@ class Task < ApplicationRecord
 
   # Tasks can have duplicated names
   def set_default_title
-    self.title ||= I18n.t('tasks.default-name') if title.blank?
+    self.title ||= I18n.t('tasks.defaults.name') if title.blank?
   end
 end

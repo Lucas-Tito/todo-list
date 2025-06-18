@@ -52,7 +52,7 @@
       </button>
       <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
         <div class="py-1">
-          <%= button_to t("tasks.delete-task"), task_path(task),
+          <%= button_to t("tasks.defaults.delete-task"), task_path(task),
                 method: :delete,
                 class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
                 data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
@@ -63,7 +63,7 @@
 
   <div class="flex-grow">
     <div data-controller="inline-edit" data-inline-edit-url-value="<%= task_path(task) %>" data-inline-edit-attribute-value="description" data-inline-edit-object-name-value="task" class="w-full mt-1">
-      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_description_classes %>"><%= task.description.presence || t("tasks.default-description") %></p>
+      <p data-inline-edit-target="display" data-action="click->inline-edit#edit" class="<%= task_description_classes %>"><%= task.description.presence || t("tasks.defaults.description") %></p>
       <%= text_area_tag 'task[description]', task.description, data: { inline_edit_target: "textarea", action: "blur->inline-edit#save keydown.esc->inline-edit#cancel" }, class: "hidden w-full task-description border-gray-300 rounded-md", rows: 2 %>
     </div>
   </div>

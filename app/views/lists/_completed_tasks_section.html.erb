@@ -1,7 +1,7 @@
 <% if completed_tasks.any? %>
   <div class="mt-4 px-2" data-controller="toggle">
     <button data-action="click->toggle#fire" class="w-full flex justify-between items-center text-left text-sm font-medium text-gray-500 p-2 hover:bg-gray-100 rounded-md">
-      <span><%= t("tasks.completed-tasks") %> (<%= completed_tasks.count %>)</span>
+      <span><%= t("tasks.defaults.completed-tasks") %> (<%= completed_tasks.count %>)</span>
       <svg data-toggle-target="icon" class="h-5 w-5 transform transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
       </svg>
