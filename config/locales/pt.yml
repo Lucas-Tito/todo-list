@@ -22,6 +22,7 @@ pt:
       name: "Novo Board"
       my-boards: "Meus Boards"
       new-board: "+ Criar Novo Board"
+      empty-board: "Nenhuma lista adicionada ainda"
   date:
     formats:
       default: "%d/%m/%Y"

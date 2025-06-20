@@ -22,6 +22,7 @@ en:
       name: "New Board"
       my-boards: "My Boards"
       new-board: "+ Create New Board"
+      empty-board: "No lists yet"
   date:
     formats:
       default: "%Y-%m-%d"
