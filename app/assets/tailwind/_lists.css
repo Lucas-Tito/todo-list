@@ -1,5 +1,18 @@
 .list{
   @apply bg-[var(--color-background)] shadow-xl rounded-lg border border-[var(--color-border)];
+  position: relative;
+  overflow: hidden;
+}
+
+/* Creates accent color bar */
+.list::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background-color: var(--list-color, transparent); /* Uses color from view variable */
 }
 
 .list-header{

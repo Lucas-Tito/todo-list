@@ -1,9 +1,10 @@
 <% start_editing_name ||= false %>
 
-<div id="<%= dom_id(list) %>" 
-  data-list-id="<%= list.id %>" 
-  class="list w-full flex-shrink-0 flex flex-col sm:w-[300px] h-fit"
-  style="<%= "border-color: #{List.color_hex_for(list.color)}" if list.color.present? && list.color != 'default' %>">
+<%= content_tag :div,
+      id: dom_id(list),
+      class: "list w-full flex-shrink-0 flex flex-col sm:w-[300px] h-fit",
+      data: { list_id: list.id },
+      style: "--list-color: #{List.color_hex_for(list.color)};" do %>
   
   <%# --- LIST HEADER --- %>
   <div class="list-header">
@@ -78,4 +79,4 @@
   <div class="flex-grow" id="<%= dom_id(list, :tasks_container) %>">
     <%= render 'lists/tasks_container', list: list %>
   </div>
-</div>
+<% end %>
