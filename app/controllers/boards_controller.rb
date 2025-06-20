@@ -9,17 +9,22 @@ class BoardsController < ApplicationController
 
   # POST /boards or /boards.turbo_stream
   def create
+    @old_board = @current_board
     @board = Board.new(board_params)
 
     respond_to do |format|
       if @board.save
         session[:board_id] = @board.id
+        @current_board = @board # Update @current_board to the new board for the rendering context
 
         format.turbo_stream do
           render turbo_stream: [
-            # Insert new board BEFORE create button
+            # Replace the old board to remove its highlight.
+            (@old_board ? turbo_stream.replace(dom_id(@old_board), partial: "boards/board", locals: { board: @old_board, current_board: @current_board }) : ''),
+            
+            # Insert the new board, highlighted and ready for editing.
             turbo_stream.before("new_board_form", partial: "boards/board",
-              locals: { board: @board, current_board: @board, start_editing_name: true }),
+              locals: { board: @board, current_board: @current_board, start_editing_name: true }),
             
             # Clear lists and tasks from screen to show the ones from the new board (which are empty)
             turbo_stream.update("lists_container", "")
