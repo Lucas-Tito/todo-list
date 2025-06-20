@@ -1,6 +1,9 @@
 <% start_editing_name ||= false %>
 
-<div id="<%= dom_id(list) %>" data-list-id="<%= list.id %>" class="list w-full flex-shrink-0 flex flex-col sm:w-[300px] h-fit">
+<div id="<%= dom_id(list) %>" 
+  data-list-id="<%= list.id %>" 
+  class="list w-full flex-shrink-0 flex flex-col sm:w-[300px] h-fit"
+  style="<%= "border-color: #{List.color_hex_for(list.color)}" if list.color.present? && list.color != 'default' %>">
   
   <%# --- LIST HEADER --- %>
   <div class="list-header">
@@ -48,6 +51,8 @@
           </svg>
         </button>
         <div data-dropdown-target="menu" class="hidden float-menu">
+          <%= render 'lists/color_picker', list: list %>
+          <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
           <div class="py-1">
             <%= button_to t("lists.defaults.delete-list"), list_path(list),
                   method: :delete,

@@ -1,4 +1,24 @@
 class List < ApplicationRecord
+  enum :color, {
+    default: "default",
+    blue: "blue",
+    green: "green",
+    yellow: "yellow",
+    orange: "orange",
+    red: "red",
+    purple: "purple"
+  }, prefix: :color
+
+  COLOR_MAP = {
+    "default" => "transparent",
+    "blue"    => "#3b82f6",
+    "green"   => "#22c55e",
+    "yellow"  => "#eab308",
+    "orange"  => "#f97316",
+    "red"     => "#ef4444",
+    "purple"  => "#8b5cf6"
+  }.freeze
+  
   # Include the acts_as_list gem functionality, scoping it to the board_id.
   # This means the position of a list is relative to other lists on the same board.
   acts_as_list scope: :board
@@ -15,6 +35,11 @@ class List < ApplicationRecord
   default_scope { order(position: :asc) }
 
   before_validation :set_default_name, on: :create
+
+    # Method to get color code.
+    def self.color_hex_for(color_key)
+      COLOR_MAP[color_key.to_s]
+    end
 
   private
 
