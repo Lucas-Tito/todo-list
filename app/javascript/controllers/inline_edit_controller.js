@@ -9,12 +9,14 @@ export default class extends Controller {
     originalText: String,
     editing: Boolean,
     startEditing: Boolean,
-    mainNewBoardButtonId: String
+    mainNewBoardButtonId: String,
+    boardId: String //Stores board id
   };
 
   connect() {
     this.editingValue = false;
     this.fieldToEdit = this.hasInputTarget ? this.inputTarget : (this.hasTextareaTarget ? this.textareaTarget : null);
+    this.isNewBoardFlow = this.startEditingValue; // Mark if in new board flow
 
     if (!this.fieldToEdit) {
       console.warn("InlineEditController: No input or textarea target found for attribute:", this.attributeValue, "on element:", this.element);
@@ -106,6 +108,11 @@ export default class extends Controller {
         
         this.originalTextValue = data[this.attributeValue] || newValue;
         this.revertToDisplayModeAndNotify("success", data);
+
+        // Redirects to new board if in new board flow
+        if (this.isNewBoardFlow && this.objectNameValue === "board" && this.hasBoardIdValue) {
+          window.location.href = `/?board_id=${this.boardIdValue}`;
+        }
       } else {
         const errorData = await response.json().catch(() => ({}));
         console.error(`Failed to save ${this.objectNameValue}:`, errorData);
