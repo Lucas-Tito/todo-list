@@ -46,6 +46,7 @@ class BoardsController < ApplicationController
   def update
     respond_to do |format|
       if @board.update(board_params)
+        format.turbo_stream { redirect_to root_path, status: :see_other }
         format.json { render json: @board, status: :ok }
         format.html { redirect_to root_path, notice: 'Board atualizado.' }
       else

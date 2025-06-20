@@ -6,7 +6,8 @@
      data-inline-edit-url-value="<%= board_path(board) %>"
      data-inline-edit-attribute-value="name"
      data-inline-edit-object-name-value="board"
-     data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_name, false) %>">
+     data-inline-edit-start-editing-value="<%= local_assigns.fetch(:start_editing_name, false) %>"
+     data-inline-edit-board-id-value="<%= board.id %>">
 
     <div data-inline-edit-target="display" class="group flex justify-between items-center w-full px-3 py-2 rounded-md #{is_current ? 'bg-blue-100' : 'hover:bg-gray-100'}">
       
