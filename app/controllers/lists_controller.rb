@@ -25,12 +25,19 @@ class ListsController < ApplicationController
     respond_to do |format|
       if @list.save
         format.turbo_stream do
-          # Inserts new list before "New List" button.
-          render turbo_stream: turbo_stream.before(
-            "add_new_list_placeholder",
-            partial: "lists/list",
-            locals: { list: @list, start_editing_name: true }
-          )
+          streams = [
+              # Inserts new list before "New List" button.
+              turbo_stream.before(
+                "add_new_list_placeholder",
+                partial: "lists/list",
+                locals: { list: @list, start_editing_name: true }
+              )
+            ]
+            # If it's the first list of a board, remove empty board message.
+            if @current_board.lists.count == 1
+              streams << turbo_stream.remove("empty_board_message")
+            end
+            render turbo_stream: streams
         end
         format.html { redirect_to root_path, notice: "List was successfully created." }
       else
