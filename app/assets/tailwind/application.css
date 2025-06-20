@@ -58,3 +58,25 @@ body{
 .float-menu{
   @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
 }
+
+.description-truncate {
+  overflow: hidden;
+  line-height: 1.2;
+  max-height: 2.8em; 
+  word-break: break-word;
+  position: relative;
+}
+
+.name-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; 
+}
+
+.title-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px; 
+}

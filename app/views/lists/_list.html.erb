@@ -14,7 +14,7 @@
              <% if start_editing_name %>
                data-inline-edit-main-new-list-button-id-value="main_new_list_button"
              <% end %>>
-            <h2 class="list-name min-h-[1.5em]"
+            <h2 class="list-name name-truncate min-h-[1.5em]"
                 data-inline-edit-target="display"
                 data-action="click->inline-edit#edit">
                 <%= list.name.presence || "Clique para editar o nome" %>
@@ -28,7 +28,7 @@
              data-inline-edit-url-value="<%= list_path(list) %>"
              data-inline-edit-attribute-value="description"
              data-inline-edit-object-name-value="list">
-            <p class="list-description min-h-[1.5em]"
+            <p class="list-description description-truncate min-h-[1.5em]"
                data-inline-edit-target="display"
                data-action="click->inline-edit#edit">
                 <%= list.description.presence || t("lists.defaults.description") %>
