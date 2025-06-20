@@ -4,10 +4,10 @@
   task_container_classes = "task-container"
   task_container_classes += " opacity-60" if is_completed
 
-  task_title_classes = "task-title"
+  task_title_classes = "task-title description-truncate"
   task_title_classes += " line-through" if is_completed
 
-  task_description_classes = "task-description"
+  task_description_classes = "task-description description-truncate"
   task_description_classes += " line-through" if is_completed
 %>
 <%= content_tag :div,
