@@ -52,8 +52,7 @@
           </svg>
         </button>
         <div data-dropdown-target="menu" class="hidden float-menu">
-          <%= render 'lists/color_picker', list: list %>
-          <div class="border-t border-gray-100 dark:border-gray-700 my-1"></div>
+          <%= render 'lists/color_selection', list: list %>
           <div class="py-1">
             <%= button_to t("lists.defaults.delete-list"), list_path(list),
                   method: :delete,

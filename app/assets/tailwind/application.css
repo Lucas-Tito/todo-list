@@ -35,6 +35,7 @@
 @import "./_lists.css";
 @import "./_tasks.css";
 @import "./_sidebar.css";
+@import "./_color_selection.css";
 
 body{
   @apply bg-[var(--color-background)];

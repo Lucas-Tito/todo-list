@@ -1,0 +1,7 @@
+.submenu-button-container{
+    @apply absoluteitems-center justify-between px-4 py-4 text-sm text-[var(--color-secondary)] hover:bg-[var(--color-background-hover)] rounded-md cursor-default;
+}
+
+.submenu{
+    @apply ml-1 p-2 w-max bg-[var(--color-surface)] border border-[var(--color-border)] rounded-lg shadow-xl;
+}

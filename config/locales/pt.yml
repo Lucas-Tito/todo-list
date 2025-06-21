@@ -7,6 +7,15 @@ pt:
       add-task: "Adicionar Tarefa"
       delete-list: "Excluir Lista"
       new-list: "+ Nova Lista"
+      set-color: "Definir Cor"
+    colors:
+      default: "Padrão"
+      blue: "Azul"
+      green: "Verde"  
+      yellow: "Amarelo"
+      orange: "Laranja"
+      red: "Vermelho"
+      purple: "Roxo"
   tasks:
     defaults:
       name: "Nova Task"
