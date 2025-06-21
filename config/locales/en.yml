@@ -7,6 +7,15 @@ en:
       add-task: "Add Task"
       delete-list: "Delete List"
       new-list: "+ New List"
+      set-color: "Set Color"
+    colors:
+      default: "Default"
+      blue: "Blue"
+      green: "Green"
+      yellow: "Yellow"
+      orange: "Orange"
+      red: "Red"
+      purple: "Purple"
   tasks:
     defaults:
       name: "New Task"

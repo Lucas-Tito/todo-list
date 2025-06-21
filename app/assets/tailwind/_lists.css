@@ -1,9 +1,25 @@
 .list{
   @apply bg-[var(--color-background)] shadow-xl rounded-lg border border-[var(--color-border)];
+  position: relative;
+}
+
+/* Creates accent color bar */
+.list::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background-color: var(--list-color, transparent); /* Uses color from view variable */
+  border-top-left-radius: 0.5rem; 
+  border-bottom-left-radius: 0.5rem;
 }
 
 .list-header{
   @apply px-6 py-5 border-b border-[var(--color-border)] bg-[var(--color-surface)];
+  border-top-left-radius: 0.5rem; 
+  border-top-right-radius: 0.5rem; 
 }
 
 .list-name{

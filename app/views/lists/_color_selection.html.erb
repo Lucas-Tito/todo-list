@@ -1,0 +1,28 @@
+<div class="relative group">
+  <div class="flex submenu-button-container">
+    <span><%= t("lists.defaults.set-color") %></span>
+    <%# Arrow icon %>
+    <svg class="w-4 h-4 text-[var(--color-tertiary)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </div>
+
+  <%# Submenu with color usign hover action %>
+  <div class="absolute left-full top-0 hidden group-hover:flex submenu">
+    <div class="flex space-x-2" data-controller="list-color" data-list-color-url-value="<%= list_path(list) %>">
+      <%# Iterates trough model list colors %>
+      <% List.colors.keys.each do |color| %>
+        <button
+        type="button"
+        class="w-6 h-6 rounded-full border-2 transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)] <%= list.color == color ? 'ring-2 ring-offset-2 ring-[var(--color-accent)]' : 'border-transparent' %> <%= color == 'default' ? 'checkerboard-bg' : '' %>"
+        style="<%= color == 'default' ? 'background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 4px 4px; background-position: 0 0, 0 2px, 2px -2px, -2px 0px;' : 'background-color: ' + List.color_hex_for(color) + ';' %>"
+        title="<%= I18n.t("lists.colors.#{color}", default: color.capitalize) %>"
+        data-action="click->list-color#select"
+        data-list-color-color-param="<%= color %>"
+        >
+          <span class="sr-only"><%= color %></span> <%# For acessibility %>
+        </button>
+      <% end %>
+    </div>
+  </div>
+</div>
