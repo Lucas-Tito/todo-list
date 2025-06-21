@@ -56,7 +56,7 @@ body{
 }
 
 .float-menu{
-  @apply absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20;
+  @apply absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg z-20;
 }
 
 .description-truncate {
