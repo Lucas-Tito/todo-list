@@ -1,0 +1,19 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-[var(--color-primary)] mb-6">Resumo com IA</h1>
+
+  <div class="bg-[var(--color-surface)] p-6 rounded-lg shadow-lg">
+    <p class="text-[var(--color-secondary)] mb-4">
+      Clique no botão abaixo para gerar um resumo inteligente de suas tarefas pendentes. A IA analisará suas tarefas e fornecerá uma visão geral para ajudá-lo a se organizar.
+    </p>
+
+    <%# Button to trigger the summary generation via a Turbo Stream request. %>
+    <%= button_to "Gerar Resumo", 
+                  ai_path, 
+                  method: :post, 
+                  class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg cursor-pointer",
+                  form_class: "inline-block" %>
+
+    <%# Turbo Frame to display the summary response. %>
+    <%= turbo_frame_tag "summary_response", class: "mt-6" %>
+  </div>
+</div>

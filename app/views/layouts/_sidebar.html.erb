@@ -39,12 +39,25 @@
     </div>
 
     <%# Sidebar Body %>
-    <nav id="boards_list_container" class="flex-grow p-4 overflow-y-auto">
+    <nav id="boards_list_container" class="flex-grow overflow-y-auto">
+    <div class="sidebar-board-section">
       <%= render partial: "boards/board", collection: @boards, as: :board, locals: { current_board: @current_board } %>
 
       <%= form_with(model: Board.new, url: boards_path(format: :turbo_stream), class: "mt-2", id: "new_board_form") do |form| %>
         <%= form.button class: "w-full text-left flex items-center px-3 py-2 p-0 border-none new-board-btn" do %>
           <%= t("boards.defaults.new-board") %>
+        <% end %>
+      <% end %>
+    </div>
+
+      <%= form_with(url: ai_path, method: :get, class: "mt-2") do |form| %>
+        <%= form.button class: "w-full flex items-center align-center px-3 py-2 p-0 border-none ai-summary-btn" do %>
+          Resumo IA
+          <svg class="h-5 w-5 ml-1" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18,11a1,1,0,0,1-1,1,5,5,0,0,0-5,5,1,1,0,0,1-2,0,5,5,0,0,0-5-5,1,1,0,0,1,0-2,5,5,0,0,0,5-5,1,1,0,0,1,2,0,5,5,0,0,0,5,5A1,1,0,0,1,18,11Z"/>
+            <path d="M19,24a1,1,0,0,1-1,1,2,2,0,0,0-2,2,1,1,0,0,1-2,0,2,2,0,0,0-2-2,1,1,0,0,1,0-2,2,2,0,0,0,2-2,1,1,0,0,1,2,0,2,2,0,0,0,2,2A1,1,0,0,1,19,24Z"/>
+            <path d="M28,17a1,1,0,0,1-1,1,4,4,0,0,0-4,4,1,1,0,0,1-2,0,4,4,0,0,0-4-4,1,1,0,0,1,0-2,4,4,0,0,0,4-4,1,1,0,0,1,2,0,4,4,0,0,0,4,4A1,1,0,0,1,28,17Z"/>
+          </svg>
         <% end %>
       <% end %>
     </nav>
