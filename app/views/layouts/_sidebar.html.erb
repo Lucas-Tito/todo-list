@@ -50,15 +50,13 @@
       <% end %>
     </div>
 
-      <%= form_with(url: ai_path, method: :get, class: "mt-2") do |form| %>
-        <%= form.button class: "w-full flex items-center align-center px-3 py-2 p-0 border-none ai-summary-btn" do %>
-          Resumo IA
+      <%= link_to ai_path, class: "w-full flex items-center align-center px-3 py-2 p-0 border-none ai-summary-btn" do %>
+          <%= t("tasks.defaults.task-summary") %>
           <svg class="h-5 w-5 ml-1" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <path d="M18,11a1,1,0,0,1-1,1,5,5,0,0,0-5,5,1,1,0,0,1-2,0,5,5,0,0,0-5-5,1,1,0,0,1,0-2,5,5,0,0,0,5-5,1,1,0,0,1,2,0,5,5,0,0,0,5,5A1,1,0,0,1,18,11Z"/>
             <path d="M19,24a1,1,0,0,1-1,1,2,2,0,0,0-2,2,1,1,0,0,1-2,0,2,2,0,0,0-2-2,1,1,0,0,1,0-2,2,2,0,0,0,2-2,1,1,0,0,1,2,0,2,2,0,0,0,2,2A1,1,0,0,1,19,24Z"/>
             <path d="M28,17a1,1,0,0,1-1,1,4,4,0,0,0-4,4,1,1,0,0,1-2,0,4,4,0,0,0-4-4,1,1,0,0,1,0-2,4,4,0,0,0,4-4,1,1,0,0,1,2,0,4,4,0,0,0,4,4A1,1,0,0,1,28,17Z"/>
           </svg>
-        <% end %>
       <% end %>
     </nav>
   </aside>

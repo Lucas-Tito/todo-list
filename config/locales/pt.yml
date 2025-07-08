@@ -22,6 +22,7 @@ pt:
       description: "Adicione uma descrição..."
       delete-task: "Excluir Tarefa"
       completed-tasks: "Concluídas"
+      task-summary: "Resumo de Tarefas"
     priorities:
       low: "Baixa"
       medium: "Média"
