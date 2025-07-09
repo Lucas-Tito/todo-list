@@ -28,5 +28,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :ai, only: [:show, :create]
+
   root 'boards#index' # Defines initial page
 end

@@ -6,11 +6,13 @@
   --color-secondary: oklch(37.3% 0.034 259.733);
   --color-tertiary: oklch(55.1% 0.027 264.364);
 
-  --color-border: oklch(92.8% 0.006 264.531);
+  --color-border: oklch(88.214% 0.00727 268.584);
 
   --color-surface: oklch(92.8% 0.006 264.531);
   --color-background: oklch(98.5% 0.002 247.839);
   --color-background-hover: oklch(96.7% 0.003 264.542);
+
+  --shadow-color: oklch(0% 0 0 / 0.1);
 }
 
 :root.dark {
@@ -21,11 +23,13 @@
   --color-secondary: oklch(75% 0.034 259.733);
   --color-tertiary: oklch(65% 0.027 264.364);
 
-  --color-border: oklch(30% 0.01 260);
+  --color-border: oklch(38.253% 0.01995 266.051);
 
-  --color-surface: oklch(25% 0.006 264.531);   
-  --color-background: oklch(15% 0.002 247.839); 
-  --color-background-hover: oklch(22% 0.003 264.542);
+  --color-surface: oklch(27.28% 0.03495 254.08);
+  --color-background: oklch(21.783% 0.01454 266.92);
+  --color-background-hover: oklch(38.562% 0.0527 243.704);
+
+  --shadow-color: oklch(44.616% 0.08638 279.824 / 0.1);
 }
 
 @config "../../../config/tailwind.config.js";
@@ -36,6 +40,7 @@
 @import "./_tasks.css";
 @import "./_sidebar.css";
 @import "./_color_selection.css";
+@import "./_ai_page.css";
 
 body{
   @apply bg-[var(--color-background)];

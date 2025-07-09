@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem 'httparty'
 gem 'acts_as_list'
 # Adds tailwind
 gem "tailwindcss-rails"

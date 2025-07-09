@@ -3,11 +3,11 @@
 }
 
 .sidebar-panel{
-    @apply bg-[var(--color-background)] border-r border-gray-200;
+    @apply bg-[var(--color-background)] border-r border-[var(--color-border)];
 }
 
 .sidebar-header{
-    @apply justify-between items-center border-b border-gray-200;
+    @apply justify-between items-center border-b border-[var(--color-border)];
 }
 
 .sidebar-header-text{
@@ -22,6 +22,14 @@
     @apply text-[var(--color-tertiary)] rounded-md hover:text-[var(--color-primary)] hover:bg-[var(--color-background-hover)] focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
+.sidebar-board-section{
+    @apply px-4 border-b border-[var(--color-border)] max-h-96 overflow-y-auto;
+}
+
 .new-board-btn{
     @apply text-sm font-medium text-[var(--color-tertiary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+.ai-summary-btn{
+    @apply text-base font-medium text-[var(--color-secondary)] cursor-pointer hover:bg-[var(--color-background-hover)] rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
 }

@@ -84,3 +84,6 @@ sudo docker-compose build --no-cache
 
 sudo lsof -i :5432
 sudo kill <pid>
+
+# Edit Credentials
+EDITOR="nano" rails credentials:edit
