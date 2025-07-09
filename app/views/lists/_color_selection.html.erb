@@ -7,6 +7,9 @@
     </svg>
   </div>
 
+  <%# Invisible connection to help navigation %>
+  <div class="absolute left-full top-0 w-2 h-full bg-transparent z-10 hidden group-hover:block"></div>
+
   <%# Submenu with color usign hover action %>
   <div class="absolute left-full top-0 hidden group-hover:flex submenu">
     <div class="flex space-x-2" data-controller="list-color" data-list-color-url-value="<%= list_path(list) %>">

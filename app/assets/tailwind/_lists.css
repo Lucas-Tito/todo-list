@@ -44,10 +44,14 @@
 .list-placeholder{
   @apply bg-[var(--color-surface)] hover:bg-[var(--color-background-hover)] rounded-lg border-2 border-dashed border-gray-400 p-6 cursor-pointer;
   box-shadow: 
-  0 10px 15px -3px var(--shadow-color), 
-  0 4px 6px -4px var(--shadow-color);
+    0 10px 15px -3px var(--shadow-color), 
+    0 4px 6px -4px var(--shadow-color);
 }
 
 .list-placeholder-text{
   @apply text-[var(--color-secondary)] text-xl font-semibold;
+}
+
+.submenu-button{
+  @apply px-4 py-4 text-sm bg-[var(--color-background)] rounded-md text-red-700 hover:bg-[var(--color-background-hover)] cursor-pointer;
 }

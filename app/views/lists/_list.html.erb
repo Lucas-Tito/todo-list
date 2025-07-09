@@ -46,7 +46,7 @@
            data-controller="dropdown"
            data-action="click@window->dropdown#hide"
            data-dropdown-hidden-class="hidden">
-        <button type="button" class="p-1 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-700" data-action="dropdown#toggle">
+        <button type="button" class="p-1 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-700 cursor-pointer" data-action="dropdown#toggle">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
           </svg>
@@ -56,7 +56,7 @@
           <div class="py-1">
             <%= button_to t("lists.defaults.delete-list"), list_path(list),
                   method: :delete,
-                  class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
+                  class: "submenu-button block w-full text-left",
                   data: { turbo_confirm: "Tem certeza que deseja excluir este list e todas as suas tarefas?" } %>
           </div>
         </div>

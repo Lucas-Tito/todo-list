@@ -9,6 +9,7 @@
   --color-border: oklch(88.214% 0.00727 268.584);
 
   --color-surface: oklch(92.8% 0.006 264.531);
+  --color-surface-hover: oklch(94.8% 0.0045 264.537);
   --color-background: oklch(98.5% 0.002 247.839);
   --color-background-hover: oklch(96.7% 0.003 264.542);
 
@@ -26,6 +27,7 @@
   --color-border: oklch(38.253% 0.01995 266.051);
 
   --color-surface: oklch(27.28% 0.03495 254.08);
+  --color-surface-hover: oklch(32.92% 0.0438 248.89);
   --color-background: oklch(21.783% 0.01454 266.92);
   --color-background-hover: oklch(38.562% 0.0527 243.704);
 
@@ -62,7 +64,10 @@ body{
 }
 
 .float-menu{
-  @apply absolute right-0 mt-2 w-36 bg-white rounded-md shadow-lg z-20;
+  @apply absolute right-0 mt-2 w-36 bg-[var(--color-background)] rounded-md z-20;
+  box-shadow: 
+    0 10px 15px -3px var(--shadow-color), 
+    0 4px 6px -4px var(--shadow-color);
 }
 
 .description-truncate {

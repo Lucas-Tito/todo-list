@@ -41,3 +41,14 @@
 .task-due-date.overdue {
   @apply text-red-500;
 }
+
+.task-submenu{
+  @apply bg-[var(--color-surface)] rounded-md;
+  box-shadow: 
+    0 10px 15px -3px var(--shadow-color), 
+    0 4px 6px -4px var(--shadow-color);
+}
+
+.task-submenu-button{
+  @apply px-4 py-4 text-sm rounded-md cursor-pointer text-red-500 hover:bg-[var(--color-surface-hover)];
+}

@@ -4,7 +4,7 @@
     <%= t("summary.defaults.description") %>
   </p>
 
-  <div class="bg-[var(--color-surface)] p-6 rounded-lg shadow-lg">
+  <div class="summary-container">
     <%# This form will submit the selected board IDs to the 'create' action. %>
     <%= form_with(url: ai_path, method: :post) do |form| %>
       

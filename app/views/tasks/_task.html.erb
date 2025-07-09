@@ -50,11 +50,11 @@
           <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
         </svg>
       </button>
-      <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+      <div data-dropdown-target="menu" class="hidden absolute right-0 mt-2 w-36 task-submenu z-10">
         <div class="py-1">
           <%= button_to t("tasks.defaults.delete-task"), task_path(task),
                 method: :delete,
-                class: "block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-red-50",
+                class: "block w-full text-left task-submenu-button",
                 data: { turbo_confirm: "Tem certeza que deseja excluir esta tarefa?" } %>
         </div>
       </div>

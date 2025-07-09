@@ -6,6 +6,13 @@
     @apply text-[var(--color-secondary)] mb-6;
 }
 
+.summary-container{
+    @apply bg-[var(--color-surface)] p-6 rounded-lg;
+    box-shadow: 
+    0 10px 15px -3px var(--shadow-color), 
+    0 4px 6px -4px var(--shadow-color);
+}
+
 .dropwdown-button{
    @apply border-[var(--color-border)] rounded-md bg-[var(--color-background)] text-left text-[var(--color-secondary)] focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
 }
