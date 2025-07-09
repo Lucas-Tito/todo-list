@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Connects to data-controller="multi-select"
 export default class extends Controller {
   static targets = ["button", "options", "selectedText", "checkbox", "arrow"]
+  static values = { defaultText: String }
 
   connect() {
     // Close dropdown when clicking outside
@@ -65,7 +66,7 @@ export default class extends Controller {
     })
     
     if (selected.length === 0) {
-      this.selectedTextTarget.textContent = 'Escolha os boards...'
+      this.selectedTextTarget.textContent = this.defaultTextValue
     } else if (selected.length === 1) {
       this.selectedTextTarget.textContent = selected[0]
     } else {

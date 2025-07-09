@@ -12,7 +12,9 @@
         <div class="flex items-start gap-4">
           <div class="relative w-80 max-w-full">
             <!-- Custom Multi-Select Dropdown -->
-            <div class="multi-select-dropdown" data-controller="multi-select">
+            <div class="multi-select-dropdown" 
+                 data-controller="multi-select"
+                 data-multi-select-default-text-value="<%= t("summary.defaults.dropdown-text") %>">
               <button type="button" 
                       class="dropwdown-button multi-select-button w-full p-3 flex items-center justify-between border"
                       data-multi-select-target="button"
