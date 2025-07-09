@@ -33,6 +33,12 @@ en:
       my-boards: "My Boards"
       new-board: "+ Create New Board"
       empty-board: "No lists yet"
+  summary:
+    defaults:
+      title: "Task  Summary"
+      description: 'Select one or more boards and click "Generate Summary" to get an analysis of your pending tasks.'
+      button-text: "Generate Summary"
+      dropdown-text: "Select boards..."
   date:
     formats:
       default: "%Y-%m-%d"

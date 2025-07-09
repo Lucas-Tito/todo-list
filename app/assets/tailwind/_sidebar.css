@@ -3,11 +3,11 @@
 }
 
 .sidebar-panel{
-    @apply bg-[var(--color-background)] border-r border-gray-200;
+    @apply bg-[var(--color-background)] border-r border-[var(--color-border)];
 }
 
 .sidebar-header{
-    @apply justify-between items-center border-b border-gray-200;
+    @apply justify-between items-center border-b border-[var(--color-border)];
 }
 
 .sidebar-header-text{
@@ -23,7 +23,7 @@
 }
 
 .sidebar-board-section{
-    @apply px-4 border-b border-gray-200 max-h-96 overflow-y-auto;
+    @apply px-4 border-b border-[var(--color-border)] max-h-96 overflow-y-auto;
 }
 
 .new-board-btn{
