@@ -25,6 +25,11 @@ class Task < ApplicationRecord
     completed_at.present?
   end
 
+  # Method to check if task is overdue
+  def overdue?
+    due_date.present? && due_date < Date.current && !completed?
+  end
+
   # Method to postpone a task
   def snooze!(duration = 1.day)
     return unless due_date # Only postpone if theres a date

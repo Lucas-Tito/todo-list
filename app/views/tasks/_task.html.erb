@@ -45,7 +45,7 @@
          data-controller="dropdown"
          data-action="click@window->dropdown#hide"
          data-dropdown-hidden-class="hidden">
-      <button type="button" class="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600" data-action="dropdown#toggle">
+      <button type="button" class="p-1 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600 cursor-pointer" data-action="dropdown#toggle">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
           <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
         </svg>
@@ -70,7 +70,9 @@
 
   <div class="mt-3 flex items-center flex-wrap gap-2">
     <% if task.due_date.present? %>
-      <div class="relative group flex items-center gap-x-1.5 bg-gray-100 text-gray-800 text-xs font-medium pl-2.5 pr-3 py-1 rounded-full">
+      <% due_date_classes = "relative group flex items-center task-due-date" %>
+      <% due_date_classes += " overdue" if task.overdue? %>
+      <div class="<%= due_date_classes %>">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
         <span><%= l(task.due_date, format: :short) rescue task.due_date.to_s %></span>
         <%= button_to task_path(task, task: { due_date: nil }), method: :patch, class: "task-badge-remove-icon", data: { "task-card-target": "removeIcon" } do %>
