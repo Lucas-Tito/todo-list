@@ -44,3 +44,63 @@ en:
       default: "%Y-%m-%d"
       short: "%b %d"  
       long: "%B %d, %Y"
+  open_router:
+    no_tasks: "No tasks to summarize."
+    no_tasks_user_message: "There are no tasks to summarize."
+    boards_analysis: "Task analysis for boards: %{board_names}"
+    priority:
+      high: "🔴 HIGH PRIORITY:"
+      medium: "🟡 MEDIUM PRIORITY:"
+      low: "🟢 LOW PRIORITY:"
+      none: "⚪ NO PRIORITY SET:"
+      all: "📋 ALL TASKS:"
+    alerts:
+      overdue: "⚠️ OVERDUE TASKS: %{count}"
+      upcoming: "⏰ TASKS DUE SOON: %{count}"
+    total: "Total: %{count} tasks in %{boards} board(s)"
+    recommendations_context: |
+
+      For recommendations, consider:
+      - High priority tasks are more important
+      - Overdue tasks need immediate attention
+      - Tasks due soon should be prioritized
+      - Tasks without deadlines can be left for later
+
+      IMPORTANT: Always mention tasks by their exact name as shown in quotes above, never use 'task 1', 'task 2' or generic terms.
+    due_dates:
+      today: "due TODAY"
+      tomorrow: "due TOMORROW"
+      yesterday: "was due YESTERDAY"
+      in_days: "due in %{days} days"
+      overdue_days: "overdue by %{days} days"
+      date_format: "due: %{date}"
+    system_prompt: |
+      You are a productivity assistant that analyzes tasks and creates summaries in plain text.
+      
+      IMPORTANT: Do not use markdown formatting (**bold**, *italic*, etc). Use only plain text.
+      
+      FUNDAMENTAL RULE: ALWAYS mention tasks by their EXACT name as shown in the list. NEVER use "task 1", "task 2" or generic terms. Use the real task title in quotes.
+      
+      Analyze the provided tasks and create a summary following EXACTLY this structure:
+      
+      1. GENERAL SITUATION: Mention the total tasks and how they are distributed by priority
+      2. URGENCIES: Highlight overdue or upcoming tasks using their real names
+      3. RECOMMENDATIONS: Specifically suggest which tasks to do first using the EXACT task names in quotes. Explain the reason for each recommendation. Example: Start with "Specific Task Name" because it's overdue by 2 days.
+      4. MOTIVATION: End with a motivating and realistic message
+      
+      Important rules:
+      - Use only plain text, no markdown formatting
+      - Be concise (maximum 4 short paragraphs)
+      - Use emojis only at the beginning of each section for highlighting
+      - ALWAYS cite the exact task name in quotes, never use "task 1", "task 2"
+      - Always explain the reason for the recommendation (deadline, priority, dependency)
+      - Maintain a friendly and professional tone
+      
+      If there are no tasks, encourage the user to add some or congratulate them if they completed everything.
+    error_messages:
+      connection_error: "An error occurred while connecting to the OpenRouter API: %{message}"
+      generation_error: "Error generating summary: %{details} (%{code})"
+      model_not_found: "Model not found or unavailable"
+      invalid_token: "Invalid authentication token"
+      rate_limit: "Request limit exceeded"
+      server_error: "OpenRouter server internal error"

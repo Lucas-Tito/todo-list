@@ -42,7 +42,7 @@ class OpenRouterService
   # Main method to generate the summary.
   def call
     # Returns a message if there are no tasks to summarize.
-    return "Nenhuma tarefa para resumir." if @tasks.empty?
+    return I18n.t('open_router.no_tasks') if @tasks.empty?
 
     # Debug: Log the user message to see what's being sent
     Rails.logger.info "User message being sent to AI:"
@@ -55,7 +55,7 @@ class OpenRouterService
     # Rescues from standard errors (e.g., network issues) and returns an error message.
     Rails.logger.error "OpenRouter Service Error: #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
-    "Ocorreu um erro ao conectar com a OpenRouter API: #{e.message}"
+    I18n.t('open_router.error_messages.connection_error', message: e.message)
   end
 
   private
@@ -73,7 +73,7 @@ class OpenRouterService
 
   # Creates a detailed user message with the list of tasks.
   def user_message
-    return "Não há tarefas para resumir." if @tasks.empty?
+    return I18n.t('open_router.no_tasks_user_message') if @tasks.empty?
 
     # Debug: Log task details before processing
     Rails.logger.info "Total tasks received: #{@tasks.count}"
@@ -106,56 +106,49 @@ class OpenRouterService
     overdue_tasks = @tasks.select { |task| task.due_date && task.due_date < Date.current }
     upcoming_tasks = @tasks.select { |task| task.due_date && task.due_date.between?(Date.current, Date.current + 3.days) }
 
-    message = "Análise de tarefas dos boards: #{board_names}\n\n"
+    message = I18n.t('open_router.boards_analysis', board_names: board_names) + "\n\n"
     
     if high_priority.any?
-      message += "🔴 ALTA PRIORIDADE:\n"
+      message += I18n.t('open_router.priority.high') + "\n"
       high_priority.each { |task| message += format_task(task) }
       message += "\n"
     end
     
     if medium_priority.any?
-      message += "🟡 MÉDIA PRIORIDADE:\n"
+      message += I18n.t('open_router.priority.medium') + "\n"
       medium_priority.each { |task| message += format_task(task) }
       message += "\n"
     end
     
     if low_priority.any?
-      message += "🟢 BAIXA PRIORIDADE:\n"
+      message += I18n.t('open_router.priority.low') + "\n"
       low_priority.each { |task| message += format_task(task) }
       message += "\n"
     end
     
     if no_priority.any?
-      message += "⚪ SEM PRIORIDADE DEFINIDA:\n"
+      message += I18n.t('open_router.priority.none') + "\n"
       no_priority.each { |task| message += format_task(task) }
       message += "\n"
     end
 
     # If no tasks in priority categories, show all tasks
     if high_priority.empty? && medium_priority.empty? && low_priority.empty? && no_priority.empty?
-      message += "📋 TODAS AS TAREFAS:\n"
+      message += I18n.t('open_router.priority.all') + "\n"
       @tasks.each { |task| message += format_task(task) }
       message += "\n"
     end
 
     if overdue_tasks.any?
-      message += "⚠️ TAREFAS VENCIDAS: #{overdue_tasks.count}\n"
+      message += I18n.t('open_router.alerts.overdue', count: overdue_tasks.count) + "\n"
     end
     
     if upcoming_tasks.any?
-      message += "⏰ TAREFAS PRÓXIMAS DO VENCIMENTO: #{upcoming_tasks.count}\n"
+      message += I18n.t('open_router.alerts.upcoming', count: upcoming_tasks.count) + "\n"
     end
 
-    message += "\nTotal: #{@tasks.count} tarefas em #{boards.count} board(s)"
-    
-    # Add priority analysis for AI context
-    message += "\n\nPara recomendações, considere:"
-    message += "\n- Tarefas com alta prioridade são mais importantes"
-    message += "\n- Tarefas vencidas precisam atenção imediata"
-    message += "\n- Tarefas próximas do vencimento devem ser priorizadas"
-    message += "\n- Tarefas sem prazo podem ser deixadas para depois"
-    message += "\n\nIMPORTANTE: Sempre mencione as tarefas pelo nome exato que aparece entre aspas acima, nunca use 'tarefa 1', 'tarefa 2' ou termos genéricos."
+    message += "\n" + I18n.t('open_router.total', count: @tasks.count, boards: boards.count)
+    message += I18n.t('open_router.recommendations_context')
     
     message
   end
@@ -169,17 +162,18 @@ class OpenRouterService
       days_diff = (task.due_date - Date.current).to_i
       case days_diff
       when 0
-        " (vence HOJE)"
+        " (#{I18n.t('open_router.due_dates.today')})"
       when 1
-        " (vence AMANHÃ)"
+        " (#{I18n.t('open_router.due_dates.tomorrow')})"
       when -1
-        " (venceu ONTEM)"
+        " (#{I18n.t('open_router.due_dates.yesterday')})"
       when 2..7
-        " (vence em #{days_diff} dias)"
+        " (#{I18n.t('open_router.due_dates.in_days', days: days_diff)})"
       when -7..-1
-        " (venceu há #{days_diff.abs} dias)"
+        " (#{I18n.t('open_router.due_dates.overdue_days', days: days_diff.abs)})"
       else
-        " (vencimento: #{task.due_date.strftime('%d/%m/%Y')})"
+        date_format = I18n.locale == :en ? '%m/%d/%Y' : '%d/%m/%Y'
+        " (#{I18n.t('open_router.due_dates.date_format', date: task.due_date.strftime(date_format))})"
       end
     else
       ""
@@ -200,17 +194,18 @@ class OpenRouterService
       days_diff = (task.due_date - Date.current).to_i
       case days_diff
       when 0
-        " (vence HOJE)"
+        " (#{I18n.t('open_router.due_dates.today')})"
       when 1
-        " (vence AMANHÃ)"
+        " (#{I18n.t('open_router.due_dates.tomorrow')})"
       when -1
-        " (venceu ONTEM)"
+        " (#{I18n.t('open_router.due_dates.yesterday')})"
       when 2..7
-        " (vence em #{days_diff} dias)"
+        " (#{I18n.t('open_router.due_dates.in_days', days: days_diff)})"
       when -7..-1
-        " (venceu há #{days_diff.abs} dias)"
+        " (#{I18n.t('open_router.due_dates.overdue_days', days: days_diff.abs)})"
       else
-        " (vencimento: #{task.due_date.strftime('%d/%m/%Y')})"
+        date_format = I18n.locale == :en ? '%m/%d/%Y' : '%d/%m/%Y'
+        " (#{I18n.t('open_router.due_dates.date_format', date: task.due_date.strftime(date_format))})"
       end
     else
       ""
@@ -223,48 +218,25 @@ class OpenRouterService
 
   # Defines the system message to guide the AI's response.
   def system_message
-    <<~PROMPT
-      Você é um assistente de produtividade que analisa tarefas e cria resumos em texto simples.
-      
-      IMPORTANTE: Não use formatação markdown (**negrito**, *itálico*, etc). Use apenas texto simples.
-      
-      REGRA FUNDAMENTAL: SEMPRE mencione as tarefas pelo nome EXATO que aparece na lista. NUNCA use "tarefa 1", "tarefa 2" ou termos genéricos. Use o título real da tarefa entre aspas.
-      
-      Analise as tarefas fornecidas e crie um resumo seguindo EXATAMENTE esta estrutura:
-      
-      1. SITUAÇÃO GERAL: Mencione o total de tarefas e como estão distribuídas por prioridade
-      2. URGÊNCIAS: Destaque tarefas vencidas ou próximas do vencimento usando seus nomes reais
-      3. RECOMENDAÇÕES: Sugira especificamente quais tarefas fazer primeiro usando os nomes EXATOS das tarefas entre aspas. Explique o porquê de cada recomendação. Exemplo: Comece com "Nome da Tarefa Específica" porque está vencida há 2 dias.
-      4. MOTIVAÇÃO: Termine com uma mensagem motivadora e realista
-      
-      Regras importantes:
-      - Use apenas texto simples, sem formatação markdown
-      - Seja conciso (máximo 4 parágrafos curtos)
-      - Use emojis apenas no início de cada seção para destacar
-      - SEMPRE cite o nome exato da tarefa entre aspas, nunca use "tarefa 1", "tarefa 2"
-      - Explique sempre o motivo da recomendação (prazo, prioridade, dependência)
-      - Mantenha um tom amigável e profissional
-      
-      Se não houver tarefas, encoraje o usuário a adicionar algumas ou parabenize se completou tudo.
-    PROMPT
+    I18n.t('open_router.system_prompt')
   end
 
   # Handles API errors and sets a flash message if a controller context is available.
   def handle_error(response)
     error_details = case response.code
     when 404
-      "Modelo não encontrado ou indisponível"
+      I18n.t('open_router.error_messages.model_not_found')
     when 401
-      "Token de autenticação inválido"
+      I18n.t('open_router.error_messages.invalid_token')
     when 429
-      "Limite de requisições excedido"
+      I18n.t('open_router.error_messages.rate_limit')
     when 500, 502, 503
-      "Erro interno do servidor OpenRouter"
+      I18n.t('open_router.error_messages.server_error')
     else
       response.message
     end
     
-    error_message = "Erro ao gerar o resumo: #{error_details} (#{response.code})"
+    error_message = I18n.t('open_router.error_messages.generation_error', details: error_details, code: response.code)
     
     # Sets a flash alert if a controller is present.
     if @controller

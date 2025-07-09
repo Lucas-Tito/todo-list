@@ -48,3 +48,63 @@ pt:
     abbr_day_names: [Dom, Seg, Ter, Qua, Qui, Sex, Sáb]
     month_names: [~, Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro]
     abbr_month_names: [~, Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez]
+  open_router:
+    no_tasks: "Nenhuma tarefa para resumir."
+    no_tasks_user_message: "Não há tarefas para resumir."
+    boards_analysis: "Análise de tarefas dos boards: %{board_names}"
+    priority:
+      high: "🔴 ALTA PRIORIDADE:"
+      medium: "🟡 MÉDIA PRIORIDADE:"
+      low: "🟢 BAIXA PRIORIDADE:"
+      none: "⚪ SEM PRIORIDADE DEFINIDA:"
+      all: "📋 TODAS AS TAREFAS:"
+    alerts:
+      overdue: "⚠️ TAREFAS VENCIDAS: %{count}"
+      upcoming: "⏰ TAREFAS PRÓXIMAS DO VENCIMENTO: %{count}"
+    total: "Total: %{count} tarefas em %{boards} board(s)"
+    recommendations_context: |
+
+      Para recomendações, considere:
+      - Tarefas com alta prioridade são mais importantes
+      - Tarefas vencidas precisam atenção imediata
+      - Tarefas próximas do vencimento devem ser priorizadas
+      - Tarefas sem prazo podem ser deixadas para depois
+
+      IMPORTANTE: Sempre mencione as tarefas pelo nome exato que aparece entre aspas acima, nunca use 'tarefa 1', 'tarefa 2' ou termos genéricos.
+    due_dates:
+      today: "vence HOJE"
+      tomorrow: "vence AMANHÃ"
+      yesterday: "venceu ONTEM"
+      in_days: "vence em %{days} dias"
+      overdue_days: "venceu há %{days} dias"
+      date_format: "vencimento: %{date}"
+    system_prompt: |
+      Você é um assistente de produtividade que analisa tarefas e cria resumos em texto simples.
+      
+      IMPORTANTE: Não use formatação markdown (**negrito**, *itálico*, etc). Use apenas texto simples.
+      
+      REGRA FUNDAMENTAL: SEMPRE mencione as tarefas pelo nome EXATO que aparece na lista. NUNCA use "tarefa 1", "tarefa 2" ou termos genéricos. Use o título real da tarefa entre aspas.
+      
+      Analise as tarefas fornecidas e crie um resumo seguindo EXATAMENTE esta estrutura:
+      
+      1. SITUAÇÃO GERAL: Mencione o total de tarefas e como estão distribuídas por prioridade
+      2. URGÊNCIAS: Destaque tarefas vencidas ou próximas do vencimento usando seus nomes reais
+      3. RECOMENDAÇÕES: Sugira especificamente quais tarefas fazer primeiro usando os nomes EXATOS das tarefas entre aspas. Explique o porquê de cada recomendação. Exemplo: Comece com "Nome da Tarefa Específica" porque está vencida há 2 dias.
+      4. MOTIVAÇÃO: Termine com uma mensagem motivadora e realista
+      
+      Regras importantes:
+      - Use apenas texto simples, sem formatação markdown
+      - Seja conciso (máximo 4 parágrafos curtos)
+      - Use emojis apenas no início de cada seção para destacar
+      - SEMPRE cite o nome exato da tarefa entre aspas, nunca use "tarefa 1", "tarefa 2"
+      - Explique sempre o motivo da recomendação (prazo, prioridade, dependência)
+      - Mantenha um tom amigável e profissional
+      
+      Se não houver tarefas, encoraje o usuário a adicionar algumas ou parabenize se completou tudo.
+    error_messages:
+      connection_error: "Ocorreu um erro ao conectar com a OpenRouter API: %{message}"
+      generation_error: "Erro ao gerar o resumo: %{details} (%{code})"
+      model_not_found: "Modelo não encontrado ou indisponível"
+      invalid_token: "Token de autenticação inválido"
+      rate_limit: "Limite de requisições excedido"
+      server_error: "Erro interno do servidor OpenRouter"
