@@ -17,6 +17,7 @@ services:
       - db
     stdin_open: true
     tty: true
+    restart: unless-stopped
 
   tailwind:
     build:
