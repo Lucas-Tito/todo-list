@@ -8,13 +8,40 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script nonce="<%= content_security_policy_nonce %>">
       // On page load or when changing themes, best to add inline in `head` to avoid FOUC
       if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark')
       } else {
         document.documentElement.classList.remove('dark')
       }
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCBCjBK9MXv93sBi9-jZ7hbYGnBB1_UvTY",
+        authDomain: "todolist-ruby.firebaseapp.com",
+        projectId: "todolist-ruby",
+        storageBucket: "todolist-ruby.firebasestorage.app",
+        messagingSenderId: "320305688472",
+        appId: "1:320305688472:web:4d461a6e3eb9450924c5ed"
+      };
+
+      // Wait for Firebase to load, then initialize
+      document.addEventListener('DOMContentLoaded', function() {
+        if (typeof firebase !== 'undefined') {
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+          
+          // Make Firebase globally available
+          window.firebase = firebase;
+          
+          console.log('Firebase initialized successfully');
+        } else {
+          console.error('Firebase not loaded');
+        }
+      });
     </script>
     
     <%= yield :head %>

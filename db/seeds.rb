@@ -1,11 +1,19 @@
-# Create or find a default Board.
-puts "Seed: garantindo a existência de um board padrão..."
-default_board = Board.find_or_create_by!(name: "Meu Primeiro Board")
-puts "Seed: board padrão '#{default_board.name}' pronto."
+# Create or find a default User.
+puts "Seed: ensuring the existence of a default user..."
+default_user = User.find_or_create_by!(email: 'default_user@example.com') do |user|
+  user.name = 'Default User'
+  user.uid = 'default_user_uid' 
+end
+puts "Seed: default user '#{default_user.name}' ready."
+
+# Create or find a default Board associated with default user.
+puts "Seed: ensuring the existence of a default board..."
+default_board = default_user.boards.find_or_create_by!(name: "Meu Primeiro Board")
+puts "Seed: default board '#{default_board.name}' ready."
 
 
 # Create lists inside default board.
-puts "Seed: criando lists..."
+puts "Seed: creating lists..."
 work_list = default_board.lists.find_or_create_by!(name: "Trabalho") do |list|
   list.description = "Tarefas relacionadas ao trabalho."
 end
@@ -17,14 +25,14 @@ end
 study_list = default_board.lists.find_or_create_by!(name: "Estudos") do |list|
   list.description = "Tarefas e metas de estudo."
 end
-puts "Seed: lists criados com sucesso!"
+puts "Seed: lists created with success!"
 
 
-# 3. Create Tasks and associate with lists
+# Create Tasks and associate with lists
 if Task.exists?
-  puts "Seed: tarefas já existem, pulando criação."
+  puts "Seed: Tasks already exist, skipping creation."
 else
-  puts "Seed: criando tarefas iniciais e associando a lists..."
+  puts "Seed: creating initial tasks and associating with lists..."
 
   Task.create!(
     title: "Prova de Semiótica",
@@ -58,7 +66,7 @@ else
     list: personal_list
   )
 
-  puts "Seed: tarefas criadas e associadas com sucesso!"
+  puts "Seed: tasks created and associated with success!"
 end
 
-puts "Seed finalizado!"
+puts "Seed finished!"

@@ -117,6 +117,8 @@ GEM
       raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    google-id-token (1.4.2)
+      jwt (>= 1)
     httparty (0.23.1)
       csv
       mini_mime (>= 1.0.0)
@@ -136,6 +138,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.12.2)
+    jwt (3.1.2)
+      base64
     kamal (2.6.1)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -377,6 +381,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  google-id-token
   httparty
   importmap-rails
   jbuilder

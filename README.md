@@ -81,6 +81,8 @@ Esta configuração deve fornecer um ambiente de desenvolvimento Rails com Postg
 
 sudo docker-compose down -v
 sudo docker-compose run --rm app rails db:create db:migrate
+sudo docker-compose run --rm app rails db:migrate
+sudo docker-compose run --rm app bundle install
 
 sudo docker-compose down
 sudo docker volume rm todo-list_bundle_cache

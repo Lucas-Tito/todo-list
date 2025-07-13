@@ -30,7 +30,7 @@ class BoardsController < ApplicationController
             turbo_stream.update("lists_container", "")
           ]
         end
-        format.html { redirect_to root_path, notice: 'Board criado com sucesso.' }
+        format.html { redirect_to app_root_path, notice: 'Board criado com sucesso.' }
       else
         format.html do
           # Error logic to handle html request
@@ -46,9 +46,9 @@ class BoardsController < ApplicationController
   def update
     respond_to do |format|
       if @board.update(board_params)
-        format.turbo_stream { redirect_to root_path, status: :see_other }
+        format.turbo_stream { redirect_to app_root_path, status: :see_other }
         format.json { render json: @board, status: :ok }
-        format.html { redirect_to root_path, notice: 'Board atualizado.' }
+        format.html { redirect_to app_root_path, notice: 'Board atualizado.' }
       else
         format.json { render json: { errors: @board.errors.full_messages }, status: :unprocessable_entity }
         format.html { render 'tasks/index', status: :unprocessable_entity }
@@ -70,8 +70,8 @@ class BoardsController < ApplicationController
       # For Turbo Stream and HTML requests, the best response is a redirect.
       # Turbo will intercept and handle the transition intelligently.
       # The notice ensures that the user sees a confirmation.
-      format.turbo_stream { redirect_to root_path, notice: 'Board excluído com sucesso.' }
-      format.html { redirect_to root_path, notice: "Board excluído com sucesso.", status: :see_other }
+      format.turbo_stream { redirect_to app_root_path, notice: 'Board excluído com sucesso.' }
+      format.html { redirect_to app_root_path, notice: "Board excluído com sucesso.", status: :see_other }
     end
   end
 
