@@ -28,15 +28,20 @@ Rails.application.configure do
                        "https://securetoken.googleapis.com",
                        "https://identitytoolkit.googleapis.com"
     
-    # Allow Firebase Auth popups and frames
+    # Allow Firebase Auth redirects and frames (not popups)
     policy.frame_src   :self,
                        "https://*.firebaseapp.com",
                        "https://accounts.google.com",
                        "https://content.googleapis.com"
     
-    # Allow child sources for Firebase Auth
+    # Allow child sources for Firebase Auth redirects
     policy.child_src   :self,
                        "https://*.firebaseapp.com", 
+                       "https://accounts.google.com"
+    
+    # Add form-action for redirects
+    policy.form_action :self,
+                       "https://*.firebaseapp.com",
                        "https://accounts.google.com"
     
     # Specify URI for violation reports

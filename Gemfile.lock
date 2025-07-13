@@ -385,6 +385,7 @@ DEPENDENCIES
   httparty
   importmap-rails
   jbuilder
+  jwt
   kamal
   pg
   propshaft

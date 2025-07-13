@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem 'google-id-token'
 gem 'httparty'
 gem 'acts_as_list'
+gem 'jwt' # For decoding Firebase JWT tokens
 # Adds tailwind
 gem "tailwindcss-rails"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
