@@ -6,7 +6,9 @@
     <p class="text-lg text-[var(--color-secondary)] mb-8">
       Organize suas tarefas de forma simples e eficiente.
     </p>
-    <button data-action="click->authentication#login" class="bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+    <button data-action="click->authentication#signInWithGoogle" 
+            data-authentication-target="loginButton"
+            class="bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
       Entrar com Google
     </button>
   </div>

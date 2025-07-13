@@ -18,7 +18,7 @@
         document.documentElement.classList.remove('dark')
       }
 
-      // Firebase configuration
+      // Firebase configuration - adjusted for development
       const firebaseConfig = {
         apiKey: "AIzaSyCBCjBK9MXv93sBi9-jZ7hbYGnBB1_UvTY",
         authDomain: "todolist-ruby.firebaseapp.com",
@@ -28,16 +28,25 @@
         appId: "1:320305688472:web:4d461a6e3eb9450924c5ed"
       };
 
+      // Set development flag
+      window.FIREBASE_DEV_MODE = <%= Rails.env.development? %>;
+
       // Wait for Firebase to load, then initialize
       document.addEventListener('DOMContentLoaded', function() {
         if (typeof firebase !== 'undefined') {
-          // Initialize Firebase
-          firebase.initializeApp(firebaseConfig);
-          
-          // Make Firebase globally available
-          window.firebase = firebase;
-          
-          console.log('Firebase initialized successfully');
+          try {
+            // Initialize Firebase
+            if (!firebase.apps.length) {
+              firebase.initializeApp(firebaseConfig);
+            }
+            
+            // Make Firebase globally available
+            window.firebase = firebase;
+            
+            console.log('Firebase initialized successfully');
+          } catch (error) {
+            console.error('Firebase initialization error:', error);
+          }
         } else {
           console.error('Firebase not loaded');
         }
