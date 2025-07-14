@@ -1,0 +1,68 @@
+<div class="relative" data-controller="user-dropdown">
+  <!-- User Avatar Button -->
+  <button 
+    data-action="click->user-dropdown#toggle" 
+    data-user-dropdown-target="trigger"
+    class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors duration-200 overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <% if current_user.photo_url.present? %>
+      <img 
+        src="<%= current_user.photo_url %>" 
+        alt="<%= current_user.name %>"
+        class="w-full h-full object-cover"
+      >
+    <% else %>
+      <!-- Fallback avatar with user initials -->
+      <span class="text-white font-semibold text-sm">
+        <%= current_user.name.split.map(&:first).join.upcase %>
+      </span>
+    <% end %>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <div 
+    data-user-dropdown-target="menu"
+    class="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg border border-gray-200 z-50 hidden"
+  >
+    <div class="py-2">
+      <!-- User Info Section -->
+      <div class="px-4 py-2 border-b border-gray-100">
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <% if current_user.photo_url.present? %>
+              <img 
+                src="<%= current_user.photo_url %>" 
+                alt="<%= current_user.name %>"
+                class="w-8 h-8 rounded-full object-cover"
+              >
+            <% else %>
+              <div class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center">
+                <span class="text-white font-semibold text-xs">
+                  <%= current_user.name.split.map(&:first).join.upcase %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900 truncate">
+              <%= current_user.name %>
+            </p>
+            <p class="text-sm text-gray-500 truncate">
+              <%= current_user.email %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logout Button -->
+      <div class="px-4 py-2">
+        <button 
+          data-action="click->user-dropdown#logout"
+          class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200"
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -58,7 +58,13 @@ class SessionsController < ApplicationController
       user = User.find_or_create_by(uid: payload['sub']) do |u|
         u.name = payload['name'] || payload['email'].split('@')[0]
         u.email = payload['email']
+        u.photo_url = payload['picture'] # Save user's photo URL from Firebase
         Rails.logger.info "Creating new user: #{u.email}"
+      end
+      
+      # Update existing user's photo URL if it changed
+      if user.persisted? && user.photo_url != payload['picture']
+        user.update(photo_url: payload['picture'])
       end
       
       if user.persisted?
@@ -69,7 +75,8 @@ class SessionsController < ApplicationController
           user: { 
             id: user.id, 
             email: user.email, 
-            name: user.name 
+            name: user.name,
+            photo_url: user.photo_url
           } 
         }
       else
