@@ -16,12 +16,11 @@
       <%# Iterates trough model list colors %>
       <% List.colors.keys.each do |color| %>
         <button
-        type="button"
-        class="w-6 h-6 rounded-full border-2 transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)] <%= list.color == color ? 'ring-2 ring-offset-2 ring-[var(--color-accent)]' : 'border-transparent' %> <%= color == 'default' ? 'checkerboard-bg' : '' %>"
-        style="<%= color == 'default' ? 'background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%); background-size: 4px 4px; background-position: 0 0, 0 2px, 2px -2px, -2px 0px;' : 'background-color: ' + List.color_hex_for(color) + ';' %>"
-        title="<%= I18n.t("lists.colors.#{color}", default: color.capitalize) %>"
-        data-action="click->list-color#select"
-        data-list-color-color-param="<%= color %>"
+          type="button"
+          class="w-6 h-6 rounded-full border-2 transition-transform transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-accent)] <%= list.color == color ? 'ring-2 ring-offset-2 ring-[var(--color-accent)]' : 'border-transparent' %> <%= color == 'default' ? 'checkerboard-bg' : "bg-list-#{color}" %>"
+          title="<%= I18n.t("lists.colors.#{color}", default: color.capitalize) %>"
+          data-action="click->list-color#select"
+          data-list-color-color-param="<%= color %>"
         >
           <span class="sr-only"><%= color %></span> <%# For acessibility %>
         </button>
