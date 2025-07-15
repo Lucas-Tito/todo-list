@@ -37,7 +37,7 @@ pt:
     defaults:
       title: "Resumo de Tarefas"
       description: 'Selecione um ou mais boards e clique em "Gerar Resumo" para obter uma análise de suas tarefas pendentes.'
-      button-text: "Gener Resumo"
+      button-text: "Gerar Resumo"
       dropdown-text: "Selecione os boards..."
   date:
     formats:
