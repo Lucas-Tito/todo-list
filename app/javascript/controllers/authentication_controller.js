@@ -102,6 +102,9 @@ export default class extends Controller {
         this.updateUI(data.user);
         this.showSuccess(`Bem-vindo, ${data.user.name || data.user.email}!`);
         
+        // Store user data in session storage for client-side access
+        sessionStorage.setItem('currentUser', JSON.stringify(data.user));
+        
         // Redirect to boards page after successful login
         setTimeout(() => {
           window.location.href = '/boards';
@@ -121,6 +124,9 @@ export default class extends Controller {
   async signOut() {
     try {
       console.log("Signing out...");
+      
+      // Clear session storage
+      sessionStorage.removeItem('currentUser');
       
       // Sign out from Firebase
       await this.auth.signOut();
