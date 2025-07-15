@@ -52,6 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_14_135327) do
     t.string "uid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "profile_picture_url"
     t.string "photo_url"
     t.index ["uid"], name: "index_users_on_uid", unique: true
   end
