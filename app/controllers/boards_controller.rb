@@ -3,14 +3,14 @@ class BoardsController < ApplicationController
 
 
   def index
-    @boards = Board.order(:name)
+    @boards = current_user.boards.order(:name)
     @lists = @current_board.lists.includes(:tasks).order(:position) if @current_board
   end
 
   # POST /boards or /boards.turbo_stream
   def create
     @old_board = @current_board
-    @board = Board.new(board_params)
+    @board = current_user.boards.build(board_params)
 
     respond_to do |format|
       if @board.save
@@ -32,9 +32,14 @@ class BoardsController < ApplicationController
         end
         format.html { redirect_to app_root_path, notice: 'Board criado com sucesso.' }
       else
+        format.turbo_stream do
+          # Error logic to handle turbo_stream request - log error to console
+          Rails.logger.error "Board creation failed: #{@board.errors.full_messages.join(', ')}"
+          head :unprocessable_entity
+        end
         format.html do
           # Error logic to handle html request
-          @boards = Board.order(:name)
+          @boards = current_user.boards.order(:name)
           @lists = @current_board&.lists&.includes(:tasks)&.order(:position)
           flash.now[:alert] = @board.errors.full_messages.join(", ")
           render 'tasks/index', status: :unprocessable_entity
@@ -62,7 +67,7 @@ class BoardsController < ApplicationController
     # If the deleted board was the active one,
     # defines first board from list as active.
     if session[:board_id] == @board.id
-      session[:board_id] = Board.order(:name).first&.id
+      session[:board_id] = current_user.boards.order(:name).first&.id
     end
 
     respond_to do |format|
@@ -78,7 +83,7 @@ class BoardsController < ApplicationController
   private
 
   def set_board
-    @board = Board.find(params[:id])
+    @board = current_user.boards.find(params[:id])
   end
 
   # Use .fetch to prevent crash if 'board' param doesn't exists
