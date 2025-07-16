@@ -1,4 +1,4 @@
-<div data-controller="authentication" class="flex flex-col items-center min-h-screen bg-[var(--color-background)]">
+<div data-controller="authentication" class="flex flex-col items-center min-h-screen bg-[var(--color-background)] mt-10">
   <div class="text-center">
     <h1 class="text-4xl font-bold text-[var(--color-primary)] mb-4 max-w-lg mx-auto">
       Organize suas tarefas de forma simples e inteligente.
@@ -12,4 +12,86 @@
       Entrar com Google
     </button>
   </div>
+
+  <div class="w-full bg-[var(--color-surface)] mt-20 py-14">
+    <div class="flex flex-col items-center justify-center gap-8 max-w-2xl mx-auto">
+      <div class="text-center">
+        <h1 class="text-xl font-bold text-[var(--color-secondary)] mb-1">
+          Inteligência Artificial Trabalhando por Você
+        </h1>
+        <p class="text-lg text-[var(--color-secondary)]">
+            A I.A lê suas tarefas e gera resumos inteligentes para você ter uma visão rápida do que precisa ser feito, sem esforço, sem dor de cabeça.
+        </p>
+      </div>
+      <div class="flex-shrink-0">
+        <%= image_tag "gif_summarize_tasks.gif", alt: "Demonstração de UX", class: "w-160 h-auto rounded-lg shadow-lg" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-20 py-14">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-start justify-between gap-8">
+        <div class="flex-1">
+          <h1 class="text-xl font-bold text-[var(--color-secondary)] max-w-75">
+            Velocidade, Colaboração e Simplicidade
+          </h1>
+        </div>
+        <div class="flex-1">
+          <p class="text-lg text-[var(--color-secondary)]">
+            Nada de cliques desnecessários, organize suas tarefas com fluidez.
+          </p>
+        </div>
+      </div>
+      
+      <!-- Cards com SVGs -->
+      <div class="flex justify-between gap-8 mt-6">
+      <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
+        <svg class="w-20 h-20 fill-[var(--color-secondary)]" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <path fill="none" d="M0 0h24v24H0z"/>
+            <path d="M12 13.333l-9.223 6.149A.5.5 0 0 1 2 19.066V4.934a.5.5 0 0 1 .777-.416L12 10.667V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832l-10.599 7.066a.5.5 0 0 1-.777-.416v-5.733zM10.394 12L4 7.737v8.526L10.394 12zM14 7.737v8.526L20.394 12 14 7.737z"/>
+          </g>
+        </svg>
+        <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Agilidade</h3>
+      </div>
+      
+      <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
+        <svg class="w-20 h-20 fill-[var(--color-secondary)]" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+          <g>
+            <circle cx="110.6" cy="184.92" r="64.12"/>
+            <path d="M221.192,391.2v-56.8c0-59.744-65.208-60.801-65.208-60.801H65.208c0,0-65.208,0.712-65.208,60.801
+              v56.8L221.192,391.2L221.192,391.2z"/>
+          </g>
+          <g>
+            <circle cx="401.399" cy="184.92" r="64.12"/>
+            <path d="M512,391.2v-56.8c0-59.744-65.208-60.801-65.208-60.801h-90.792c0,0-65.208,0.728-65.208,60.801
+              v56.8L512,391.2L512,391.2z"/>
+          </g>
+        </svg>
+        <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Colaboração</h3>
+      </div>
+
+      <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
+        <svg class="w-20 h-20 fill-[var(--color-secondary)]" width="800px" height="800px" viewBox="0 0 556.232 556.231" xml:space="preserve">
+          <g>
+            <path d="M222.136,314.367h147.081c-35.343-23.38-48.405-62.348-48.405-93.731c0-20.684,2.391-51.332,4.705-80.966
+              c1.94-24.815,3.768-48.243,3.768-61.372C329.284,47.124,316.651,0,297.613,0c-4.724,0-8.816,1.807-12.508,5.546
+              c-18.485,18.647-18.179,73.937-18.169,74.492c0,36.031,3.06,56.237,5.766,74.071c2.926,19.288,5.441,35.945,3.796,66.479
+              C273.658,272.56,242.427,301.161,222.136,314.367z"/>
+            <rect x="203.164" y="362.18" width="181.688" height="9.562"/>
+            <rect x="203.164" y="381.305" width="181.688" height="19.125"/>
+            <rect x="203.164" y="333.492" width="181.688" height="19.125"/>
+            <path d="M173.673,539.688c-1.721,1.233-2.639,3.634-2.171,5.709c0.65,2.936,4.017,5.154,9.209,6.101
+              c6.321,1.147,14.506,2.113,23.963,2.869c0.144,0,0.201-0.02,0.383-0.01c12.642,0.87,25.226-25.475,32.828-45.747
+              c0,0-3.586,28.582-8.482,47.124c8.788,0.315,18.035,0.497,27.635,0.497c39.8,0,75.009-2.754,94.2-7.363
+              c10.959-2.63,18.886-9.734,21.21-19.01c8.529-34.129,11.513-92.986,12.221-110.304H203.192
+              C203.135,440.392,201.117,520.085,173.673,539.688z"/>
+          </g>
+        </svg>
+        <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Customização</h3>
+      </div>
+    </div>
+  </div>
+
 </div>

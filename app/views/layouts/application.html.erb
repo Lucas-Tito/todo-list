@@ -79,7 +79,7 @@
       <%# Renderiza a barra lateral. Ela só aparecerá se @boards estiver definido no controller. %>
       <%= render "layouts/sidebar" if @boards %>
 
-      <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+      <main class="flex-1 overflow-y-auto">
         <%# Uma área dedicada e estilizada para notificações (flash messages) %>
         <div id="flash" class="mb-4">
           <% if notice %>
