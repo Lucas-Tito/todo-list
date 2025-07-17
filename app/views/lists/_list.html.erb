@@ -46,9 +46,7 @@
            data-action="click@window->dropdown#hide"
            data-dropdown-hidden-class="hidden">
         <button type="button" class="p-1 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-700 cursor-pointer" data-action="dropdown#toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-          </svg>
+          <%= render "shared/icons/three_dot_icon", css_class: "h-5 w-5" %>
         </button>
         <div data-dropdown-target="menu" class="hidden float-menu">
           <%= render 'lists/color_selection', list: list %>
