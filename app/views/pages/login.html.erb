@@ -1,16 +1,16 @@
 <div data-controller="authentication" class="flex flex-col items-center min-h-screen bg-[var(--color-background)] mt-10">
   <div class="text-center">
     <h1 class="text-4xl font-bold text-[var(--color-primary)] mb-4 max-w-lg mx-auto">
-      Organize suas tarefas de forma simples e inteligente.
+      <%= t("login.defaults.title") %>
     </h1>
     <p class="text-lg text-[var(--color-secondary)] mb-8">
-      Uma todolist moderna, colaborativa e personalizável.
+      <%= t("login.defaults.subtitle") %>
     </p>
     <button data-action="click->authentication#signInWithGoogle"
     data-authentication-target="loginButton"
-    class="bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 mx-auto flex items-center justify-center">
-    Entrar com Google
-    <%= render "shared/icons/google_icon", css_class: "w-5 h-5 stroke-white inline-block align-middle ml-1" %>
+    class="!flex bg-[var(--color-accent)] gap-2 hover:bg-[var(--color-accent-hover)] text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-transform transform hover:scale-105 mx-auto items-center justify-center">
+      <%= t("login.defaults.login-button") %>
+      <%= render "shared/icons/google_icon", css_class: "w-5 h-5 stroke-white inline-block align-middle" %>
     </button>
   </div>
 
@@ -19,45 +19,51 @@
       <div class="flex items-start justify-between gap-8">
         <div class="flex-1">
           <h1 class="text-3xl font-bold text-[var(--color-secondary)] max-w-175">
-            Rápida, Colaborativa e Personalizável
+            <%= t("login.defaults.features-title") %>
           </h1>
         </div>
         <div class="flex-1">
           <p class="text-base text-[var(--color-secondary)]">
-            Uma interface leve, feita para você se concentrar no que importa. Organize tarefas sem modais, colabore em tempo real e mantenha tudo simples do começo ao fim.
+            <%= t("login.defaults.features-subtitle") %>
           </p>
         </div>
       </div>
       
-      <!-- Cards com SVGs -->
+      <!-- SVGs Cards -->
       <div class="flex justify-between gap-8 mt-6">
         <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
           <%= render "shared/icons/fastfoward_icon", css_class: "w-20 h-20 fill-[var(--color-secondary)]" %>
-          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Agilidade</h3>
+          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <%= t("login.defaults.agility-card") %>
+          </h3>
         </div>
         
         <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
           <%= render "shared/icons/team_icon", css_class: "w-20 h-20 stroke-[var(--color-secondary)]" %>
-          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Colaboração</h3>
+          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <%= t("login.defaults.collaboration-card") %>
+          </h3>
         </div>
 
         <div class="rounded-lg shadow-lg flex-1 max-w-56 h-64 bg-[var(--color-surface)] relative overflow-hidden flex items-center justify-center">
           <%= render "shared/icons/paint_brush_icon", css_class: "w-20 h-20 stroke-[var(--color-secondary)]" %>
-          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">Customização</h3>
+          <h3 class="absolute bottom-4 left-1/2 transform -translate-x-1/2 text-lg font-semibold text-[var(--color-secondary)] z-10">
+            <%= t("login.defaults.customization-card") %>
+          </h3>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Seção do GIF com largura completa (movida para baixo dos cards) -->
+  <!-- AI GIF Section -->
   <div class="w-full bg-[var(--color-surface)] py-14 mt-24">
     <div class="flex flex-col items-center justify-center gap-8">
       <div class="text-center max-w-xl mx-auto">
         <h1 class="text-2xl font-bold text-[var(--color-secondary)] mb-1">
-          Inteligência artificial trabalhando por você
+          <%= t("login.defaults.ai-feat-title") %>
         </h1>
         <p class="text-base text-[var(--color-secondary)]">
-            A I.A lê suas tarefas e gera resumos inteligentes para você ter uma visão rápida do que precisa ser feito, sem esforço, sem dor de cabeça.
+            <%= t("login.defaults.ai-feat-description") %>
         </p>
       </div>
       <div class="flex-shrink-0">

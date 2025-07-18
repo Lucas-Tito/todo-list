@@ -39,6 +39,18 @@ pt:
       description: 'Selecione um ou mais boards e clique em "Gerar Resumo" para obter uma análise de suas tarefas pendentes.'
       button-text: "Gerar Resumo"
       dropdown-text: "Selecione os boards..."
+  login:
+    defaults:
+      title: "Organize suas tarefas de forma simples e inteligente."
+      subtitle: "Uma todolist moderna, colaborativa e personalizável."
+      login-button: "Entrar com Google"
+      features-title: "Rápida, Colaborativa e Personalizável"
+      features-subtitle: "Uma interface leve, feita para você se concentrar no que importa. Organize tarefas sem popups, colabore em tempo real e mantenha tudo simples do começo ao fim."
+      agility-card: "Agilidade"
+      collaboration-card: "Colaboração"
+      customization-card: "Customização"
+      ai-feat-title: "Inteligência artificial trabalhando por você"
+      ai-feat-description: "A I.A lê suas tarefas e gera resumos inteligentes para você ter uma visão rápida do que precisa ser feito, sem esforço, sem dor de cabeça."
   date:
     formats:
       default: "%d/%m/%Y"
