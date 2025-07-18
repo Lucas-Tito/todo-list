@@ -2,7 +2,7 @@ class AisController < ApplicationController
   # The 'show' action now prepares the data for the selection page.
   # It fetches all boards and makes them available to the view.
   def show
-    @boards = Board.order(:name)
+    @boards = current_user.boards.order(:name)
   end
 
   # The 'create' action now handles the form submission from the 'show' page.
@@ -14,8 +14,11 @@ class AisController < ApplicationController
     if board_ids.blank?
       @summary = "Por favor, selecione ao menos um board para gerar o resumo."
     else
+      # Ensure we only access boards that belong to the current user
+      user_board_ids = current_user.boards.where(id: board_ids).pluck(:id)
+      
       # Fetches all uncompleted tasks from the lists belonging to the selected boards.
-      tasks = Task.joins(:list).where(lists: { board_id: board_ids }).uncompleted.order(:created_at)
+      tasks = Task.joins(:list).where(lists: { board_id: user_board_ids }).uncompleted.order(:created_at)
       
       # Calls the OpenRouterService with the collected tasks.
       @summary = OpenRouterService.new(tasks, self).call

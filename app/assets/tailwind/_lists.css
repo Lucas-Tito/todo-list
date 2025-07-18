@@ -55,3 +55,12 @@
 .submenu-button{
   @apply px-4 py-4 text-sm bg-[var(--color-background)] rounded-md text-red-700 hover:bg-[var(--color-background-hover)] cursor-pointer;
 }
+
+/* Needed to comply with CSP rules */
+.list-color-default { --list-color: transparent; }
+.list-color-blue { --list-color: #3b82f6; }
+.list-color-green { --list-color: #22c55e; }
+.list-color-yellow { --list-color: #eab308; }
+.list-color-orange { --list-color: #f97316; }
+.list-color-red { --list-color: #ef4444; }
+.list-color-purple { --list-color: #8b5cf6; }

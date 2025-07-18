@@ -1,4 +1,5 @@
 class Board < ApplicationRecord
+  belongs_to :user
   has_many :lists, -> { order(position: :asc) }, dependent: :destroy
   validates :name, presence: true
 
@@ -12,8 +13,8 @@ class Board < ApplicationRecord
     base_name = I18n.t('boards.defaults.name')
     new_name = base_name
     i = 1
-    # Ensure name is unique
-    while Board.exists?(name: new_name)
+    # Ensure name is unique for this user
+    while user.boards.exists?(name: new_name)
       new_name = "#{base_name} (#{i})"
       i += 1
     end

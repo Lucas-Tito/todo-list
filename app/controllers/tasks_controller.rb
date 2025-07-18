@@ -22,7 +22,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       if @task.update(task_params_for_update)
         format.json { render json: @task, status: :ok }
-        format.html { redirect_to root_path, notice: 'Tarefa atualizada.' }
+        format.html { redirect_to app_root_path, notice: 'Tarefa atualizada.' }
       else
         format.json { render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity }
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,7 +47,7 @@ class TasksController < ApplicationController
           locals: { list: @list, start_editing_title_for_task_id: @task&.id }
         )
       end
-      format.html { redirect_to root_path }
+      format.html { redirect_to app_root_path }
     end
   end
 

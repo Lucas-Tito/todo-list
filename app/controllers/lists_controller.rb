@@ -39,7 +39,7 @@ class ListsController < ApplicationController
             end
             render turbo_stream: streams
         end
-        format.html { redirect_to root_path, notice: "List was successfully created." }
+        format.html { redirect_to app_root_path, notice: "List was successfully created." }
       else
         format.turbo_stream do
           render turbo_stream: turbo_stream.prepend("lists_list_container",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_09_165341) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_14_135327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,6 +18,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_165341) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_boards_on_user_id"
   end
 
   create_table "lists", force: :cascade do |t|
@@ -44,6 +46,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_09_165341) do
     t.index ["list_id"], name: "index_tasks_on_list_id"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.string "uid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "profile_picture_url"
+    t.string "photo_url"
+    t.index ["uid"], name: "index_users_on_uid", unique: true
+  end
+
+  add_foreign_key "boards", "users"
   add_foreign_key "lists", "boards"
   add_foreign_key "tasks", "lists"
 end

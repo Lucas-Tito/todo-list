@@ -2,9 +2,7 @@
   <%# --- Panel Toggle Btn --- %>
   <button type="button" data-action="click->toggle#fire" class="p-2 panel-toggle-btn">
     <span class="sr-only">Abrir menu</span>
-    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-    </svg>
+    <%= render "shared/icons/sidebar_icon", css_class: "h-6 w-6" %>
   </button>
 
   <%# --- Sidebar Panel --- %>
@@ -15,25 +13,18 @@
       <h2 class="sidebar-header-text"><%= t("boards.defaults.my-boards") %></h2>
 
       <div class="flex items-center space-x-2">
-        <%# --- Theme Switcher Btn Container --- %>
+        
         <div data-controller="theme">
           <button type="button" data-action="click->theme#toggle" class="p-2 theme-switcher-btn">
-            <svg data-theme-target="moon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-            <svg data-theme-target="sun" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
+            <%= render "shared/icons/moon_icon", css_class: "h-5 w-5" %>
+            <%= render "shared/icons/sun_icon", css_class: "h-5 w-5 hidden" %>
           </button>
         </div>
-        <%# --- END: Theme Switcher Btn Container --- %>
 
         <%# Close Sidebar Btn %>
         <button type="button" data-action="click->toggle#fire" class="p-1 close-sidebar-btn">
           <span class="sr-only">Fechar menu</span>
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <%= render "shared/icons/close_icon", css_class: "h-5 w-5" %>
         </button>
       </div>
     </div>
@@ -52,11 +43,7 @@
 
       <%= link_to ai_path, class: "w-full flex items-center align-center p-4 border-none ai-summary-btn" do %>
           <%= t("summary.defaults.title") %>
-          <svg class="h-5 w-5 ml-1" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18,11a1,1,0,0,1-1,1,5,5,0,0,0-5,5,1,1,0,0,1-2,0,5,5,0,0,0-5-5,1,1,0,0,1,0-2,5,5,0,0,0,5-5,1,1,0,0,1,2,0,5,5,0,0,0,5,5A1,1,0,0,1,18,11Z"/>
-            <path d="M19,24a1,1,0,0,1-1,1,2,2,0,0,0-2,2,1,1,0,0,1-2,0,2,2,0,0,0-2-2,1,1,0,0,1,0-2,2,2,0,0,0,2-2,1,1,0,0,1,2,0,2,2,0,0,0,2,2A1,1,0,0,1,19,24Z"/>
-            <path d="M28,17a1,1,0,0,1-1,1,4,4,0,0,0-4,4,1,1,0,0,1-2,0,4,4,0,0,0-4-4,1,1,0,0,1,0-2,4,4,0,0,0,4-4,1,1,0,0,1,2,0,4,4,0,0,0,4,4A1,1,0,0,1,28,17Z"/>
-          </svg>
+          <%= render "shared/icons/sparkles_icon", css_class: "h-5 w-5 ml-1" %>
       <% end %>
     </nav>
   </aside>

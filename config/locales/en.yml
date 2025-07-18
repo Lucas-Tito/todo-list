@@ -39,6 +39,18 @@ en:
       description: 'Select one or more boards and click "Generate Summary" to get an analysis of your pending tasks.'
       button-text: "Generate Summary"
       dropdown-text: "Select boards..."
+  login:
+    defaults:
+      title: "Organize your tasks in a simple and smart way."
+      subtitle: "A modern, collaborative, and customizable to-do list."
+      login-button: "Sign in with Google"
+      features-title: "Fast, Collaborative, and Customizable"
+      features-subtitle: "A lightweight interface built to help you focus on what matters. Organize tasks without popups, collaborate in real time, and keep everything simple from start to finish."
+      agility-card: "Agility"
+      collaboration-card: "Collaboration"
+      customization-card: "Customization"
+      ai-feat-title: "Artificial intelligence working for you"
+      ai-feat-description: "AI reads your tasks and generates smart summaries so you can quickly see what needs to be done, effortlessly, stress-free."
   date:
     formats:
       default: "%Y-%m-%d"
